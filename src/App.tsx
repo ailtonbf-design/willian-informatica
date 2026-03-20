@@ -1,4 +1,5 @@
-import { motion } from 'motion/react';
+import { useEffect, useRef } from 'react';
+import { motion, useInView, animate } from 'motion/react';
 import { BookOpen, Rocket, ArrowRight, CheckCircle2, Users, Award, Clock, MapPin, Phone, Mail, Instagram, Facebook, Linkedin, Code, Briefcase, Palette, Star } from 'lucide-react';
 
 const fadeInUp = {
@@ -14,6 +15,38 @@ const staggerContainer = {
   }
 };
 
+function CountUpAnimation({
+  value,
+  prefix = "",
+  suffix = "",
+  duration = 2
+}: {
+  value: number;
+  prefix?: string;
+  suffix?: string;
+  duration?: number;
+}) {
+  const ref = useRef<HTMLSpanElement>(null);
+  const inView = useInView(ref, { once: true });
+
+  useEffect(() => {
+    if (inView && ref.current) {
+      const controls = animate(0, value, {
+        duration,
+        ease: "easeOut",
+        onUpdate(latest) {
+          if (ref.current) {
+            ref.current.textContent = `${prefix}${Math.floor(latest)}${suffix}`;
+          }
+        }
+      });
+      return () => controls.stop();
+    }
+  }, [inView, value, duration, prefix, suffix]);
+
+  return <span ref={ref}>{prefix}0{suffix}</span>;
+}
+
 export default function App() {
   return (
     <div className="font-sans text-slate-800 bg-slate-50 selection:bg-brand-red selection:text-white">
@@ -22,9 +55,10 @@ export default function App() {
         {/* Background Image */}
         <div className="absolute inset-0 z-0">
           <img
-            src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1920&q=80"
+            src="https://res.cloudinary.com/dapsovbs5/image/upload/v1774028444/Willian-2_vkkrov.webp"
             alt="Alunos e profissionais em ambiente premium"
             className="w-full h-full object-cover opacity-60"
+            referrerPolicy="no-referrer"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-slate-900/95 via-slate-900/80 to-slate-900/40" />
         </div>
@@ -432,9 +466,9 @@ export default function App() {
           {/* Numbers Panel */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto mb-24">
             {[
-              { number: "24", label: "Anos de História", icon: Clock },
-              { number: "+8000", label: "Alunos Formados", icon: Users },
-              { number: "100%", label: "Certificação de Excelência", icon: Award },
+              { number: 24, prefix: "", suffix: "", label: "Anos de História", icon: Clock },
+              { number: 8000, prefix: "+", suffix: "", label: "Alunos Formados", icon: Users },
+              { number: 100, prefix: "", suffix: "%", label: "Certificação de Excelência", icon: Award },
             ].map((stat, idx) => (
               <motion.div
                 key={idx}
@@ -447,7 +481,9 @@ export default function App() {
                 <div className="w-16 h-16 mx-auto bg-red-50 rounded-2xl flex items-center justify-center mb-6">
                   <stat.icon className="w-8 h-8 text-brand-red" />
                 </div>
-                <div className="font-heading text-5xl font-extrabold text-slate-900 mb-2">{stat.number}</div>
+                <div className="font-heading text-5xl font-extrabold text-slate-900 mb-2">
+                  <CountUpAnimation value={stat.number} prefix={stat.prefix} suffix={stat.suffix} />
+                </div>
                 <div className="text-slate-500 font-medium uppercase tracking-wider text-sm">{stat.label}</div>
               </motion.div>
             ))}
