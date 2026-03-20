@@ -51,7 +51,7 @@ export default function App() {
   return (
     <div className="font-sans text-slate-800 bg-slate-50 selection:bg-brand-red selection:text-white">
       {/* HERO SECTION */}
-      <section className="relative min-h-[90vh] flex flex-col bg-slate-900 overflow-hidden">
+      <section className="relative min-h-[85vh] md:min-h-[75vh] lg:min-h-[85vh] flex flex-col bg-slate-900 overflow-hidden">
         {/* Background Image */}
         <div className="absolute inset-0 z-0">
           <img
@@ -76,7 +76,7 @@ export default function App() {
         </header>
 
         {/* Hero Content */}
-        <div className="relative z-10 container mx-auto px-6 flex-1 flex flex-col justify-center items-start pb-40 pt-12">
+        <div className="relative z-10 container mx-auto px-6 flex-1 flex flex-col justify-center items-start pt-32 md:pt-40 pb-48 md:pb-56">
           <motion.div
             initial="hidden"
             animate="visible"
