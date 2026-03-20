@@ -55,7 +55,7 @@ export default function App() {
         {/* Background Image */}
         <div className="absolute inset-0 z-0">
           <img
-            src="https://res.cloudinary.com/dapsovbs5/image/upload/v1774028444/Willian-2_vkkrov.webp"
+            src="https://res.cloudinary.com/dapsovbs5/image/upload/v1774045137/Design_sem_nome_wb65oe.webp"
             alt="Alunos e profissionais em ambiente premium"
             className="w-full h-full object-cover opacity-60"
             referrerPolicy="no-referrer"
