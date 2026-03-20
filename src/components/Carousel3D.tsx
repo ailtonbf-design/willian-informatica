@@ -117,14 +117,14 @@ export default function Carousel3D() {
           <div className="flex items-center gap-4">
             <button
               onClick={() => swiperInstance?.slidePrev()}
-              className="w-14 h-14 flex items-center justify-center rounded-full border border-blue-600 text-blue-600 hover:bg-blue-50 transition-all duration-300 focus:outline-none"
+              className="w-14 h-14 flex items-center justify-center rounded-full border border-brand-red text-brand-red hover:bg-brand-red/10 transition-all duration-300 focus:outline-none"
               aria-label="Slide anterior"
             >
               <ArrowLeft strokeWidth={1.5} className="w-6 h-6" />
             </button>
             <button
               onClick={() => swiperInstance?.slideNext()}
-              className="w-14 h-14 flex items-center justify-center rounded-full border border-blue-600 text-blue-600 hover:bg-blue-50 transition-all duration-300 focus:outline-none"
+              className="w-14 h-14 flex items-center justify-center rounded-full border border-brand-red text-brand-red hover:bg-brand-red/10 transition-all duration-300 focus:outline-none"
               aria-label="Próximo slide"
             >
               <ArrowRight strokeWidth={1.5} className="w-6 h-6" />
