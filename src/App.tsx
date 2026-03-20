@@ -294,10 +294,10 @@ export default function App() {
       </section>
 
       {/* AUTORIDADE E CERTIFICAÇÃO */}
-      <section className="py-24 bg-slate-900 relative overflow-hidden">
+      <section className="py-24 bg-slate-50 relative overflow-hidden">
         {/* Decorative background elements */}
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-red/10 rounded-full blur-3xl -mr-64 -mt-64" />
-        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-blue-900/20 rounded-full blur-3xl -ml-32 -mb-32" />
+        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-red/5 rounded-full blur-3xl -mr-64 -mt-64" />
+        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-blue-100/50 rounded-full blur-3xl -ml-32 -mb-32" />
         
         <div className="container mx-auto px-6 relative z-10">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center max-w-6xl mx-auto">
@@ -307,15 +307,15 @@ export default function App() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
             >
-              <h2 className="font-heading text-3xl md:text-5xl font-bold text-white mb-8 leading-tight">
+              <h2 className="font-heading text-3xl md:text-5xl font-bold text-slate-900 mb-8 leading-tight">
                 Liberação de Vagas: Formação Profissional com Certificação Premium
               </h2>
               
-              <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-3xl p-8 relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-brand-red/20 rounded-full blur-2xl -mr-16 -mt-16" />
+              <div className="bg-white shadow-xl border border-slate-100 rounded-3xl p-8 relative overflow-hidden">
+                <div className="absolute top-0 right-0 w-32 h-32 bg-brand-red/10 rounded-full blur-2xl -mr-16 -mt-16" />
                 <Award className="w-12 h-12 text-brand-red mb-6 relative z-10" />
-                <p className="text-slate-300 text-lg mb-6 relative z-10 leading-relaxed">
-                  <strong className="text-white">Escola Credenciada com Exclusividade.</strong> O Dr. Augusto Cury também utiliza esta certificação em sua metodologia, atestando o padrão de excelência do nosso ensino.
+                <p className="text-slate-600 text-lg mb-6 relative z-10 leading-relaxed">
+                  <strong className="text-slate-900">Escola Credenciada com Exclusividade.</strong> O Dr. Augusto Cury também utiliza esta certificação em sua metodologia, atestando o padrão de excelência do nosso ensino.
                 </p>
                 <a href="#" className="inline-flex items-center font-semibold text-brand-red hover:text-brand-red-hover transition-colors relative z-10">
                   www.certificadopremium.com.br <ArrowRight className="ml-2 w-4 h-4" />
@@ -330,7 +330,7 @@ export default function App() {
               viewport={{ once: true }}
               className="relative"
             >
-              <div className="aspect-[4/5] md:aspect-square rounded-3xl overflow-hidden shadow-2xl shadow-black/50 border border-white/10">
+              <div className="aspect-[4/5] md:aspect-square rounded-3xl overflow-hidden shadow-2xl border border-slate-200">
                 <img 
                   src="https://images.unsplash.com/photo-1555848962-6e79363ec58f?auto=format&fit=crop&w=800&q=80" 
                   alt="Certificação Premium" 
@@ -344,7 +344,7 @@ export default function App() {
       </section>
 
       {/* QUEM SOMOS */}
-      <section className="py-24 bg-slate-50 relative overflow-hidden">
+      <section className="py-24 bg-white relative overflow-hidden">
         <div className="container mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center max-w-6xl mx-auto">
             {/* Coluna da Esquerda (Imagem Criativa) */}
