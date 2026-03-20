@@ -506,10 +506,10 @@ export default function App() {
           <div className="max-w-6xl mx-auto">
             <h3 className="font-heading text-2xl font-bold text-center text-slate-900 mb-10">Nossos Alunos Premium</h3>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=400&q=80" className="rounded-2xl w-full h-48 object-cover" alt="Aluno" />
-              <img src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3?auto=format&fit=crop&w=400&q=80" className="rounded-2xl w-full h-64 object-cover md:-mt-8" alt="Aluno" />
-              <img src="https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?auto=format&fit=crop&w=400&q=80" className="rounded-2xl w-full h-56 object-cover" alt="Aluno" />
-              <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80" className="rounded-2xl w-full h-48 object-cover md:mt-8" alt="Aluno" />
+              <img src="https://res.cloudinary.com/dapsovbs5/image/upload/v1774034573/aluno-1_1_ljnomo.jpg" className="rounded-2xl w-full h-48 object-cover" alt="Aluno" referrerPolicy="no-referrer" />
+              <img src="https://res.cloudinary.com/dapsovbs5/image/upload/v1774034574/aluno-2_1_xa1jai.jpg" className="rounded-2xl w-full h-64 object-cover md:-mt-8" alt="Aluno" referrerPolicy="no-referrer" />
+              <img src="https://res.cloudinary.com/dapsovbs5/image/upload/v1774034574/aluno-4_1_muhg80.jpg" className="rounded-2xl w-full h-56 object-cover" alt="Aluno" referrerPolicy="no-referrer" />
+              <img src="https://res.cloudinary.com/dapsovbs5/image/upload/v1774034574/aluno-3_1_hkjn7j.jpg" className="rounded-2xl w-full h-48 object-cover md:mt-8" alt="Aluno" referrerPolicy="no-referrer" />
             </div>
           </div>
         </div>
