@@ -117,32 +117,37 @@ export default function App() {
         <div className="container mx-auto px-6 relative z-10">
           <div className="max-w-5xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-8">
             <div className="text-white lg:w-1/2 text-center lg:text-left">
-              <span className="inline-block py-1 px-3 rounded-full bg-white/20 text-sm font-semibold tracking-wider uppercase mb-4 backdrop-blur-sm">
+              <span className="inline-block py-1 px-3 rounded-full bg-white/20 text-sm font-semibold tracking-wider uppercase mb-4 backdrop-blur-sm animate-pulse">
                 Oferta por tempo limitado
               </span>
               <h2 className="font-heading text-3xl md:text-4xl font-bold mb-2 leading-tight">
                 Curso destaque da semana
               </h2>
+              <h3 className="font-heading text-2xl md:text-3xl font-extrabold text-yellow-400 mb-4 drop-shadow-sm">
+                Pacote Office & Gestão Administrativa
+              </h3>
               <p className="text-red-100 text-lg">
                 50% de desconto real + Diagnóstico Profissional gratuito.
               </p>
             </div>
 
-            <div className="w-full lg:w-1/2 bg-white/10 backdrop-blur-md p-6 rounded-2xl border border-white/20">
-              <form className="flex flex-col sm:flex-row gap-3">
-                <input
-                  type="text"
-                  placeholder="Seu Nome"
-                  className="flex-1 bg-white rounded-lg px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-red"
-                />
-                <input
-                  type="email"
-                  placeholder="Seu E-mail"
-                  className="flex-1 bg-white rounded-lg px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-red"
-                />
+            <div className="w-full lg:w-1/2 bg-white/10 backdrop-blur-md p-6 md:p-8 rounded-2xl border border-white/20">
+              <form className="flex flex-col gap-4 w-full">
+                <div className="flex flex-col sm:flex-row gap-3 w-full">
+                  <input
+                    type="text"
+                    placeholder="Seu Nome"
+                    className="w-full flex-1 min-w-0 bg-white rounded-lg px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-red"
+                  />
+                  <input
+                    type="tel"
+                    placeholder="Seu WhatsApp"
+                    className="w-full flex-1 min-w-0 bg-white rounded-lg px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-red"
+                  />
+                </div>
                 <button
                   type="button"
-                  className="bg-slate-900 text-white font-semibold px-6 py-3 rounded-lg hover:bg-slate-800 transition-colors whitespace-nowrap shadow-lg shadow-slate-900/20"
+                  className="w-full bg-slate-900 text-white font-bold text-lg px-6 py-4 rounded-lg hover:bg-slate-800 transition-colors shadow-lg shadow-slate-900/20"
                 >
                   Garantir Desconto
                 </button>
