@@ -243,14 +243,25 @@ export default function App() {
 
       {/* WP - ESCOLA DE VENDAS (Empresário) */}
       <section className="relative bg-slate-900 pt-32 pb-24 overflow-hidden">
+        {/* Background Image */}
+        <div className="absolute inset-0 z-0">
+          <img
+            src="https://res.cloudinary.com/dapsovbs5/image/upload/v1774023454/Banner-Willian_vusp0w.webp"
+            alt="Banner Escola de Vendas"
+            className="w-full h-full object-cover opacity-60"
+            referrerPolicy="no-referrer"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-slate-900/90 to-slate-900/70" />
+        </div>
+
         {/* Top Wave Divider for Dark Section */}
-        <div className="absolute top-0 left-0 w-full overflow-hidden leading-none z-0 rotate-180">
+        <div className="absolute top-0 left-0 w-full overflow-hidden leading-none z-10 rotate-180">
           <svg viewBox="0 0 1440 320" preserveAspectRatio="none" className="block w-full h-[60px] md:h-[120px]">
             <path fill="#f8fafc" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,112C672,96,768,96,864,112C960,128,1056,160,1152,160C1248,160,1344,128,1392,112L1440,96L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
           </svg>
         </div>
 
-        <div className="container mx-auto px-6 relative z-10">
+        <div className="container mx-auto px-6 relative z-20">
           <div className="max-w-4xl mx-auto text-center">
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
