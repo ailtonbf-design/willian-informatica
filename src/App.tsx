@@ -50,7 +50,7 @@ export default function App() {
             className="max-w-full md:max-w-4xl lg:max-w-5xl text-left"
           >
             <motion.h1 variants={fadeInUp} className="font-heading text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-[1.1] tracking-tight mb-6">
-              <span className="block">Onde você se qualifica</span>
+              <span className="block">Onde você aprende</span>
               <span className="block text-brand-red">e aprende a empreender.</span>
             </motion.h1>
             <motion.p variants={fadeInUp} className="text-lg md:text-xl text-slate-300 mb-10 max-w-xl leading-relaxed">
@@ -207,19 +207,19 @@ export default function App() {
           </div>
 
           {/* Vantagens Blocks */}
-          <div className="grid md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+          <div className="grid md:grid-cols-12 gap-8 max-w-6xl mx-auto">
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm flex items-start gap-4"
+              className="md:col-span-5 bg-white p-8 rounded-2xl border border-slate-200 shadow-sm flex items-start gap-4"
             >
               <div className="bg-red-50 p-3 rounded-full shrink-0">
                 <CheckCircle2 className="w-6 h-6 text-brand-red" />
               </div>
               <div>
                 <h4 className="font-heading font-bold text-lg text-slate-900 mb-2">Vagas de Emprego Atualizadas</h4>
-                <p className="text-slate-600">Matricule-se e ganhe dois cursos bônus para acelerar sua entrada no mercado.</p>
+                <p className="text-slate-600">Matricule-se agora e ganhe dois cursos extras.</p>
               </div>
             </motion.div>
 
@@ -227,14 +227,14 @@ export default function App() {
               initial={{ opacity: 0, x: 30 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
-              className="bg-slate-900 p-8 rounded-2xl shadow-xl flex items-start gap-4"
+              className="md:col-span-7 bg-slate-900 p-8 rounded-2xl shadow-xl flex items-start gap-4"
             >
               <div className="bg-white/10 p-3 rounded-full shrink-0">
                 <Rocket className="w-6 h-6 text-white" />
               </div>
               <div>
                 <h4 className="font-heading font-bold text-lg text-white mb-2">Aluno Empreendedor</h4>
-                <p className="text-slate-300">Um diferencial exclusivo: Aqui não aprende apenas a técnica... aprende a empreender.</p>
+                <p className="text-slate-300">Um diferencial exclusivo para nossos alunos. Aqui você não apenas aprende... você aprende a empreender. Saiba como participar e ter acesso ao programa, desenvolvendo habilidades que vão além da sala de aula.</p>
               </div>
             </motion.div>
           </div>
@@ -323,6 +323,24 @@ export default function App() {
             <a href="#" className="inline-flex items-center font-semibold text-brand-red hover:text-brand-red-hover transition-colors relative z-10">
               www.certificadopremium.com.br <ArrowRight className="ml-2 w-4 h-4" />
             </a>
+          </motion.div>
+
+          {/* Quem Somos */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="max-w-4xl mx-auto text-center mb-24"
+          >
+            <h2 className="font-heading text-3xl md:text-4xl font-bold text-slate-900 mb-6">
+              Quem somos
+            </h2>
+            <p className="text-lg text-slate-600 leading-relaxed mb-6">
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+            </p>
+            <p className="text-lg text-slate-600 leading-relaxed">
+              Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam.
+            </p>
           </motion.div>
 
           {/* Numbers Panel */}
