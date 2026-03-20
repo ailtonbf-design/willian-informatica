@@ -352,13 +352,22 @@ export default function App() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
             >
-              <h2 className="font-heading text-3xl md:text-5xl font-bold text-slate-900 mb-8 leading-tight">
-                Liberação de Vagas: Formação Profissional com Certificação Premium
-              </h2>
+              <div className="mb-8 text-left">
+                <span className="inline-block text-brand-red font-bold uppercase tracking-wider text-sm mb-3">
+                  Liberação de Vagas
+                </span>
+                <h2 className="font-heading text-3xl md:text-5xl font-bold text-slate-900 leading-tight">
+                  Formação Profissional com Certificação Premium
+                </h2>
+              </div>
               
-              <div className="bg-white shadow-xl border border-slate-100 rounded-3xl p-8 relative overflow-hidden">
+              <div className="bg-white shadow-xl border border-slate-100 rounded-3xl p-8 relative overflow-hidden text-left">
                 <div className="absolute top-0 right-0 w-32 h-32 bg-brand-red/10 rounded-full blur-2xl -mr-16 -mt-16" />
-                <Award className="w-12 h-12 text-brand-red mb-6 relative z-10" />
+                <img 
+                  src="https://res.cloudinary.com/dapsovbs5/image/upload/v1774029343/logop_btmd14.png" 
+                  alt="Logo Certificado Premium" 
+                  className="h-16 mb-6 object-contain relative z-10" 
+                />
                 <p className="text-slate-600 text-lg mb-6 relative z-10 leading-relaxed">
                   <strong className="text-slate-900">Escola Credenciada com Exclusividade.</strong> O Dr. Augusto Cury também utiliza esta certificação em sua metodologia, atestando o padrão de excelência do nosso ensino.
                 </p>
