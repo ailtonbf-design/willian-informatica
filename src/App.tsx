@@ -384,13 +384,17 @@ export default function App() {
               viewport={{ once: true }}
               className="relative"
             >
-              <div className="aspect-[4/5] md:aspect-square rounded-3xl overflow-hidden shadow-2xl border border-slate-200">
-                <img 
-                  src="https://images.unsplash.com/photo-1555848962-6e79363ec58f?auto=format&fit=crop&w=800&q=80" 
-                  alt="Certificação Premium" 
-                  className="w-full h-full object-cover"
-                  referrerPolicy="no-referrer"
-                />
+              <div className="w-32 h-32 bg-[#E3000F]/10 rounded-full blur-2xl absolute -bottom-6 -right-6 -z-10" />
+              <div className="bg-white p-3 rounded-2xl shadow-2xl border border-slate-100 transform rotate-1 hover:rotate-0 transition-transform duration-500 ease-out">
+                <div className="relative rounded-xl overflow-hidden">
+                  <img 
+                    src="https://res.cloudinary.com/dapsovbs5/image/upload/v1774031802/Augusto_Cury_lgg4xk.webp" 
+                    alt="Certificação Premium Augusto Cury" 
+                    className="w-full aspect-[4/3] hover:scale-105 transition-transform duration-700 object-cover"
+                    referrerPolicy="no-referrer"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-900/20 to-transparent pointer-events-none" />
+                </div>
               </div>
             </motion.div>
           </div>
@@ -408,14 +412,14 @@ export default function App() {
               viewport={{ once: true }}
               className="relative order-2 md:order-1"
             >
-              <div className="relative rounded-[2rem] overflow-hidden shadow-xl">
+              <div className="relative rounded-3xl overflow-hidden shadow-2xl">
                 <img 
-                  src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=800&q=80" 
-                  alt="Alunos estudando" 
-                  className="w-full h-[500px] object-cover"
+                  src="https://res.cloudinary.com/dapsovbs5/image/upload/v1774032713/imagem-2_vr35bs.jpg" 
+                  alt="Equipe da escola" 
+                  className="w-full h-[500px] object-cover object-center hover:scale-105 transition-transform duration-700 ease-in-out"
                   referrerPolicy="no-referrer"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent" />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent pointer-events-none" />
               </div>
               
               {/* Floating Card */}
@@ -443,10 +447,10 @@ export default function App() {
               
               <div className="space-y-6 text-lg text-slate-600 leading-relaxed mb-8">
                 <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                  Há mais de 24 anos, a William Informática nasceu com um propósito claro: transformar vidas através da educação. Não somos apenas uma escola, mas um verdadeiro centro de qualificação focado em preparar os nossos alunos para as exigências reais do mercado de trabalho.
                 </p>
                 <p>
-                  Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                  Unimos a excelência técnica a uma visão inovadora de negócios. Acreditamos que, em qualquer etapa da vida, o importante é crescer. Aqui, você adquire as ferramentas certas para conquistar a sua vaga de emprego ou para escalar o seu próprio negócio.
                 </p>
               </div>
 
