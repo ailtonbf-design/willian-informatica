@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import { motion, useInView, animate } from 'motion/react';
 import { BookOpen, Rocket, ArrowRight, CheckCircle2, Users, Award, Clock, MapPin, Phone, Mail, Instagram, Facebook, Linkedin, Code, Briefcase, Palette, Star } from 'lucide-react';
+import Carousel3D from './components/Carousel3D';
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 30 },
@@ -515,15 +516,11 @@ export default function App() {
             ))}
           </div>
 
-          {/* Gallery (Masonry simulation) */}
+          {/* Gallery (Carousel 3D) */}
           <div className="max-w-6xl mx-auto">
-            <h3 className="font-heading text-2xl font-bold text-center text-slate-900 mb-10">Nossos Alunos Premium</h3>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <img src="https://res.cloudinary.com/dapsovbs5/image/upload/v1774034573/aluno-1_1_ljnomo.jpg" className="rounded-2xl w-full h-48 object-cover" alt="Aluno" referrerPolicy="no-referrer" />
-              <img src="https://res.cloudinary.com/dapsovbs5/image/upload/v1774034574/aluno-2_1_xa1jai.jpg" className="rounded-2xl w-full h-64 object-cover md:-mt-8" alt="Aluno" referrerPolicy="no-referrer" />
-              <img src="https://res.cloudinary.com/dapsovbs5/image/upload/v1774034574/aluno-4_1_muhg80.jpg" className="rounded-2xl w-full h-56 object-cover" alt="Aluno" referrerPolicy="no-referrer" />
-              <img src="https://res.cloudinary.com/dapsovbs5/image/upload/v1774034574/aluno-3_1_hkjn7j.jpg" className="rounded-2xl w-full h-48 object-cover md:mt-8" alt="Aluno" referrerPolicy="no-referrer" />
-            </div>
+            <h3 className="font-heading text-3xl md:text-4xl font-bold text-center text-slate-900 mb-4">Nossos Alunos Premium</h3>
+            <p className="text-center text-slate-600 mb-10 max-w-2xl mx-auto">Conheça algumas das histórias de sucesso de quem passou pela nossa instituição e transformou a sua carreira.</p>
+            <Carousel3D />
           </div>
         </div>
       </section>
