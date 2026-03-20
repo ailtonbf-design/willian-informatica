@@ -42,18 +42,18 @@ export default function App() {
         </header>
 
         {/* Hero Content */}
-        <div className="relative z-10 container mx-auto px-6 flex-1 flex flex-col justify-center pb-40 pt-12">
+        <div className="relative z-10 container mx-auto px-6 flex-1 flex flex-col justify-center items-start pb-40 pt-12">
           <motion.div
             initial="hidden"
             animate="visible"
             variants={staggerContainer}
-            className="max-w-4xl"
+            className="max-w-full md:max-w-4xl lg:max-w-5xl text-left"
           >
-            <motion.h1 variants={fadeInUp} className="font-heading text-5xl md:text-7xl font-extrabold text-white leading-[1.1] tracking-tight mb-6">
-              Onde você se qualifica... <br />
-              <span className="text-brand-red">e aprende a empreender.</span>
+            <motion.h1 variants={fadeInUp} className="font-heading text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-[1.1] tracking-tight mb-6">
+              <span className="block">Onde você se qualifica</span>
+              <span className="block text-brand-red">e aprende a empreender.</span>
             </motion.h1>
-            <motion.p variants={fadeInUp} className="text-lg md:text-xl text-slate-300 mb-10 max-w-2xl leading-relaxed">
+            <motion.p variants={fadeInUp} className="text-lg md:text-xl text-slate-300 mb-10 max-w-xl leading-relaxed">
               Formação profissional de excelência para quem busca destaque no mercado de trabalho ou quer escalar o seu próprio negócio.
             </motion.p>
           </motion.div>
