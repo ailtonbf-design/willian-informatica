@@ -11,67 +11,60 @@ import 'swiper/css/navigation';
 const slidesData = [
   {
     id: 1,
-    image: 'https://picsum.photos/seed/aluno1/600/600',
+    image: 'https://res.cloudinary.com/dapsovbs5/image/upload/v1774034573/aluno-1_1_ljnomo.jpg',
     category: 'Design',
     title: 'Maria Silva',
     desc: 'Concluiu o curso de Design Gráfico com distinção e já atua no mercado criativo.',
   },
   {
     id: 2,
-    image: 'https://picsum.photos/seed/aluno2/600/600',
+    image: 'https://res.cloudinary.com/dapsovbs5/image/upload/v1774034574/aluno-2_1_xa1jai.jpg',
     category: 'Marketing',
     title: 'João Pedro',
     desc: 'Especialista em Marketing Digital formado na William Informática.',
   },
   {
     id: 3,
-    image: 'https://picsum.photos/seed/aluno3/600/600',
+    image: 'https://res.cloudinary.com/dapsovbs5/image/upload/v1774034574/aluno-4_1_muhg80.jpg',
     category: 'Tecnologia',
     title: 'Ana Costa',
     desc: 'Desenvolvedora Web Front-end, agora a trabalhar numa grande agência de tecnologia.',
   },
   {
     id: 4,
-    image: 'https://picsum.photos/seed/aluno4/600/600',
+    image: 'https://res.cloudinary.com/dapsovbs5/image/upload/v1774034574/aluno-3_1_hkjn7j.jpg',
     category: 'Gestão',
     title: 'Carlos Santos',
     desc: 'Obteve a Certificação Premium em Gestão de Projetos e alavancou a sua carreira.',
   },
   {
     id: 5,
-    image: 'https://picsum.photos/seed/aluno5/600/600',
+    image: 'https://res.cloudinary.com/dapsovbs5/image/upload/v1774034573/aluno-1_1_ljnomo.jpg',
     category: 'Programação',
     title: 'Beatriz Lima',
     desc: 'Aluna destaque da turma de Programação Avançada, com projetos inovadores.',
   },
   {
     id: 6,
-    image: 'https://picsum.photos/seed/aluno6/600/600',
+    image: 'https://res.cloudinary.com/dapsovbs5/image/upload/v1774034574/aluno-2_1_xa1jai.jpg',
     category: 'Dados',
     title: 'Lucas Almeida',
     desc: 'Atua como Cientista de Dados após concluir a nossa formação intensiva.',
   },
   {
     id: 7,
-    image: 'https://picsum.photos/seed/aluno7/600/600',
+    image: 'https://res.cloudinary.com/dapsovbs5/image/upload/v1774034574/aluno-4_1_muhg80.jpg',
     category: 'UX/UI',
     title: 'Sofia Martins',
     desc: 'Criadora de interfaces premiadas, começou a sua jornada nos nossos laboratórios.',
   },
   {
     id: 8,
-    image: 'https://picsum.photos/seed/aluno8/600/600',
+    image: 'https://res.cloudinary.com/dapsovbs5/image/upload/v1774034574/aluno-3_1_hkjn7j.jpg',
     category: 'Cloud',
     title: 'Pedro Rocha',
     desc: 'Arquiteto Cloud certificado, responsável por infraestruturas de grande escala.',
-  },
-  {
-    id: 9,
-    image: 'https://picsum.photos/seed/aluno9/600/600',
-    category: 'Segurança',
-    title: 'Mariana Alves',
-    desc: 'Especialista em Cibersegurança, protegendo dados de empresas multinacionais.',
-  },
+  }
 ];
 
 export default function Carousel3D() {
