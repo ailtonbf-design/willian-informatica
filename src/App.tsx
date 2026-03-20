@@ -81,7 +81,7 @@ export default function App() {
             initial="hidden"
             animate="visible"
             variants={staggerContainer}
-            className="max-w-full md:max-w-4xl lg:max-w-5xl text-left"
+            className="max-w-full md:max-w-4xl lg:max-w-5xl text-left md:pl-12 lg:pl-20"
           >
             <motion.h1 variants={fadeInUp} className="font-heading text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-[1.1] tracking-tight mb-6">
               <span className="block">Onde você aprende</span>
