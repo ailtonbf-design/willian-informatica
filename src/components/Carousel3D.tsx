@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { EffectCoverflow, Navigation } from 'swiper/modules';
+import { EffectCoverflow, Navigation, Autoplay } from 'swiper/modules';
 import type { Swiper as SwiperType } from 'swiper';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 
@@ -93,9 +93,14 @@ export default function Carousel3D() {
           modifier: 1,
           slideShadows: false,
         }}
+        autoplay={{
+          delay: 3000,
+          disableOnInteraction: false,
+          pauseOnMouseEnter: true,
+        }}
         onSwiper={setSwiperInstance}
         onSlideChange={(swiper) => setActiveIndex(swiper.realIndex)}
-        modules={[EffectCoverflow, Navigation]}
+        modules={[EffectCoverflow, Navigation, Autoplay]}
         className="w-full py-12 !overflow-visible"
       >
         {slidesData.map((slide) => (
