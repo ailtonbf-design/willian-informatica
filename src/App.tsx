@@ -124,10 +124,10 @@ export default function App() {
                 Curso destaque da semana
               </h2>
               <h3 className="font-heading text-2xl md:text-3xl font-extrabold text-yellow-400 mb-4 drop-shadow-sm">
-                Pacote Office & Gestão Administrativa
+                Auxiliar Administrativo
               </h3>
               <p className="text-red-100 text-lg">
-                50% de desconto real + Diagnóstico Profissional gratuito.
+                Quero realizar esse curso com 50% de desconto real e ainda ganhar um Diagnóstico Profissional
               </p>
             </div>
 
