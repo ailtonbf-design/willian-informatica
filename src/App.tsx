@@ -1,7 +1,10 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { motion, useInView, animate } from 'motion/react';
 import { BookOpen, Rocket, ArrowRight, CheckCircle2, Users, Award, Clock, MapPin, Phone, Mail, Instagram, Facebook, Linkedin, Code, Briefcase, Palette, Star } from 'lucide-react';
 import Carousel3D from './components/Carousel3D';
+import { AdminPanel } from './components/AdminPanel';
+import { db } from './firebase';
+import { doc, onSnapshot } from 'firebase/firestore';
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 30 },
@@ -49,6 +52,34 @@ function CountUpAnimation({
 }
 
 export default function App() {
+  const [cursoDestaque, setCursoDestaque] = useState({
+    titulo: "Auxiliar Administrativo",
+    descricao: "Domine as rotinas do escritório e seja o profissional que as empresas procuram.",
+    imagemUrl: "https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&w=400&q=80"
+  });
+
+  useEffect(() => {
+    const docRef = doc(db, 'configuracoes', 'cursoDestaque');
+    const unsubscribe = onSnapshot(docRef, (docSnap) => {
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        setCursoDestaque(prev => ({
+          titulo: data.titulo || prev.titulo,
+          descricao: data.descricao || prev.descricao,
+          imagemUrl: data.imagemUrl || prev.imagemUrl
+        }));
+      }
+    });
+
+    return () => unsubscribe();
+  }, []);
+
+  const isAdminRoute = typeof window !== 'undefined' && (window.location.pathname === '/admin' || window.location.search.includes('admin=true'));
+
+  if (isAdminRoute) {
+    return <AdminPanel />;
+  }
+
   return (
     <div className="font-sans text-slate-800 bg-slate-50 selection:bg-brand-red selection:text-white">
       {/* HERO SECTION */}
@@ -161,17 +192,17 @@ export default function App() {
               
               <div className="flex flex-row items-center gap-5 md:gap-6 mt-6 md:mt-8 text-left">
                 <img
-                  src="https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&w=400&q=80"
-                  alt="Curso Auxiliar Administrativo"
+                  src={cursoDestaque.imagemUrl}
+                  alt={`Curso ${cursoDestaque.titulo}`}
                   className="w-24 h-24 md:w-28 md:h-28 object-cover rounded-2xl shadow-xl border-2 border-white/20 flex-shrink-0"
                   referrerPolicy="no-referrer"
                 />
                 <div className="flex flex-col">
                   <h3 className="text-2xl md:text-3xl font-bold text-yellow-400 leading-tight">
-                    Auxiliar Administrativo
+                    {cursoDestaque.titulo}
                   </h3>
                   <p className="text-white/80 text-sm md:text-base mt-2 max-w-xs">
-                    Domine as rotinas do escritório e seja o profissional que as empresas procuram.
+                    {cursoDestaque.descricao}
                   </p>
                 </div>
               </div>

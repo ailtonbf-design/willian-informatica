@@ -1,0 +1,83 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ===============================================================
+    // Assumed Data Model
+    // ===============================================================
+    //
+    // Collection: leads
+    // Document ID: Auto-generated
+    // Fields:
+    //   - name: string (required, length 1-100) - Full name of the lead
+    //   - email: string (required, valid email) - Email address of the lead
+    //   - createdAt: timestamp (required) - When the lead registered
+    //
+    // ===============================================================
+
+    // ===============================================================
+    // Helper Functions
+    // ===============================================================
+
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isAuthenticated() &&
+        (get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin' ||
+          (request.auth.token.email == "ailtonbf@gmail.com" && request.auth.token.email_verified == true)); // Default admin
+    }
+
+    function hasOnlyAllowedFields(fields) {
+      return request.resource.data.keys().hasOnly(fields);
+    }
+
+    function isValidEmail(email) {
+      return email is string &&
+        email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
+    }
+
+    function isValidLead(data) {
+      return hasOnlyAllowedFields(['name', 'email', 'createdAt']) &&
+             data.name is string && data.name.size() > 0 && data.name.size() <= 100 &&
+             data.email is string && isValidEmail(data.email) &&
+             data.createdAt is timestamp;
+    }
+
+    function isValidConfiguracao(data) {
+      return hasOnlyAllowedFields(['titulo', 'descricao', 'imagemUrl']) &&
+             (!('titulo' in data) || (data.titulo is string && data.titulo.size() <= 100)) &&
+             (!('descricao' in data) || (data.descricao is string && data.descricao.size() <= 500)) &&
+             (!('imagemUrl' in data) || (data.imagemUrl is string && data.imagemUrl.size() <= 1000));
+    }
+
+    // ===============================================================
+    // Rules
+    // ===============================================================
+
+    match /users/{userId} {
+      // Users collection for RBAC
+      allow read: if isAuthenticated() && (request.auth.uid == userId || isAdmin());
+      allow create: if isAuthenticated() && request.auth.uid == userId && hasOnlyAllowedFields(['role', 'email']) && request.resource.data.role == 'user';
+      allow update: if isAdmin();
+      allow delete: if isAdmin();
+    }
+
+    match /leads/{leadId} {
+      // Anyone can create a lead (e.g., landing page form)
+      allow create: if isValidLead(request.resource.data);
+      // Only admins can read, update, or delete leads
+      allow read, update, delete: if isAdmin();
+    }
+
+    match /configuracoes/{configId} {
+      // Anyone can read configurations
+      allow read: if true;
+      // Only admins can update configurations
+      allow create, update: if isAdmin() && isValidConfiguracao(request.resource.data);
+      allow delete: if isAdmin();
+    }
+  }
+}

@@ -1,0 +1,59 @@
+{
+  "entities": {
+    "Lead": {
+      "title": "Lead",
+      "description": "A potential student or customer who registered their interest.",
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Full name of the lead"
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "Email address of the lead"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "When the lead registered"
+        }
+      },
+      "required": ["name", "email", "createdAt"]
+    },
+    "Configuracao": {
+      "title": "Configuração",
+      "description": "Configurações dinâmicas do site",
+      "type": "object",
+      "properties": {
+        "titulo": {
+          "type": "string",
+          "description": "Título do curso destaque"
+        },
+        "descricao": {
+          "type": "string",
+          "description": "Descrição do curso destaque"
+        },
+        "imagemUrl": {
+          "type": "string",
+          "description": "URL da imagem do curso destaque"
+        }
+      }
+    }
+  },
+  "firestore": {
+    "/leads/{leadId}": {
+      "schema": {
+        "$ref": "#/entities/Lead"
+      },
+      "description": "Collection of leads who signed up for more information or courses."
+    },
+    "/configuracoes/{configId}": {
+      "schema": {
+        "$ref": "#/entities/Configuracao"
+      },
+      "description": "Collection of dynamic configurations for the site."
+    }
+  }
+}
