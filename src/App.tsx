@@ -257,38 +257,43 @@ export default function App() {
             ))}
           </div>
 
-          {/* Vantagens Blocks */}
-          <div className="flex justify-center max-w-6xl mx-auto">
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              className="w-full max-w-2xl bg-white p-8 rounded-2xl border border-slate-200 shadow-sm flex items-start gap-4"
-            >
-              <div className="bg-red-50 p-3 rounded-full shrink-0">
-                <CheckCircle2 className="w-6 h-6 text-brand-red" />
-              </div>
-              <div className="flex flex-col w-full">
-                <h4 className="font-heading font-bold text-lg text-slate-900 mb-2">Vagas de Emprego Atualizadas</h4>
-                <p className="text-slate-600 mb-4">Matricule-se agora e ganhe dois cursos extras.</p>
-                
-                <ul className="space-y-2 mb-6">
-                  <li className="flex items-center gap-2 text-slate-700 font-medium">
-                    <div className="w-1.5 h-1.5 rounded-full bg-brand-red shrink-0" />
-                    Emprego 50X
-                  </li>
-                  <li className="flex items-center gap-2 text-slate-700 font-medium">
-                    <div className="w-1.5 h-1.5 rounded-full bg-brand-red shrink-0" />
-                    Currículo Profissional
-                  </li>
-                </ul>
-                
-                <button className="bg-slate-900 text-white font-bold py-2.5 px-6 rounded-lg hover:bg-slate-800 transition-colors text-sm shadow-md self-start">
-                  Vagas da semana
-                </button>
-              </div>
-            </motion.div>
-          </div>
+          {/* Vagas de Emprego Atualizadas - Promessa + Bônus */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="bg-white rounded-3xl shadow-lg border border-gray-200 p-6 md:p-10 flex flex-col md:flex-row gap-8 items-stretch mb-16 max-w-6xl mx-auto"
+          >
+            {/* Lado Esquerdo (A Promessa de Empregabilidade) */}
+            <div className="w-full md:w-3/5 flex flex-col justify-center items-start text-left">
+              <h3 className="text-3xl font-bold text-slate-900">Vagas de Emprego Atualizadas</h3>
+              <p className="text-gray-600 text-lg mt-4 mb-8">
+                Conectamos nossos alunos às melhores oportunidades do mercado. Receba orientações exclusivas, encaminhamento para vagas reais e prepare-se para ser o candidato ideal que as grandes empresas buscam.
+              </p>
+              <button className="bg-slate-900 text-white px-8 py-3 rounded-full font-semibold hover:bg-slate-800 transition">
+                Quero acessar as vagas
+              </button>
+            </div>
+
+            {/* Lado Direito (O Bônus de Matrícula) */}
+            <div className="w-full md:w-2/5 bg-slate-900 rounded-2xl p-8 relative overflow-hidden shadow-inner flex flex-col justify-center">
+              <span className="text-yellow-400 font-bold tracking-wider uppercase text-sm mb-2">🎁 Bônus de Matrícula</span>
+              <h3 className="text-white text-xl font-bold mb-4">Ganhe 2 Cursos Extras</h3>
+              
+              <ul className="space-y-3">
+                <li className="flex items-center gap-3 text-white font-medium">
+                  <CheckCircle2 className="w-5 h-5 text-yellow-400 shrink-0" />
+                  Emprego 50X
+                </li>
+                <li className="flex items-center gap-3 text-white font-medium">
+                  <CheckCircle2 className="w-5 h-5 text-yellow-400 shrink-0" />
+                  Currículo Profissional
+                </li>
+              </ul>
+              
+              <p className="text-white/70 text-sm mt-6">* Bônus liberado automaticamente ao confirmar sua matrícula hoje.</p>
+            </div>
+          </motion.div>
 
           {/* Novo Banner Aluno Empreendedor */}
           <div className="flex flex-col md:flex-row bg-gray-200 rounded-3xl overflow-hidden shadow-lg border border-gray-200 mt-16 max-w-6xl mx-auto">
@@ -362,7 +367,7 @@ export default function App() {
               transition={{ delay: 0.1 }}
               className="text-xl text-slate-400 mb-12 max-w-2xl mx-auto leading-relaxed"
             >
-              Se tem um negócio próprio ou é profissional liberal e quer escalar as suas vendas com previsibilidade e lucro.
+              Se tem um negócio próprio ou é profissional liberal para escalar as suas vendas com previsibilidade e lucro.
             </motion.p>
 
             <motion.button
