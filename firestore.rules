@@ -50,7 +50,7 @@ service cloud.firestore {
       return hasOnlyAllowedFields(['titulo', 'descricao', 'imagemUrl']) &&
              (!('titulo' in data) || (data.titulo is string && data.titulo.size() <= 100)) &&
              (!('descricao' in data) || (data.descricao is string && data.descricao.size() <= 500)) &&
-             (!('imagemUrl' in data) || (data.imagemUrl is string && data.imagemUrl.size() <= 1000));
+             (!('imagemUrl' in data) || (data.imagemUrl is string && data.imagemUrl.size() <= 1048576));
     }
 
     // ===============================================================

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
 import { db } from '../firebase';
-import { Save, LogIn, LogOut, CheckCircle } from 'lucide-react';
+import { Save, LogIn, LogOut, CheckCircle, Upload } from 'lucide-react';
 
 export function AdminPanel() {
   const [titulo, setTitulo] = useState('');
@@ -75,6 +75,47 @@ export function AdminPanel() {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > 1024 * 1024) {
+      setError('A imagem deve ter no máximo 1MB.');
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        let width = img.width;
+        let height = img.height;
+        const MAX_DIMENSION = 800;
+
+        if (width > height && width > MAX_DIMENSION) {
+          height *= MAX_DIMENSION / width;
+          width = MAX_DIMENSION;
+        } else if (height > MAX_DIMENSION) {
+          width *= MAX_DIMENSION / height;
+          height = MAX_DIMENSION;
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx?.drawImage(img, 0, 0, width, height);
+        
+        // Compress to JPEG to save space
+        const compressedBase64 = canvas.toDataURL('image/jpeg', 0.8);
+        setImagemUrl(compressedBase64);
+        setError('');
+      };
+      img.src = event.target?.result as string;
+    };
+    reader.readAsDataURL(file);
   };
 
   if (!isAuthenticated) {
@@ -186,16 +227,25 @@ export function AdminPanel() {
 
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-2">
-                Link da Imagem (URL)
+                Imagem do Curso (Máx. 1MB)
               </label>
-              <input
-                type="url"
-                value={imagemUrl}
-                onChange={(e) => setImagemUrl(e.target.value)}
-                placeholder="https://..."
-                className="w-full px-4 py-3 rounded-lg border border-slate-200 focus:ring-2 focus:ring-brand-red focus:border-brand-red outline-none transition-all"
-                required
-              />
+              
+              <div className="flex items-center justify-center w-full">
+                <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-slate-300 border-dashed rounded-lg cursor-pointer bg-slate-50 hover:bg-slate-100 transition-colors">
+                  <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                    <Upload className="w-8 h-8 mb-3 text-slate-400" />
+                    <p className="mb-2 text-sm text-slate-500"><span className="font-semibold">Clique para enviar</span> ou arraste uma imagem</p>
+                    <p className="text-xs text-slate-500">PNG, JPG ou WEBP (Max. 1MB)</p>
+                  </div>
+                  <input 
+                    type="file" 
+                    className="hidden" 
+                    accept="image/*"
+                    onChange={handleImageChange}
+                  />
+                </label>
+              </div>
+
               {imagemUrl && (
                 <div className="mt-4">
                   <p className="text-xs text-slate-500 mb-2">Pré-visualização da imagem:</p>
