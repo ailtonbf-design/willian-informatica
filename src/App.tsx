@@ -197,9 +197,9 @@ export default function App() {
                   </div>
                   <button
                     type="button"
-                    className="w-full bg-slate-900 text-white font-bold text-lg px-6 py-4 rounded-lg hover:bg-slate-800 transition-colors shadow-lg shadow-slate-900/20"
+                    className="w-full bg-slate-900 text-white font-bold px-6 py-4 rounded-lg hover:bg-slate-800 transition-colors shadow-lg shadow-slate-900/20 text-sm md:text-base whitespace-normal md:whitespace-nowrap text-center"
                   >
-                    Garantir Desconto
+                    Garantir Desconto + Diagnóstico
                   </button>
                 </form>
               </div>
@@ -268,9 +268,24 @@ export default function App() {
               <div className="bg-red-50 p-3 rounded-full shrink-0">
                 <CheckCircle2 className="w-6 h-6 text-brand-red" />
               </div>
-              <div>
+              <div className="flex flex-col w-full">
                 <h4 className="font-heading font-bold text-lg text-slate-900 mb-2">Vagas de Emprego Atualizadas</h4>
-                <p className="text-slate-600">Matricule-se agora e ganhe dois cursos extras.</p>
+                <p className="text-slate-600 mb-4">Matricule-se agora e ganhe dois cursos extras.</p>
+                
+                <ul className="space-y-2 mb-6">
+                  <li className="flex items-center gap-2 text-slate-700 font-medium">
+                    <div className="w-1.5 h-1.5 rounded-full bg-brand-red shrink-0" />
+                    Emprego 50X
+                  </li>
+                  <li className="flex items-center gap-2 text-slate-700 font-medium">
+                    <div className="w-1.5 h-1.5 rounded-full bg-brand-red shrink-0" />
+                    Currículo Profissional
+                  </li>
+                </ul>
+                
+                <button className="bg-slate-900 text-white font-bold py-2.5 px-6 rounded-lg hover:bg-slate-800 transition-colors text-sm shadow-md self-start">
+                  Vagas da semana
+                </button>
               </div>
             </motion.div>
 
