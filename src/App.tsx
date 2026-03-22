@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion, useInView, animate } from 'motion/react';
-import { BookOpen, Rocket, ArrowRight, CheckCircle2, Users, Award, Clock, MapPin, Phone, Mail, Instagram, Facebook, Linkedin, Code, Briefcase, Palette, Star } from 'lucide-react';
+import { BookOpen, Rocket, ArrowRight, CheckCircle2, Users, Award, Clock, MapPin, Phone, Mail, Instagram, Facebook, Linkedin, Code, Briefcase, Palette, Star, Target } from 'lucide-react';
 import Carousel3D from './components/Carousel3D';
 import { AdminPanel } from './components/AdminPanel';
 import { db } from './firebase';
@@ -209,9 +209,15 @@ export default function App() {
             </div>
 
             <div className="w-full lg:w-1/2 flex flex-col gap-6">
-              <p className="text-white text-xl md:text-2xl font-medium text-center lg:text-left leading-snug">
-                Quero realizar esse curso com <span className="font-bold text-yellow-400">50% de desconto real</span> e ainda ganhar um Diagnóstico Profissional
-              </p>
+              <div className="mb-6 md:mb-8 flex flex-col items-center lg:items-start text-center lg:text-left">
+                <h2 className="text-xl md:text-2xl text-white font-medium leading-snug">
+                  Quero realizar esse curso com <span className="text-yellow-400 font-bold">50% de desconto real</span> e ainda garantir o meu:
+                </h2>
+                <div className="mt-4 inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 px-5 py-2.5 rounded-full shadow-sm">
+                  <Target className="w-5 h-5 text-yellow-400" />
+                  <span className="text-white font-bold tracking-wide uppercase text-sm">Diagnóstico Profissional</span>
+                </div>
+              </div>
               <div className="bg-white/10 backdrop-blur-md p-6 md:p-8 rounded-2xl border border-white/20">
                 <form className="flex flex-col gap-4 w-full">
                   <div className="flex flex-col sm:flex-row gap-3 w-full">
