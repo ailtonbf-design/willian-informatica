@@ -258,12 +258,12 @@ export default function App() {
           </div>
 
           {/* Vantagens Blocks */}
-          <div className="grid md:grid-cols-12 gap-8 max-w-6xl mx-auto">
+          <div className="flex justify-center max-w-6xl mx-auto">
             <motion.div
-              initial={{ opacity: 0, x: -30 }}
-              whileInView={{ opacity: 1, x: 0 }}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              className="md:col-span-5 bg-white p-8 rounded-2xl border border-slate-200 shadow-sm flex items-start gap-4"
+              className="w-full max-w-2xl bg-white p-8 rounded-2xl border border-slate-200 shadow-sm flex items-start gap-4"
             >
               <div className="bg-red-50 p-3 rounded-full shrink-0">
                 <CheckCircle2 className="w-6 h-6 text-brand-red" />
@@ -288,21 +288,29 @@ export default function App() {
                 </button>
               </div>
             </motion.div>
+          </div>
 
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true }}
-              className="md:col-span-7 bg-slate-900 p-8 rounded-2xl shadow-xl flex items-start gap-4"
-            >
-              <div className="bg-white/10 p-3 rounded-full shrink-0">
-                <Rocket className="w-6 h-6 text-white" />
-              </div>
-              <div>
-                <h4 className="font-heading font-bold text-lg text-white mb-2">Aluno Empreendedor</h4>
-                <p className="text-slate-300">Um diferencial exclusivo para nossos alunos. Aqui você não apenas aprende... você aprende a empreender. Saiba como participar e ter acesso ao programa, desenvolvendo habilidades que vão além da sala de aula.</p>
-              </div>
-            </motion.div>
+          {/* Novo Banner Aluno Empreendedor */}
+          <div className="flex flex-col md:flex-row bg-gray-200 rounded-3xl overflow-hidden shadow-lg border border-gray-200 mt-16 max-w-6xl mx-auto">
+            {/* Lado Esquerdo (Sólido - Textos e Botão) */}
+            <div className="w-full md:w-1/2 p-8 md:p-16 flex flex-col justify-center bg-gray-200 relative z-10">
+              <h3 className="text-slate-900 font-bold text-3xl md:text-4xl">Aluno Empreendedor</h3>
+              <p className="text-gray-600 mt-4">Um diferencial exclusivo para nossos alunos. Aqui você não apenas aprende... você aprende a empreender. Saiba como participar e ter acesso ao programa, desenvolvendo habilidades que vão além da sala de aula.</p>
+              <button className="bg-red-600 hover:bg-red-700 text-white rounded-full px-8 py-3 font-bold w-fit mt-8 transition-colors">
+                Quero me inscrever
+              </button>
+            </div>
+            
+            {/* Lado Direito (A Imagem com o Fade Restrito) */}
+            <div className="w-full md:w-1/2 relative min-h-[300px] md:min-h-[400px]">
+              <img 
+                src="https://res.cloudinary.com/dapsovbs5/image/upload/v1774184551/teste_zb9hjx.webp" 
+                alt="Aluno Empreendedor" 
+                className="absolute inset-0 w-full h-full object-cover object-center"
+                referrerPolicy="no-referrer"
+              />
+              <div className="absolute top-0 left-0 w-full h-24 md:h-full md:w-40 bg-gradient-to-b md:bg-gradient-to-r from-gray-200 to-transparent pointer-events-none"></div>
+            </div>
           </div>
         </div>
       </section>
