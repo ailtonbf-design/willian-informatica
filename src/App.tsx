@@ -139,7 +139,7 @@ export default function App() {
               Quero escalar as vendas da minha empresa com estratégias validadas de mercado.
             </p>
             <button className="inline-flex items-center font-semibold text-slate-900 group-hover:text-brand-red transition-colors">
-              Escola de Vendas <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              WP-Escola de Vendas e Negócios <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </button>
           </motion.div>
         </div>
@@ -151,42 +151,58 @@ export default function App() {
 
         <div className="container mx-auto px-6 relative z-10">
           <div className="max-w-5xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-8">
-            <div className="text-white lg:w-1/2 text-center lg:text-left">
+            <div className="text-white lg:w-1/2 flex flex-col items-center lg:items-start text-center lg:text-left">
               <span className="inline-block py-1 px-3 rounded-full bg-white/20 text-sm font-semibold tracking-wider uppercase mb-4 backdrop-blur-sm animate-pulse">
                 Oferta por tempo limitado
               </span>
               <h2 className="font-heading text-3xl md:text-4xl font-bold mb-2 leading-tight">
                 Curso destaque da semana
               </h2>
-              <h3 className="font-heading text-2xl md:text-3xl font-extrabold text-yellow-400 mb-4 drop-shadow-sm">
-                Auxiliar Administrativo
-              </h3>
-              <p className="text-red-100 text-lg">
-                Quero realizar esse curso com 50% de desconto real e ainda ganhar um Diagnóstico Profissional
-              </p>
+              
+              <div className="flex flex-row items-center gap-5 md:gap-6 mt-6 md:mt-8 text-left">
+                <img
+                  src="https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&w=400&q=80"
+                  alt="Curso Auxiliar Administrativo"
+                  className="w-24 h-24 md:w-28 md:h-28 object-cover rounded-2xl shadow-xl border-2 border-white/20 flex-shrink-0"
+                  referrerPolicy="no-referrer"
+                />
+                <div className="flex flex-col">
+                  <h3 className="text-2xl md:text-3xl font-bold text-yellow-400 leading-tight">
+                    Auxiliar Administrativo
+                  </h3>
+                  <p className="text-white/80 text-sm md:text-base mt-2 max-w-xs">
+                    Domine as rotinas do escritório e seja o profissional que as empresas procuram.
+                  </p>
+                </div>
+              </div>
             </div>
 
-            <div className="w-full lg:w-1/2 bg-white/10 backdrop-blur-md p-6 md:p-8 rounded-2xl border border-white/20">
-              <form className="flex flex-col gap-4 w-full">
-                <div className="flex flex-col sm:flex-row gap-3 w-full">
-                  <input
-                    type="text"
-                    placeholder="Seu Nome"
-                    className="w-full flex-1 min-w-0 bg-white rounded-lg px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-red"
-                  />
-                  <input
-                    type="tel"
-                    placeholder="Seu WhatsApp"
-                    className="w-full flex-1 min-w-0 bg-white rounded-lg px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-red"
-                  />
-                </div>
-                <button
-                  type="button"
-                  className="w-full bg-slate-900 text-white font-bold text-lg px-6 py-4 rounded-lg hover:bg-slate-800 transition-colors shadow-lg shadow-slate-900/20"
-                >
-                  Garantir Desconto
-                </button>
-              </form>
+            <div className="w-full lg:w-1/2 flex flex-col gap-6">
+              <p className="text-white text-xl md:text-2xl font-medium text-center lg:text-left leading-snug">
+                Quero realizar esse curso com <span className="font-bold text-yellow-400">50% de desconto real</span> e ainda ganhar um Diagnóstico Profissional
+              </p>
+              <div className="bg-white/10 backdrop-blur-md p-6 md:p-8 rounded-2xl border border-white/20">
+                <form className="flex flex-col gap-4 w-full">
+                  <div className="flex flex-col sm:flex-row gap-3 w-full">
+                    <input
+                      type="text"
+                      placeholder="Seu Nome"
+                      className="w-full flex-1 min-w-0 bg-white rounded-lg px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-red"
+                    />
+                    <input
+                      type="tel"
+                      placeholder="Seu WhatsApp"
+                      className="w-full flex-1 min-w-0 bg-white rounded-lg px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-red"
+                    />
+                  </div>
+                  <button
+                    type="button"
+                    className="w-full bg-slate-900 text-white font-bold text-lg px-6 py-4 rounded-lg hover:bg-slate-800 transition-colors shadow-lg shadow-slate-900/20"
+                  >
+                    Garantir Desconto
+                  </button>
+                </form>
+              </div>
             </div>
           </div>
         </div>
@@ -276,13 +292,13 @@ export default function App() {
         </div>
       </section>
 
-      {/* WP - ESCOLA DE VENDAS (Empresário) */}
+      {/* WP - ESCOLA DE VENDAS E NEGÓCIOS (Empresário) */}
       <section className="relative bg-slate-900 pt-32 pb-24 overflow-hidden">
         {/* Background Image */}
         <div className="absolute inset-0 z-0">
           <img
             src="https://res.cloudinary.com/dapsovbs5/image/upload/v1774023454/Banner-Willian_vusp0w.webp"
-            alt="Banner Escola de Vendas"
+            alt="Banner WP-Escola de Vendas e Negócios"
             className="w-full h-full object-cover opacity-60"
             referrerPolicy="no-referrer"
           />
@@ -313,7 +329,7 @@ export default function App() {
               viewport={{ once: true }}
               className="font-heading text-4xl md:text-6xl font-extrabold text-white mb-6 leading-tight"
             >
-              WP - Escola de Vendas <br className="hidden md:block" /> e Negócios
+              WP-Escola de Vendas <br className="hidden md:block" /> e Negócios
             </motion.h2>
 
             <motion.p
@@ -572,7 +588,7 @@ export default function App() {
               <ul className="space-y-3">
                 <li><a href="#" className="hover:text-white transition-colors">Sobre Nós</a></li>
                 <li><a href="#" className="hover:text-white transition-colors">Nossos Cursos</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Escola de Vendas</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">WP-Escola de Vendas e Negócios</a></li>
                 <li><a href="#" className="hover:text-white transition-colors">Política de Privacidade</a></li>
               </ul>
             </div>
