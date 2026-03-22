@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
-import { signInWithPopup, GoogleAuthProvider, onAuthStateChanged, signOut } from 'firebase/auth';
-import { db, auth } from '../firebase';
+import { db } from '../firebase';
 import { Save, LogIn, LogOut, CheckCircle } from 'lucide-react';
 
 export function AdminPanel() {
@@ -11,17 +10,17 @@ export function AdminPanel() {
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
-  const [user, setUser] = useState<any>(null);
+  
+  // Hardcoded login state
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
-      if (currentUser) {
-        loadCurrentData();
-      }
-    });
-    return () => unsubscribe();
-  }, []);
+    if (isAuthenticated) {
+      loadCurrentData();
+    }
+  }, [isAuthenticated]);
 
   const loadCurrentData = async () => {
     try {
@@ -38,21 +37,20 @@ export function AdminPanel() {
     }
   };
 
-  const handleLogin = async () => {
-    try {
-      const provider = new GoogleAuthProvider();
-      await signInWithPopup(auth, provider);
-    } catch (err: any) {
-      setError(err.message || 'Erro ao fazer login');
+  const handleLogin = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (username === 'Admin' && password === 'Winfo2335') {
+      setIsAuthenticated(true);
+      setError('');
+    } else {
+      setError('Usuário ou senha incorretos');
     }
   };
 
-  const handleLogout = async () => {
-    try {
-      await signOut(auth);
-    } catch (err) {
-      console.error(err);
-    }
+  const handleLogout = () => {
+    setIsAuthenticated(false);
+    setUsername('');
+    setPassword('');
   };
 
   const handleSave = async (e: React.FormEvent) => {
@@ -79,19 +77,46 @@ export function AdminPanel() {
     }
   };
 
-  if (!user) {
+  if (!isAuthenticated) {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center p-6">
         <div className="bg-white p-8 rounded-2xl shadow-xl max-w-md w-full text-center">
           <h2 className="text-2xl font-bold text-slate-900 mb-6">Painel Administrativo</h2>
-          <p className="text-slate-600 mb-8">Faça login com sua conta Google para acessar as configurações.</p>
-          <button
-            onClick={handleLogin}
-            className="w-full bg-slate-900 text-white font-bold py-3 px-4 rounded-lg hover:bg-slate-800 transition-colors flex items-center justify-center gap-2"
-          >
-            <LogIn className="w-5 h-5" />
-            Fazer Login com Google
-          </button>
+          <p className="text-slate-600 mb-8">Insira suas credenciais para acessar as configurações.</p>
+          
+          <form onSubmit={handleLogin} className="space-y-4 text-left">
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1">Usuário</label>
+              <input
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                className="w-full px-4 py-2 rounded-lg border border-slate-200 focus:ring-2 focus:ring-brand-red outline-none"
+                placeholder="Digite o usuário"
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1">Senha</label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full px-4 py-2 rounded-lg border border-slate-200 focus:ring-2 focus:ring-brand-red outline-none"
+                placeholder="Digite a senha"
+                required
+              />
+            </div>
+            
+            <button
+              type="submit"
+              className="w-full bg-slate-900 text-white font-bold py-3 px-4 rounded-lg hover:bg-slate-800 transition-colors flex items-center justify-center gap-2 mt-6"
+            >
+              <LogIn className="w-5 h-5" />
+              Entrar
+            </button>
+          </form>
+          
           {error && <p className="text-red-500 mt-4 text-sm">{error}</p>}
         </div>
       </div>

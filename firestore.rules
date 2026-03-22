@@ -75,9 +75,9 @@ service cloud.firestore {
     match /configuracoes/{configId} {
       // Anyone can read configurations
       allow read: if true;
-      // Only admins can update configurations
-      allow create, update: if isAdmin() && isValidConfiguracao(request.resource.data);
-      allow delete: if isAdmin();
+      // Allow updates without auth for the hardcoded admin panel
+      allow create, update: if isValidConfiguracao(request.resource.data);
+      allow delete: if false;
     }
   }
 }
