@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion, useInView, animate } from 'motion/react';
-import { BookOpen, Rocket, ArrowRight, CheckCircle2, Users, Award, Clock, MapPin, Phone, Mail, Instagram, Facebook, Linkedin, Code, Briefcase, Palette, Star, Target } from 'lucide-react';
+import { BookOpen, Rocket, ArrowRight, CheckCircle2, Users, Award, Clock, MapPin, Phone, Mail, Instagram, Facebook, Linkedin, Code, Briefcase, Palette, Star, Target, Menu } from 'lucide-react';
 import Carousel3D from './components/Carousel3D';
 import { AdminPanel } from './components/AdminPanel';
 import { db } from './firebase';
@@ -82,6 +82,38 @@ export default function App() {
 
   return (
     <div className="font-sans text-slate-800 bg-slate-50 selection:bg-brand-red selection:text-white">
+      {/* GLOBAL HEADER */}
+      <header className="sticky top-0 z-50 w-full bg-white shadow-md">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+          {/* Logo */}
+          <div className="flex-shrink-0">
+            <img 
+              src="https://res.cloudinary.com/dapsovbs5/image/upload/v1774207958/WhatsApp_Image_2026-03-21_at_19.02.03_1_ohotur.jpg" 
+              alt="William Informática" 
+              className="h-12 w-auto object-contain mix-blend-multiply" 
+            />
+          </div>
+
+          {/* Desktop Navigation */}
+          <nav className="hidden md:flex gap-8 items-center">
+            <a href="#cursos" className="text-slate-700 hover:text-red-600 font-medium transition-colors">Cursos</a>
+            <a href="#aluno-empreendedor" className="text-slate-700 hover:text-red-600 font-medium transition-colors">Aluno Empreendedor</a>
+            <a href="#vagas" className="text-slate-700 hover:text-red-600 font-medium transition-colors">Vagas de Emprego</a>
+            <a href="#quem-somos" className="text-slate-700 hover:text-red-600 font-medium transition-colors">Quem Somos</a>
+          </nav>
+
+          {/* CTA & Mobile Menu */}
+          <div className="flex items-center gap-4">
+            <button className="bg-red-600 text-white px-6 py-2 rounded-full font-bold hover:bg-red-700 hidden md:block transition-colors">
+              Matricule-se
+            </button>
+            <button className="md:hidden p-2 text-slate-700 hover:text-red-600 transition-colors">
+              <Menu className="w-6 h-6" />
+            </button>
+          </div>
+        </div>
+      </header>
+
       {/* HERO SECTION */}
       <section className="relative min-h-[85vh] md:min-h-[75vh] lg:min-h-[85vh] flex flex-col bg-slate-900 overflow-hidden">
         {/* Background Image */}
@@ -94,18 +126,6 @@ export default function App() {
           />
           <div className="absolute inset-0 bg-gradient-to-r from-slate-900/95 via-slate-900/80 to-slate-900/40" />
         </div>
-
-        {/* Header */}
-        <header className="relative z-20 container mx-auto px-6 py-6 flex justify-between items-center">
-          <div className="flex items-center gap-2">
-            <span className="font-heading font-extrabold text-2xl tracking-tight text-white">
-              William <span className="text-brand-red">Informática</span>
-            </span>
-          </div>
-          <button className="hidden md:inline-flex items-center justify-center px-6 py-2.5 text-sm font-medium text-white transition-colors border border-white/20 rounded-full hover:bg-white/10 backdrop-blur-sm">
-            Fale Conosco
-          </button>
-        </header>
 
         {/* Hero Content */}
         <div className="relative z-10 container mx-auto px-6 flex-1 flex flex-col justify-center items-start pt-32 md:pt-40 pb-48 md:pb-56">
@@ -617,9 +637,11 @@ export default function App() {
         <div className="container mx-auto px-6">
           <div className="grid md:grid-cols-4 gap-12 mb-12">
             <div className="col-span-1 md:col-span-2">
-              <span className="font-heading font-extrabold text-2xl tracking-tight text-white block mb-6">
-                William <span className="text-brand-red">Informática</span>
-              </span>
+              <img 
+                src="https://res.cloudinary.com/dapsovbs5/image/upload/v1774208363/Design_sem_nome_acqxgq.webp" 
+                alt="William Informática" 
+                className="h-16 w-auto object-contain mb-6" 
+              />
               <p className="max-w-sm mb-8 leading-relaxed">
                 Transformando vidas através da educação tecnológica e empreendedora há mais de duas décadas.
               </p>
