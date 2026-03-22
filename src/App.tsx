@@ -187,7 +187,16 @@ export default function App() {
                 Curso destaque <br className="hidden md:block" />da semana
               </h2>
               
-              <div className="flex flex-row items-center gap-5 md:gap-6 mt-6 md:mt-8 text-left">
+              <div className="flex items-center w-full max-w-[200px] lg:max-w-[280px] py-6 opacity-90">
+                <div className="h-[1px] flex-1 bg-gradient-to-r from-transparent via-yellow-400/60 to-transparent"></div>
+                <div className="px-4 relative flex items-center justify-center">
+                  <div className="absolute w-8 h-8 bg-yellow-400/30 blur-md rounded-full animate-pulse"></div>
+                  <Star className="w-6 h-6 text-yellow-400 animate-[spin_8s_linear_infinite] relative z-10" fill="currentColor" />
+                </div>
+                <div className="h-[1px] flex-1 bg-gradient-to-r from-transparent via-yellow-400/60 to-transparent"></div>
+              </div>
+
+              <div className="flex flex-row items-center gap-5 md:gap-6 mt-2 md:mt-4 text-left">
                 <img
                   src={cursoDestaque.imagemUrl}
                   alt={`Curso ${cursoDestaque.titulo}`}
