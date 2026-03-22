@@ -183,11 +183,8 @@ export default function App() {
         <div className="container mx-auto px-6 relative z-10">
           <div className="max-w-5xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-8">
             <div className="text-white lg:w-1/2 flex flex-col items-center lg:items-start text-center lg:text-left">
-              <span className="inline-block py-1 px-3 rounded-full bg-white/20 text-sm font-semibold tracking-wider uppercase mb-4 backdrop-blur-sm animate-pulse">
-                Oferta por tempo limitado
-              </span>
-              <h2 className="font-heading text-3xl md:text-4xl font-bold mb-2 leading-tight">
-                Curso destaque da semana
+              <h2 className="font-heading text-4xl md:text-5xl font-bold mb-2 leading-tight">
+                Curso destaque <br className="hidden md:block" />da semana
               </h2>
               
               <div className="flex flex-row items-center gap-5 md:gap-6 mt-6 md:mt-8 text-left">
@@ -210,13 +207,13 @@ export default function App() {
 
             <div className="w-full lg:w-1/2 flex flex-col gap-6">
               <div className="mb-6 md:mb-8 flex flex-col items-center lg:items-start text-center lg:text-left">
-                <h2 className="text-xl md:text-2xl text-white font-medium leading-snug">
-                  Quero realizar esse curso com <span className="text-yellow-400 font-bold">50% de desconto real</span> e ainda garantir o meu:
-                </h2>
-                <div className="mt-4 inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 px-5 py-2.5 rounded-full shadow-sm">
+                <div className="mb-4 inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 px-5 py-2.5 rounded-full shadow-sm">
                   <Target className="w-5 h-5 text-yellow-400" />
                   <span className="text-white font-bold tracking-wide uppercase text-sm">Diagnóstico Profissional</span>
                 </div>
+                <h2 className="text-xl md:text-2xl text-white font-medium leading-snug">
+                  Quero realizar esse curso com <span className="text-yellow-400 font-bold">50% de desconto real</span> e ainda garantir o meu Diagnóstico Profissional.
+                </h2>
               </div>
               <div className="bg-white/10 backdrop-blur-md p-6 md:p-8 rounded-2xl border border-white/20">
                 <form className="flex flex-col gap-4 w-full">
