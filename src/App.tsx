@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion, useInView, animate } from 'motion/react';
-import { BookOpen, Rocket, ArrowRight, CheckCircle2, Users, Award, Clock, MapPin, Phone, Mail, Instagram, Facebook, Linkedin, Code, Briefcase, Palette, Star, Target, Menu } from 'lucide-react';
+import { BookOpen, Rocket, ArrowRight, CheckCircle2, Users, Award, Clock, MapPin, Phone, Mail, Instagram, Facebook, Linkedin, Code, Briefcase, Palette, Star, Target, Menu, X } from 'lucide-react';
 import Carousel3D from './components/Carousel3D';
 import { AdminPanel } from './components/AdminPanel';
 import { db } from './firebase';
@@ -52,6 +52,36 @@ function CountUpAnimation({
 }
 
 export default function App() {
+  const [modalAtivo, setModalAtivo] = useState<'carreira' | 'negocio' | null>(null);
+
+  const cursosCarreira = [
+    { nome: 'Operador de Tecnologia', imagem: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=150&h=150&fit=crop' },
+    { nome: 'Excel Avançado', imagem: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=150&h=150&fit=crop' },
+    { nome: 'Power BI', imagem: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=150&h=150&fit=crop' },
+    { nome: 'Marketing Digital', imagem: 'https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a?w=150&h=150&fit=crop' },
+    { nome: 'Assistente de Recursos Humanos', imagem: 'https://images.unsplash.com/photo-1521791136064-7986c2920216?w=150&h=150&fit=crop' },
+    { nome: 'Departamento Pessoal', imagem: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=150&h=150&fit=crop' },
+    { nome: 'Rotinas Administrativas', imagem: 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=150&h=150&fit=crop' },
+    { nome: 'Assistente Contábil', imagem: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=150&h=150&fit=crop' },
+    { nome: 'Design Gráfico', imagem: 'https://images.unsplash.com/photo-1626785774573-4b799315345d?w=150&h=150&fit=crop' },
+    { nome: 'Edição de Vídeos', imagem: 'https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?w=150&h=150&fit=crop' },
+    { nome: 'Games', imagem: 'https://images.unsplash.com/photo-1552820728-8b83bb6b773f?w=150&h=150&fit=crop' },
+    { nome: 'Web Design', imagem: 'https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?w=150&h=150&fit=crop' },
+    { nome: 'Programação', imagem: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=150&h=150&fit=crop' },
+    { nome: 'Evolução Pessoal e Profissional', imagem: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=150&h=150&fit=crop' }
+  ];
+
+  const cursosNegocio = [
+    { nome: 'Vendas', imagem: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=150&h=150&fit=crop' },
+    { nome: 'Oratória', imagem: 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=150&h=150&fit=crop' },
+    { nome: 'Liderança', imagem: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=150&h=150&fit=crop' },
+    { nome: 'Controle de Tempo', imagem: 'https://images.unsplash.com/photo-1506784983877-45594efa4cbe?w=150&h=150&fit=crop' },
+    { nome: 'Controle Financeiro Pessoal', imagem: 'https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=150&h=150&fit=crop' },
+    { nome: 'Trabalho em Equipe', imagem: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=150&h=150&fit=crop' },
+    { nome: 'Inteligência Artificial', imagem: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=150&h=150&fit=crop' },
+    { nome: 'Gestão de Pessoas', imagem: 'https://images.unsplash.com/photo-1542744173-8e7e53415bb0?w=150&h=150&fit=crop' }
+  ];
+
   const [cursoDestaque, setCursoDestaque] = useState({
     titulo: "Auxiliar Administrativo",
     descricao: "Domine as rotinas do escritório e seja o profissional que as empresas procuram.",
@@ -170,7 +200,10 @@ export default function App() {
             <p className="text-slate-600 mb-8 leading-relaxed">
               Quero qualificar-me para o mercado de trabalho com cursos práticos e atualizados.
             </p>
-            <button className="inline-flex items-center font-semibold text-brand-red group-hover:text-brand-red-hover transition-colors">
+            <button 
+              onClick={() => setModalAtivo('carreira')}
+              className="inline-flex items-center font-semibold text-brand-red group-hover:text-brand-red-hover transition-colors"
+            >
               Ver Cursos <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </button>
           </motion.div>
@@ -189,7 +222,10 @@ export default function App() {
             <p className="text-slate-600 mb-8 leading-relaxed">
               Quero escalar as vendas da minha empresa com estratégias validadas de mercado.
             </p>
-            <button className="inline-flex items-center font-semibold text-slate-900 group-hover:text-brand-red transition-colors">
+            <button 
+              onClick={() => setModalAtivo('negocio')}
+              className="inline-flex items-center font-semibold text-slate-900 group-hover:text-brand-red transition-colors"
+            >
               WP Escola de Vendas & Negócios <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </button>
           </motion.div>
@@ -277,55 +313,10 @@ export default function App() {
         </div>
       </section>
 
+
       {/* ESCOLHA SUA ÁREA (Aluno) */}
       <section className="py-24 bg-slate-50 relative">
         <div className="container mx-auto px-6">
-          <motion.div
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
-            variants={fadeInUp}
-            className="text-center max-w-2xl mx-auto mb-16"
-          >
-            <h2 className="font-heading text-4xl font-bold text-slate-900 mb-4">Escolha sua área...</h2>
-            <p className="text-slate-600 text-lg">
-              Formações completas desenhadas para as demandas reais do mercado atual.
-            </p>
-          </motion.div>
-
-          {/* Cursos Grid */}
-          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto mb-20">
-            {[
-              { title: "Tecnologia", desc: "O Mundo pede pessoas mais preparadas para os desafios da era digital.", img: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?auto=format&fit=crop&w=600&q=80", icon: Code },
-              { title: "Negócios", desc: "O Mundo dos Negócios exige profissionais completos, preparados para o Sucesso!", img: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=600&q=80", icon: Briefcase },
-              { title: "Design", desc: "Criatividade e técnica para dar vida a projetos incríveis e inovadores.", img: "https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&w=600&q=80", icon: Palette },
-            ].map((course, idx) => (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: idx * 0.2 }}
-                className="group bg-white rounded-2xl overflow-hidden shadow-lg shadow-slate-200/50 hover:shadow-2xl hover:-translate-y-1 transition-all duration-300"
-              >
-                <div className="relative h-48 overflow-hidden">
-                  <div className="absolute inset-0 bg-slate-900/20 group-hover:bg-transparent transition-colors duration-300 z-10" />
-                  <img src={course.img} alt={course.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" />
-                  <div className="absolute bottom-4 left-4 z-20 bg-white/90 backdrop-blur-sm p-2 rounded-lg">
-                    <course.icon className="w-6 h-6 text-brand-red" />
-                  </div>
-                </div>
-                <div className="p-8">
-                  <h3 className="font-heading text-xl font-bold text-slate-900 mb-3">{course.title}</h3>
-                  <p className="text-slate-600 text-sm leading-relaxed mb-6">{course.desc}</p>
-                  <button className="text-brand-red font-medium inline-flex items-center group-hover:text-brand-red-hover transition-colors">
-                    Saber mais <ArrowRight className="ml-1 w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                  </button>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-
           {/* Vagas de Emprego Atualizadas - Promessa + Bônus */}
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -717,6 +708,65 @@ export default function App() {
           <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
         </svg>
       </a>
+      {/* MODAL DE CURSOS */}
+      {modalAtivo && (
+        <div className="fixed inset-0 z-[100] flex items-end md:items-center justify-center bg-black/60 backdrop-blur-sm p-0 md:p-4">
+          <div 
+            className="absolute inset-0" 
+            onClick={() => setModalAtivo(null)}
+          ></div>
+          
+          <motion.div 
+            initial={{ opacity: 0, y: 100 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 100 }}
+            className="bg-white w-full max-w-md rounded-t-3xl md:rounded-3xl shadow-2xl relative z-10 flex flex-col max-h-[85vh] overflow-hidden"
+          >
+            {/* Cabeçalho */}
+            <div className="flex items-center justify-between p-5 border-b border-gray-100">
+              <h3 className="text-xl font-bold text-slate-900">
+                {modalAtivo === 'carreira' ? 'Cursos para Carreira' : 'Cursos Meu Negócio'}
+              </h3>
+              <button 
+                onClick={() => setModalAtivo(null)}
+                className="p-2 bg-gray-100 hover:bg-gray-200 rounded-full text-slate-500 transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Lista de Cursos (Scroll) */}
+            <div className="overflow-y-auto flex-1 p-2">
+              {(modalAtivo === 'carreira' ? cursosCarreira : cursosNegocio).map((curso, index) => (
+                <div key={index} className="flex items-center gap-4 py-3 px-4 border-b border-gray-100 last:border-0 hover:bg-gray-50 rounded-xl transition-colors cursor-pointer">
+                  <img 
+                    src={curso.imagem} 
+                    alt={curso.nome} 
+                    className="w-12 h-12 rounded-lg object-cover shadow-sm flex-shrink-0"
+                    referrerPolicy="no-referrer"
+                  />
+                  <span className="text-slate-800 font-medium">{curso.nome}</span>
+                </div>
+              ))}
+            </div>
+
+            {/* Rodapé (Ação Fixo) */}
+            <div className="p-4 border-t border-gray-100 bg-white">
+              <a 
+                href="https://wa.me/5517992451458" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="bg-green-500 hover:bg-green-600 text-white w-full py-3.5 rounded-xl font-bold flex items-center justify-center gap-2 shadow-lg transition-colors"
+              >
+                <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+                </svg>
+                Falar com Consultor
+              </a>
+            </div>
+          </motion.div>
+        </div>
+      )}
     </div>
   );
 }
