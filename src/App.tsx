@@ -202,34 +202,41 @@ export default function App() {
 
         <div className="container mx-auto px-6 relative z-10">
           <div className="max-w-5xl mx-auto flex flex-col lg:flex-row items-center justify-between gap-8">
-            <div className="text-white lg:w-1/2 flex flex-col items-center lg:items-start text-center lg:text-left">
-              <h2 className="font-heading text-4xl md:text-5xl font-bold mb-2 leading-tight">
-                Curso destaque <br className="hidden md:block" />da semana
+            <div className="text-white lg:w-1/2 flex flex-col items-center lg:items-start text-center lg:text-left w-full">
+              <h2 className="text-4xl font-bold text-white mb-10">
+                Curso destaque da semana
               </h2>
               
-              <div className="bg-white inline-flex items-center justify-center p-2.5 rounded-2xl mb-4 mt-6 shadow-lg border border-white/20">
-                <img 
-                  src="https://res.cloudinary.com/dapsovbs5/image/upload/v1774029343/logop_btmd14.png" 
-                  alt="Selo Certificado Premium" 
-                  className="h-10 w-auto object-contain" 
-                />
-              </div>
-
-              <div className="flex flex-row items-center gap-5 md:gap-6 mt-2 md:mt-4 text-left">
-                <img
-                  src={cursoDestaque.imagemUrl}
-                  alt={`Curso ${cursoDestaque.titulo}`}
-                  className="w-24 h-24 md:w-28 md:h-28 object-cover rounded-2xl shadow-xl border-2 border-white/20 flex-shrink-0"
-                  referrerPolicy="no-referrer"
-                />
-                <div className="flex flex-col">
-                  <h3 className="text-2xl md:text-3xl font-bold text-yellow-400 leading-tight">
-                    {cursoDestaque.titulo}
-                  </h3>
-                  <p className="text-white/80 text-sm md:text-base mt-2 max-w-xs">
-                    {cursoDestaque.descricao}
-                  </p>
+              <div className="relative bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl p-6 md:p-8 mt-4 shadow-2xl w-full">
+                
+                {/* O Selo Flutuante (Floating Badge) */}
+                <div className="absolute -top-6 right-6 md:-top-8 md:right-8 bg-white px-4 py-2 md:py-3 rounded-2xl shadow-xl border border-white/40">
+                  <img 
+                    src="https://res.cloudinary.com/dapsovbs5/image/upload/v1774029343/logop_btmd14.png" 
+                    alt="Certificado Premium" 
+                    className="h-8 md:h-10 w-auto object-contain" 
+                  />
                 </div>
+
+                {/* O Conteúdo do Curso */}
+                <div className="flex flex-col md:flex-row items-center md:items-start gap-6 pt-4 md:pt-0 text-center md:text-left">
+                  {/* Imagem do Curso */}
+                  <img 
+                    src={cursoDestaque.imagemUrl}
+                    alt={`Curso ${cursoDestaque.titulo}`}
+                    className="w-24 h-24 md:w-32 md:h-32 rounded-2xl object-cover shadow-lg border border-white/10 flex-shrink-0" 
+                    referrerPolicy="no-referrer"
+                  />
+                  
+                  {/* Textos do Curso */}
+                  <div>
+                    <h3 className="text-2xl font-bold text-white mb-3">{cursoDestaque.titulo}</h3>
+                    <p className="text-red-50 leading-relaxed text-sm md:text-base">
+                      {cursoDestaque.descricao}
+                    </p>
+                  </div>
+                </div>
+
               </div>
             </div>
 
