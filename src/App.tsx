@@ -40,7 +40,7 @@ function CountUpAnimation({
         ease: "easeOut",
         onUpdate(latest) {
           if (ref.current) {
-            ref.current.textContent = `${prefix}${Math.floor(latest)}${suffix}`;
+            ref.current.textContent = `${prefix}${Math.floor(latest).toLocaleString('pt-BR')}${suffix}`;
           }
         }
       });
@@ -90,7 +90,7 @@ export default function App() {
             <img 
               src="https://res.cloudinary.com/dapsovbs5/image/upload/v1774207958/WhatsApp_Image_2026-03-21_at_19.02.03_1_ohotur.jpg" 
               alt="William Informática" 
-              className="h-12 w-auto object-contain mix-blend-multiply" 
+              className="h-[58px] md:h-[62px] w-auto object-contain mix-blend-multiply" 
             />
           </div>
 
@@ -197,7 +197,7 @@ export default function App() {
       </section>
 
       {/* DESTAQUE DA SEMANA (Offer Banner) */}
-      <section className="bg-brand-red py-12 relative overflow-hidden">
+      <section className="bg-red-800 py-12 relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-white/10 via-transparent to-transparent" />
 
         <div className="container mx-auto px-6 relative z-10">
@@ -207,13 +207,12 @@ export default function App() {
                 Curso destaque <br className="hidden md:block" />da semana
               </h2>
               
-              <div className="flex items-center w-full max-w-[200px] lg:max-w-[280px] py-6 opacity-90">
-                <div className="h-[1px] flex-1 bg-gradient-to-r from-transparent via-yellow-400/60 to-transparent"></div>
-                <div className="px-4 relative flex items-center justify-center">
-                  <div className="absolute w-8 h-8 bg-yellow-400/30 blur-md rounded-full animate-pulse"></div>
-                  <Star className="w-6 h-6 text-yellow-400 animate-[spin_8s_linear_infinite] relative z-10" fill="currentColor" />
-                </div>
-                <div className="h-[1px] flex-1 bg-gradient-to-r from-transparent via-yellow-400/60 to-transparent"></div>
+              <div className="bg-white inline-flex items-center justify-center p-2.5 rounded-2xl mb-4 mt-6 shadow-lg border border-white/20">
+                <img 
+                  src="https://res.cloudinary.com/dapsovbs5/image/upload/v1774029343/logop_btmd14.png" 
+                  alt="Selo Certificado Premium" 
+                  className="h-10 w-auto object-contain" 
+                />
               </div>
 
               <div className="flex flex-row items-center gap-5 md:gap-6 mt-2 md:mt-4 text-left">
@@ -241,7 +240,7 @@ export default function App() {
                   <span className="text-white font-bold tracking-wide uppercase text-sm">Diagnóstico Profissional</span>
                 </div>
                 <h2 className="text-xl md:text-2xl text-white font-medium leading-snug">
-                  Quero realizar esse curso com <span className="text-yellow-400 font-bold">50% de desconto real</span> e ainda garantir o meu Diagnóstico Profissional.
+                  Quero <span className="text-yellow-400 font-bold">50% de desconto</span> nesse curso com <span className="text-yellow-400 font-bold">Certificação Premium</span> e ainda garantir o meu <span className="text-yellow-400 font-bold">Diagnóstico de Perfil Profissional 100% grátis</span>
                 </h2>
               </div>
               <div className="bg-white/10 backdrop-blur-md p-6 md:p-8 rounded-2xl border border-white/20">
@@ -329,32 +328,29 @@ export default function App() {
           >
             {/* Lado Esquerdo (A Promessa de Empregabilidade) */}
             <div className="w-full md:w-3/5 flex flex-col justify-center items-start text-left">
-              <h3 className="text-3xl font-bold text-slate-900">Vagas de Emprego Atualizadas</h3>
+              <h3 className="text-3xl font-bold text-slate-900">Vagas de Emprego</h3>
               <p className="text-gray-600 text-lg mt-4 mb-8">
-                Conectamos nossos alunos às melhores oportunidades do mercado. Receba orientações exclusivas, encaminhamento para vagas reais e prepare-se para ser o candidato ideal que as grandes empresas buscam.
+                Cadastre-se e receba 02 treinamentos - 100% grátis, que podem garantir sua vaga no mercado de trabalho!
               </p>
               <button className="bg-slate-900 text-white px-8 py-3 rounded-full font-semibold hover:bg-slate-800 transition">
-                Quero acessar as vagas
+                Quero me cadastrar
               </button>
             </div>
 
             {/* Lado Direito (O Bônus de Matrícula) */}
             <div className="w-full md:w-2/5 bg-slate-900 rounded-2xl p-8 relative overflow-hidden shadow-inner flex flex-col justify-center">
-              <span className="text-yellow-400 font-bold tracking-wider uppercase text-sm mb-2">🎁 Bônus de Matrícula</span>
-              <h3 className="text-white text-xl font-bold mb-4">Ganhe 2 Cursos Extras</h3>
+              <h3 className="text-white text-xl font-bold mb-4">Treinamentos Grátis</h3>
               
               <ul className="space-y-3">
                 <li className="flex items-center gap-3 text-white font-medium">
                   <CheckCircle2 className="w-5 h-5 text-yellow-400 shrink-0" />
-                  Emprego 50X
+                  <span><span className="font-bold">Empregabilidade</span> - Como aumentar em 50x suas chances de conseguir um trabalho</span>
                 </li>
                 <li className="flex items-center gap-3 text-white font-medium">
                   <CheckCircle2 className="w-5 h-5 text-yellow-400 shrink-0" />
-                  Currículo Profissional
+                  <span><span className="font-bold">Currículo Profissional</span> - Técnicas para elaboração de currículos</span>
                 </li>
               </ul>
-              
-              <p className="text-white/70 text-sm mt-6">* Bônus liberado automaticamente ao confirmar sua matrícula hoje.</p>
             </div>
           </motion.div>
 
@@ -372,7 +368,7 @@ export default function App() {
             {/* Lado Direito (A Imagem com o Fade Restrito) */}
             <div className="w-full md:w-1/2 relative min-h-[300px] md:min-h-[400px]">
               <img 
-                src="https://res.cloudinary.com/dapsovbs5/image/upload/v1774184551/teste_zb9hjx.webp" 
+                src="https://res.cloudinary.com/dapsovbs5/image/upload/v1774310749/teste_1_w0k9op.webp" 
                 alt="Aluno Empreendedor" 
                 className="absolute inset-0 w-full h-full object-cover object-center"
                 referrerPolicy="no-referrer"
@@ -405,15 +401,6 @@ export default function App() {
 
         <div className="container mx-auto px-6 relative z-20">
           <div className="max-w-4xl mx-auto text-center">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              whileInView={{ opacity: 1, scale: 1 }}
-              viewport={{ once: true }}
-              className="inline-flex items-center justify-center px-4 py-1.5 mb-8 border border-white/10 rounded-full bg-white/5 backdrop-blur-sm"
-            >
-              <span className="text-sm font-medium text-slate-300 uppercase tracking-widest">Para Empresários</span>
-            </motion.div>
-
             <motion.h2
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -430,7 +417,9 @@ export default function App() {
               transition={{ delay: 0.1 }}
               className="text-xl text-slate-400 mb-12 max-w-2xl mx-auto leading-relaxed"
             >
-              Se tem um negócio próprio ou é profissional liberal para escalar as suas vendas com previsibilidade e lucro.
+              <span className="font-bold text-white">Empresário ou Profissional Liberal</span><br />
+              Aprenda como escalar suas Vendas com previsibilidade e LUCRO.<br /><br />
+              <span className="text-white font-medium">Cadastre-se e receba gratuitamente os 7 passos para escalar suas Vendas</span>
             </motion.p>
 
             <motion.button
@@ -440,7 +429,7 @@ export default function App() {
               transition={{ delay: 0.2 }}
               className="bg-brand-red hover:bg-brand-red-hover text-white text-lg font-bold py-4 px-8 rounded-full shadow-[0_0_40px_-10px_rgba(220,38,38,0.5)] hover:shadow-[0_0_60px_-15px_rgba(220,38,38,0.7)] transition-all duration-300 transform hover:-translate-y-1"
             >
-              Clique e receba gratuitamente os 7 Passos para Escalar
+              Quero me cadastrar
             </motion.button>
           </div>
         </div>
@@ -462,7 +451,7 @@ export default function App() {
             >
               <div className="mb-8 text-left">
                 <span className="inline-block text-brand-red font-bold uppercase tracking-wider text-sm mb-3">
-                  Liberação de Vagas
+                  VAGAS LIBERADAS
                 </span>
                 <h2 className="font-heading text-3xl md:text-5xl font-bold text-slate-900 leading-tight">
                   Formação Profissional com Certificação Premium
@@ -476,12 +465,25 @@ export default function App() {
                   alt="Logo Certificado Premium" 
                   className="h-16 mb-6 object-contain relative z-10" 
                 />
-                <p className="text-slate-600 text-lg mb-6 relative z-10 leading-relaxed">
-                  <strong className="text-slate-900">Escola Credenciada com Exclusividade.</strong> O Dr. Augusto Cury também utiliza esta certificação em sua metodologia, atestando o padrão de excelência do nosso ensino.
+                <p className="text-slate-700 mb-4 relative z-10 leading-relaxed">
+                  William Informática é a única Escola de Bebedouro Credenciada com Exclusividade ao Certificado Premium.
+                </p>
+                <p className="text-slate-700 mb-6 relative z-10 leading-relaxed">
+                  Dr. Augusto Cury também utiliza esta certificação em sua metodologia, atestando o padrão de excelência do nosso ensino.
                 </p>
                 <a href="#" className="inline-flex items-center font-semibold text-brand-red hover:text-brand-red-hover transition-colors relative z-10">
                   www.certificadopremium.com.br <ArrowRight className="ml-2 w-4 h-4" />
                 </a>
+
+                {/* Nova Oferta CTA */}
+                <div className="bg-red-50 border border-red-100 p-4 rounded-xl mt-6 relative z-10">
+                  <p className="text-red-900 font-medium text-sm mb-3">
+                    Cadastre-se e receba gratuitamente um treinamento de Evolução Pessoal e Profissional.
+                  </p>
+                  <button className="bg-red-600 hover:bg-red-700 text-white text-sm font-bold py-2.5 px-5 rounded-full w-full transition-colors">
+                    Quero meu treinamento grátis
+                  </button>
+                </div>
               </div>
             </motion.div>
 
@@ -549,8 +551,8 @@ export default function App() {
                   <Star className="w-6 h-6 text-yellow-600 fill-yellow-600" />
                 </div>
                 <div>
-                  <p className="font-heading font-bold text-slate-900 leading-tight">Mais de 24 anos</p>
-                  <p className="text-sm text-slate-500">de Tradição</p>
+                  <p className="font-heading font-bold text-slate-900 leading-tight">38 anos</p>
+                  <p className="text-sm text-slate-500">de História</p>
                 </div>
               </div>
             </motion.div>
@@ -568,7 +570,7 @@ export default function App() {
               
               <div className="space-y-6 text-lg text-slate-600 leading-relaxed mb-8">
                 <p>
-                  Há mais de 24 anos, a William Informática nasceu com um propósito claro: transformar vidas através da educação. Não somos apenas uma escola, mas um verdadeiro centro de qualificação focado em preparar os nossos alunos para as exigências reais do mercado de trabalho.
+                  Com 38 anos de história e mais de 20.000 alunos formados, a William Informática nasceu com um propósito claro: transformar vidas através da educação. Não somos apenas uma escola, mas um verdadeiro centro de qualificação focado em preparar os nossos alunos para as exigências reais do mercado de trabalho.
                 </p>
                 <p>
                   Unimos a excelência técnica a uma visão inovadora de negócios. Acreditamos que, em qualquer etapa da vida, o importante é crescer. Aqui, você adquire as ferramentas certas para conquistar a sua vaga de emprego ou para escalar o seu próprio negócio.
@@ -600,8 +602,8 @@ export default function App() {
           {/* Numbers Panel */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto mb-24">
             {[
-              { number: 24, prefix: "", suffix: "", label: "Anos de História", icon: Clock },
-              { number: 8000, prefix: "+", suffix: "", label: "Alunos Formados", icon: Users },
+              { number: 38, prefix: "", suffix: "", label: "Anos de História", icon: Clock },
+              { number: 20000, prefix: "+", suffix: "", label: "Alunos Formados", icon: Users },
               { number: 100, prefix: "", suffix: "%", label: "Certificação de Excelência", icon: Award },
             ].map((stat, idx) => (
               <motion.div
@@ -640,7 +642,7 @@ export default function App() {
               <img 
                 src="https://res.cloudinary.com/dapsovbs5/image/upload/v1774208363/Design_sem_nome_acqxgq.webp" 
                 alt="William Informática" 
-                className="h-16 w-auto object-contain mb-6" 
+                className="h-[77px] md:h-[83px] w-auto object-contain mb-6" 
               />
               <p className="max-w-sm mb-8 leading-relaxed">
                 Transformando vidas através da educação tecnológica e empreendedora há mais de duas décadas.
