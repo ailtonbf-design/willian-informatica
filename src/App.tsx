@@ -84,13 +84,13 @@ export default function App() {
     <div className="font-sans text-slate-800 bg-slate-50 selection:bg-brand-red selection:text-white">
       {/* GLOBAL HEADER */}
       <header className="sticky top-0 z-50 w-full bg-white shadow-md">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 md:h-24 flex items-center justify-between">
           {/* Logo */}
           <div className="flex-shrink-0">
             <img 
               src="https://res.cloudinary.com/dapsovbs5/image/upload/v1774207958/WhatsApp_Image_2026-03-21_at_19.02.03_1_ohotur.jpg" 
               alt="William Informática" 
-              className="h-[58px] md:h-[62px] w-auto object-contain mix-blend-multiply" 
+              className="h-[58px] md:h-[75px] w-auto object-contain mix-blend-multiply" 
             />
           </div>
 
