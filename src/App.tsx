@@ -84,13 +84,13 @@ export default function App() {
     <div className="font-sans text-slate-800 bg-slate-50 selection:bg-brand-red selection:text-white">
       {/* GLOBAL HEADER */}
       <header className="sticky top-0 z-50 w-full bg-white shadow-md">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 md:h-24 flex items-center justify-between">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 md:h-28 flex items-center justify-between">
           {/* Logo */}
           <div className="flex-shrink-0">
             <img 
               src="https://res.cloudinary.com/dapsovbs5/image/upload/v1774207958/WhatsApp_Image_2026-03-21_at_19.02.03_1_ohotur.jpg" 
               alt="William Informática" 
-              className="h-[58px] md:h-[75px] w-auto object-contain mix-blend-multiply" 
+              className="h-[58px] md:h-[90px] w-auto object-contain mix-blend-multiply" 
             />
           </div>
 
@@ -190,7 +190,7 @@ export default function App() {
               Quero escalar as vendas da minha empresa com estratégias validadas de mercado.
             </p>
             <button className="inline-flex items-center font-semibold text-slate-900 group-hover:text-brand-red transition-colors">
-              WP-Escola de Vendas e Negócios <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              WP Escola de Vendas & Negócios <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </button>
           </motion.div>
         </div>
@@ -386,13 +386,13 @@ export default function App() {
         </div>
       </section>
 
-      {/* WP - ESCOLA DE VENDAS E NEGÓCIOS (Empresário) */}
+      {/* WP ESCOLA DE VENDAS & NEGÓCIOS (Empresário) */}
       <section className="relative bg-slate-900 pt-32 pb-24 overflow-hidden">
         {/* Background Image */}
         <div className="absolute inset-0 z-0">
           <img
             src="https://res.cloudinary.com/dapsovbs5/image/upload/v1774023454/Banner-Willian_vusp0w.webp"
-            alt="Banner WP-Escola de Vendas e Negócios"
+            alt="Banner WP Escola de Vendas & Negócios"
             className="w-full h-full object-cover opacity-60"
             referrerPolicy="no-referrer"
           />
@@ -414,7 +414,7 @@ export default function App() {
               viewport={{ once: true }}
               className="font-heading text-4xl md:text-6xl font-extrabold text-white mb-6 leading-tight"
             >
-              WP-Escola de Vendas <br className="hidden md:block" /> e Negócios
+              WP Escola de Vendas <br className="hidden md:block" /> & Negócios
             </motion.h2>
 
             <motion.p
@@ -652,7 +652,7 @@ export default function App() {
                 className="h-[77px] md:h-[83px] w-auto object-contain mb-6" 
               />
               <p className="max-w-sm mb-8 leading-relaxed">
-                Transformando vidas através da educação tecnológica e empreendedora há mais de duas décadas.
+                Transformando vidas através da educação tecnológica e empreendedora há mais de três décadas.
               </p>
               <div className="flex gap-4">
                 <a href="#" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-brand-red hover:text-white transition-colors">
@@ -690,7 +690,7 @@ export default function App() {
               <ul className="space-y-3">
                 <li><a href="#" className="hover:text-white transition-colors">Sobre Nós</a></li>
                 <li><a href="#" className="hover:text-white transition-colors">Nossos Cursos</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">WP-Escola de Vendas e Negócios</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">WP Escola de Vendas & Negócios</a></li>
                 <li><a href="#" className="hover:text-white transition-colors">Política de Privacidade</a></li>
               </ul>
             </div>
