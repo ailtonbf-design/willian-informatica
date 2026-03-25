@@ -273,11 +273,6 @@ export function AdminPanel() {
     e.preventDefault();
     if (!novaFotoPreview) return;
 
-    if (fotosCarrossel.length >= 10) {
-      setError('Limite de 10 fotos atingido. Exclua uma para adicionar outra.');
-      return;
-    }
-
     setLoading(true);
     setError('');
     setSuccess(false);
@@ -617,66 +612,60 @@ export function AdminPanel() {
               <form onSubmit={handleAddFotoCarrossel} className="space-y-6 mb-10 bg-slate-50 p-6 rounded-xl border border-slate-200">
                 <div className="flex items-center justify-between mb-4">
                   <h3 className="font-semibold text-slate-800">Adicionar Nova Foto</h3>
-                  <span className={`text-sm font-medium px-3 py-1 rounded-full ${fotosCarrossel.length >= 10 ? 'bg-red-100 text-red-700' : 'bg-slate-200 text-slate-700'}`}>
-                    {fotosCarrossel.length} / 10 fotos
+                  <span className="text-sm font-medium px-3 py-1 rounded-full bg-slate-200 text-slate-700">
+                    {fotosCarrossel.length} foto(s)
                   </span>
                 </div>
 
-                {fotosCarrossel.length >= 10 ? (
-                  <div className="bg-amber-50 border border-amber-200 text-amber-800 p-4 rounded-lg">
-                    <p className="font-medium">Limite de 10 fotos atingido. Exclua uma para adicionar outra.</p>
-                  </div>
-                ) : (
-                  <>
-                    <div>
-                      <label className="block text-sm font-medium text-slate-700 mb-2">
-                        Imagem (Máx. 5MB)
-                      </label>
-                      
-                      <div className="flex items-center justify-center w-full">
-                        <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-slate-300 border-dashed rounded-lg cursor-pointer bg-white hover:bg-slate-50 transition-colors">
-                          <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                            <Upload className="w-8 h-8 mb-3 text-slate-400" />
-                            <p className="mb-2 text-sm text-slate-500"><span className="font-semibold">Clique para enviar</span> ou arraste uma imagem</p>
-                            <p className="text-xs text-slate-500">PNG, JPG ou WEBP (Max. 5MB)</p>
-                          </div>
-                          <input 
-                            type="file" 
-                            className="hidden" 
-                            accept="image/png, image/jpeg, image/jpg, image/webp"
-                            onChange={handleFotoCarrosselChange}
-                          />
-                        </label>
-                      </div>
-
-                      {novaFotoPreview && (
-                        <div className="mt-4">
-                          <p className="text-xs text-slate-500 mb-2">Pré-visualização da imagem:</p>
-                          <img 
-                            src={novaFotoPreview} 
-                            alt="Preview" 
-                            className="w-32 h-32 object-cover rounded-lg border border-slate-200"
-                          />
+                <>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-2">
+                      Imagem (Máx. 5MB)
+                    </label>
+                    
+                    <div className="flex items-center justify-center w-full">
+                      <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-slate-300 border-dashed rounded-lg cursor-pointer bg-white hover:bg-slate-50 transition-colors">
+                        <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                          <Upload className="w-8 h-8 mb-3 text-slate-400" />
+                          <p className="mb-2 text-sm text-slate-500"><span className="font-semibold">Clique para enviar</span> ou arraste uma imagem</p>
+                          <p className="text-xs text-slate-500">PNG, JPG ou WEBP (Max. 5MB)</p>
                         </div>
-                      )}
+                        <input 
+                          type="file" 
+                          className="hidden" 
+                          accept="image/png, image/jpeg, image/jpg, image/webp"
+                          onChange={handleFotoCarrosselChange}
+                        />
+                      </label>
                     </div>
 
-                    <button
-                      type="submit"
-                      disabled={loading || !novaFotoFile}
-                      className="bg-slate-900 hover:bg-slate-800 text-white font-bold py-3 px-6 rounded-lg transition-colors flex items-center justify-center gap-2 disabled:opacity-70"
-                    >
-                      {loading ? (
-                        <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                      ) : (
-                        <>
-                          <Save className="w-4 h-4" />
-                          Adicionar Foto
-                        </>
-                      )}
-                    </button>
-                  </>
-                )}
+                    {novaFotoPreview && (
+                      <div className="mt-4">
+                        <p className="text-xs text-slate-500 mb-2">Pré-visualização da imagem:</p>
+                        <img 
+                          src={novaFotoPreview} 
+                          alt="Preview" 
+                          className="w-32 h-32 object-cover rounded-lg border border-slate-200"
+                        />
+                      </div>
+                    )}
+                  </div>
+
+                  <button
+                    type="submit"
+                    disabled={loading || !novaFotoFile}
+                    className="bg-slate-900 hover:bg-slate-800 text-white font-bold py-3 px-6 rounded-lg transition-colors flex items-center justify-center gap-2 disabled:opacity-70"
+                  >
+                    {loading ? (
+                      <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                    ) : (
+                      <>
+                        <Save className="w-4 h-4" />
+                        Adicionar Foto
+                      </>
+                    )}
+                  </button>
+                </>
               </form>
 
               <div>

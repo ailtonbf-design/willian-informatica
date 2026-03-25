@@ -79,11 +79,12 @@ export default function Carousel3D() {
           disableOnInteraction: false,
           pauseOnMouseEnter: true,
         }}
+        lazyPreloadPrevNext={2}
         onSwiper={setSwiperInstance}
         modules={[EffectCoverflow, Navigation, Autoplay]}
         className="w-full py-12 !overflow-visible"
       >
-        {slides.map((slide) => (
+        {slides.map((slide, index) => (
           <SwiperSlide key={slide.id} className="flex justify-center items-center">
             <div className="w-full aspect-square max-w-64 sm:max-w-72 md:max-w-[300px] mx-auto bg-white shadow-[0_10px_30px_-10px_rgba(0,0,0,0.2)]">
               <img
@@ -91,6 +92,7 @@ export default function Carousel3D() {
                 alt="Aluno com certificado"
                 className="w-full h-full object-cover"
                 referrerPolicy="no-referrer"
+                loading={index < 3 ? "eager" : "lazy"}
               />
             </div>
           </SwiperSlide>
