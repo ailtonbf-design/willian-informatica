@@ -236,18 +236,42 @@ export function AdminPanel() {
       return;
     }
 
-    setNovaFotoFile(file);
     const reader = new FileReader();
     reader.onload = (event) => {
-      setNovaFotoPreview(event.target?.result as string);
-      setError('');
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        let width = img.width;
+        let height = img.height;
+        const MAX_DIMENSION = 800;
+
+        if (width > height && width > MAX_DIMENSION) {
+          height *= MAX_DIMENSION / width;
+          width = MAX_DIMENSION;
+        } else if (height > MAX_DIMENSION) {
+          width *= MAX_DIMENSION / height;
+          height = MAX_DIMENSION;
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx?.drawImage(img, 0, 0, width, height);
+        
+        // Compress to JPEG to save space
+        const compressedBase64 = canvas.toDataURL('image/jpeg', 0.8);
+        setNovaFotoPreview(compressedBase64);
+        setNovaFotoFile(file);
+        setError('');
+      };
+      img.src = event.target?.result as string;
     };
     reader.readAsDataURL(file);
   };
 
   const handleAddFotoCarrossel = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!novaFotoFile) return;
+    if (!novaFotoPreview) return;
 
     if (fotosCarrossel.length >= 10) {
       setError('Limite de 10 fotos atingido. Exclua uma para adicionar outra.');
@@ -260,14 +284,10 @@ export function AdminPanel() {
 
     try {
       const fileId = Date.now().toString();
-      const storageRef = ref(storage, `carrossel/${fileId}_${novaFotoFile.name}`);
       
-      await uploadBytes(storageRef, novaFotoFile);
-      const downloadUrl = await getDownloadURL(storageRef);
-
       const novaFoto: FotoCarrossel = {
         id: fileId,
-        url: downloadUrl
+        url: novaFotoPreview
       };
       
       const updatedFotos = [...fotosCarrossel, novaFoto];
@@ -294,20 +314,6 @@ export function AdminPanel() {
     setSuccess(false);
 
     try {
-      // Delete from Storage if it's a firebase storage URL
-      if (foto.url.includes('firebasestorage')) {
-        try {
-          // Extract the path from the URL
-          const urlObj = new URL(foto.url);
-          const path = decodeURIComponent(urlObj.pathname.split('/o/')[1].split('?')[0]);
-          const fileRef = ref(storage, path);
-          await deleteObject(fileRef);
-        } catch (storageErr) {
-          console.error("Erro ao deletar do storage:", storageErr);
-          // Continue to delete from firestore even if storage delete fails
-        }
-      }
-
       const updatedFotos = fotosCarrossel.filter(f => f.id !== foto.id);
       
       const docRef = doc(db, 'configuracoes', 'carrossel');
