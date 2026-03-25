@@ -1,74 +1,54 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { EffectCoverflow, Navigation, Autoplay } from 'swiper/modules';
 import type { Swiper as SwiperType } from 'swiper';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
+import { doc, getDoc, onSnapshot } from 'firebase/firestore';
+import { db } from '../firebase';
 
 import 'swiper/css';
 import 'swiper/css/effect-coverflow';
 import 'swiper/css/navigation';
 
-const slidesData = [
+const defaultSlides = [
   {
-    id: 1,
-    image: 'https://res.cloudinary.com/dapsovbs5/image/upload/v1774034573/aluno-1_1_ljnomo.jpg',
-    category: 'Design',
-    title: 'Maria Silva',
-    desc: 'Concluiu o curso de Design Gráfico com distinção e já atua no mercado criativo.',
+    id: '1',
+    url: 'https://res.cloudinary.com/dapsovbs5/image/upload/v1774034573/aluno-1_1_ljnomo.jpg',
   },
   {
-    id: 2,
-    image: 'https://res.cloudinary.com/dapsovbs5/image/upload/v1774034574/aluno-2_1_xa1jai.jpg',
-    category: 'Marketing',
-    title: 'João Pedro',
-    desc: 'Especialista em Marketing Digital formado na William Informática.',
+    id: '2',
+    url: 'https://res.cloudinary.com/dapsovbs5/image/upload/v1774034574/aluno-2_1_xa1jai.jpg',
   },
   {
-    id: 3,
-    image: 'https://res.cloudinary.com/dapsovbs5/image/upload/v1774034574/aluno-4_1_muhg80.jpg',
-    category: 'Tecnologia',
-    title: 'Ana Costa',
-    desc: 'Desenvolvedora Web Front-end, agora a trabalhar numa grande agência de tecnologia.',
-  },
-  {
-    id: 4,
-    image: 'https://res.cloudinary.com/dapsovbs5/image/upload/v1774034574/aluno-3_1_hkjn7j.jpg',
-    category: 'Gestão',
-    title: 'Carlos Santos',
-    desc: 'Obteve a Certificação Premium em Gestão de Projetos e alavancou a sua carreira.',
-  },
-  {
-    id: 5,
-    image: 'https://res.cloudinary.com/dapsovbs5/image/upload/v1774034573/aluno-1_1_ljnomo.jpg',
-    category: 'Programação',
-    title: 'Beatriz Lima',
-    desc: 'Aluna destaque da turma de Programação Avançada, com projetos inovadores.',
-  },
-  {
-    id: 6,
-    image: 'https://res.cloudinary.com/dapsovbs5/image/upload/v1774034574/aluno-2_1_xa1jai.jpg',
-    category: 'Dados',
-    title: 'Lucas Almeida',
-    desc: 'Atua como Cientista de Dados após concluir a nossa formação intensiva.',
-  },
-  {
-    id: 7,
-    image: 'https://res.cloudinary.com/dapsovbs5/image/upload/v1774034574/aluno-4_1_muhg80.jpg',
-    category: 'UX/UI',
-    title: 'Sofia Martins',
-    desc: 'Criadora de interfaces premiadas, começou a sua jornada nos nossos laboratórios.',
-  },
-  {
-    id: 8,
-    image: 'https://res.cloudinary.com/dapsovbs5/image/upload/v1774034574/aluno-3_1_hkjn7j.jpg',
-    category: 'Cloud',
-    title: 'Pedro Rocha',
-    desc: 'Arquiteto Cloud certificado, responsável por infraestruturas de grande escala.',
+    id: '3',
+    url: 'https://res.cloudinary.com/dapsovbs5/image/upload/v1774034574/aluno-4_1_muhg80.jpg',
   }
 ];
 
 export default function Carousel3D() {
   const [swiperInstance, setSwiperInstance] = useState<SwiperType | null>(null);
+  const [slides, setSlides] = useState<{id: string, url: string}[]>(defaultSlides);
+
+  useEffect(() => {
+    const docRef = doc(db, 'configuracoes', 'carrossel');
+    
+    const unsubscribe = onSnapshot(docRef, (docSnap) => {
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        if (data.lista && data.lista.length > 0) {
+          setSlides(data.lista);
+        } else {
+          setSlides(defaultSlides);
+        }
+      } else {
+        setSlides(defaultSlides);
+      }
+    }, (error) => {
+      console.error("Erro ao carregar fotos do carrossel:", error);
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   return (
     <div className="w-full max-w-[1400px] mx-auto px-4 py-12 overflow-hidden">
@@ -103,12 +83,12 @@ export default function Carousel3D() {
         modules={[EffectCoverflow, Navigation, Autoplay]}
         className="w-full py-12 !overflow-visible"
       >
-        {slidesData.map((slide) => (
+        {slides.map((slide) => (
           <SwiperSlide key={slide.id} className="flex justify-center items-center">
             <div className="w-full aspect-square max-w-64 sm:max-w-72 md:max-w-[300px] mx-auto bg-white shadow-[0_10px_30px_-10px_rgba(0,0,0,0.2)]">
               <img
-                src={slide.image}
-                alt={slide.title}
+                src={slide.url}
+                alt="Aluno com certificado"
                 className="w-full h-full object-cover"
                 referrerPolicy="no-referrer"
               />

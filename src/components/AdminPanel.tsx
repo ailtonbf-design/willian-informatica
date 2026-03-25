@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
-import { db } from '../firebase';
-import { Save, LogIn, LogOut, CheckCircle, Upload, Trash2, Briefcase, BookOpen } from 'lucide-react';
+import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
+import { db, storage } from '../firebase';
+import { Save, LogIn, LogOut, CheckCircle, Upload, Trash2, Briefcase, BookOpen, Image as ImageIcon } from 'lucide-react';
 
 interface Vaga {
   id: string;
@@ -9,8 +10,13 @@ interface Vaga {
   descricao: string;
 }
 
+interface FotoCarrossel {
+  id: string;
+  url: string;
+}
+
 export function AdminPanel() {
-  const [activeTab, setActiveTab] = useState<'curso' | 'vagas'>('curso');
+  const [activeTab, setActiveTab] = useState<'curso' | 'vagas' | 'fotosCarrossel'>('curso');
   
   // Curso Destaque State
   const [titulo, setTitulo] = useState('');
@@ -21,6 +27,11 @@ export function AdminPanel() {
   const [vagas, setVagas] = useState<Vaga[]>([]);
   const [novaVagaTitulo, setNovaVagaTitulo] = useState('');
   const [novaVagaDescricao, setNovaVagaDescricao] = useState('');
+
+  // Fotos Carrossel State
+  const [fotosCarrossel, setFotosCarrossel] = useState<FotoCarrossel[]>([]);
+  const [novaFotoPreview, setNovaFotoPreview] = useState('');
+  const [novaFotoFile, setNovaFotoFile] = useState<File | null>(null);
 
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -35,6 +46,7 @@ export function AdminPanel() {
     if (isAuthenticated) {
       loadCurrentData();
       loadVagas();
+      loadFotosCarrossel();
     }
   }, [isAuthenticated]);
 
@@ -63,6 +75,19 @@ export function AdminPanel() {
       }
     } catch (err) {
       console.error("Erro ao carregar vagas:", err);
+    }
+  };
+
+  const loadFotosCarrossel = async () => {
+    try {
+      const docRef = doc(db, 'configuracoes', 'carrossel');
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        if (data.lista) setFotosCarrossel(data.lista);
+      }
+    } catch (err) {
+      console.error("Erro ao carregar fotos do carrossel:", err);
     }
   };
 
@@ -202,6 +227,103 @@ export function AdminPanel() {
     reader.readAsDataURL(file);
   };
 
+  const handleFotoCarrosselChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > 5 * 1024 * 1024) {
+      setError('A imagem deve ter no máximo 5MB.');
+      return;
+    }
+
+    setNovaFotoFile(file);
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      setNovaFotoPreview(event.target?.result as string);
+      setError('');
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const handleAddFotoCarrossel = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!novaFotoFile) return;
+
+    if (fotosCarrossel.length >= 10) {
+      setError('Limite de 10 fotos atingido. Exclua uma para adicionar outra.');
+      return;
+    }
+
+    setLoading(true);
+    setError('');
+    setSuccess(false);
+
+    try {
+      const fileId = Date.now().toString();
+      const storageRef = ref(storage, `carrossel/${fileId}_${novaFotoFile.name}`);
+      
+      await uploadBytes(storageRef, novaFotoFile);
+      const downloadUrl = await getDownloadURL(storageRef);
+
+      const novaFoto: FotoCarrossel = {
+        id: fileId,
+        url: downloadUrl
+      };
+      
+      const updatedFotos = [...fotosCarrossel, novaFoto];
+      
+      const docRef = doc(db, 'configuracoes', 'carrossel');
+      await setDoc(docRef, { lista: updatedFotos }, { merge: true });
+      
+      setFotosCarrossel(updatedFotos);
+      setNovaFotoFile(null);
+      setNovaFotoPreview('');
+      setSuccess(true);
+      setTimeout(() => setSuccess(false), 3000);
+    } catch (err: any) {
+      console.error(err);
+      setError(err.message || 'Erro ao adicionar foto.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDeleteFotoCarrossel = async (foto: FotoCarrossel) => {
+    setLoading(true);
+    setError('');
+    setSuccess(false);
+
+    try {
+      // Delete from Storage if it's a firebase storage URL
+      if (foto.url.includes('firebasestorage')) {
+        try {
+          // Extract the path from the URL
+          const urlObj = new URL(foto.url);
+          const path = decodeURIComponent(urlObj.pathname.split('/o/')[1].split('?')[0]);
+          const fileRef = ref(storage, path);
+          await deleteObject(fileRef);
+        } catch (storageErr) {
+          console.error("Erro ao deletar do storage:", storageErr);
+          // Continue to delete from firestore even if storage delete fails
+        }
+      }
+
+      const updatedFotos = fotosCarrossel.filter(f => f.id !== foto.id);
+      
+      const docRef = doc(db, 'configuracoes', 'carrossel');
+      await setDoc(docRef, { lista: updatedFotos }, { merge: true });
+      
+      setFotosCarrossel(updatedFotos);
+      setSuccess(true);
+      setTimeout(() => setSuccess(false), 3000);
+    } catch (err: any) {
+      console.error(err);
+      setError(err.message || 'Erro ao remover foto.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center p-6">
@@ -284,6 +406,17 @@ export function AdminPanel() {
           >
             <Briefcase className="w-5 h-5" />
             Gerenciar Vagas
+          </button>
+          <button
+            onClick={() => { setActiveTab('fotosCarrossel'); setError(''); setSuccess(false); }}
+            className={`flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-colors ${
+              activeTab === 'fotosCarrossel' 
+                ? 'bg-slate-900 text-white shadow-md' 
+                : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'
+            }`}
+          >
+            <ImageIcon className="w-5 h-5" />
+            Fotos do Carrossel
           </button>
         </div>
 
@@ -462,6 +595,111 @@ export function AdminPanel() {
                         >
                           <Trash2 className="w-5 h-5" />
                         </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </>
+          )}
+          {activeTab === 'fotosCarrossel' && (
+            <>
+              <h2 className="text-xl font-bold text-slate-800 mb-6 border-b border-slate-100 pb-4">
+                Gerenciar Fotos do Carrossel
+              </h2>
+              
+              <form onSubmit={handleAddFotoCarrossel} className="space-y-6 mb-10 bg-slate-50 p-6 rounded-xl border border-slate-200">
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="font-semibold text-slate-800">Adicionar Nova Foto</h3>
+                  <span className={`text-sm font-medium px-3 py-1 rounded-full ${fotosCarrossel.length >= 10 ? 'bg-red-100 text-red-700' : 'bg-slate-200 text-slate-700'}`}>
+                    {fotosCarrossel.length} / 10 fotos
+                  </span>
+                </div>
+
+                {fotosCarrossel.length >= 10 ? (
+                  <div className="bg-amber-50 border border-amber-200 text-amber-800 p-4 rounded-lg">
+                    <p className="font-medium">Limite de 10 fotos atingido. Exclua uma para adicionar outra.</p>
+                  </div>
+                ) : (
+                  <>
+                    <div>
+                      <label className="block text-sm font-medium text-slate-700 mb-2">
+                        Imagem (Máx. 5MB)
+                      </label>
+                      
+                      <div className="flex items-center justify-center w-full">
+                        <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-slate-300 border-dashed rounded-lg cursor-pointer bg-white hover:bg-slate-50 transition-colors">
+                          <div className="flex flex-col items-center justify-center pt-5 pb-6">
+                            <Upload className="w-8 h-8 mb-3 text-slate-400" />
+                            <p className="mb-2 text-sm text-slate-500"><span className="font-semibold">Clique para enviar</span> ou arraste uma imagem</p>
+                            <p className="text-xs text-slate-500">PNG, JPG ou WEBP (Max. 5MB)</p>
+                          </div>
+                          <input 
+                            type="file" 
+                            className="hidden" 
+                            accept="image/png, image/jpeg, image/jpg, image/webp"
+                            onChange={handleFotoCarrosselChange}
+                          />
+                        </label>
+                      </div>
+
+                      {novaFotoPreview && (
+                        <div className="mt-4">
+                          <p className="text-xs text-slate-500 mb-2">Pré-visualização da imagem:</p>
+                          <img 
+                            src={novaFotoPreview} 
+                            alt="Preview" 
+                            className="w-32 h-32 object-cover rounded-lg border border-slate-200"
+                          />
+                        </div>
+                      )}
+                    </div>
+
+                    <button
+                      type="submit"
+                      disabled={loading || !novaFotoFile}
+                      className="bg-slate-900 hover:bg-slate-800 text-white font-bold py-3 px-6 rounded-lg transition-colors flex items-center justify-center gap-2 disabled:opacity-70"
+                    >
+                      {loading ? (
+                        <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                      ) : (
+                        <>
+                          <Save className="w-4 h-4" />
+                          Adicionar Foto
+                        </>
+                      )}
+                    </button>
+                  </>
+                )}
+              </form>
+
+              <div>
+                <h3 className="font-semibold text-slate-800 mb-4">Galeria de Fotos</h3>
+                
+                {fotosCarrossel.length === 0 ? (
+                  <p className="text-slate-500 text-center py-8 bg-slate-50 rounded-xl border border-slate-200 border-dashed">
+                    Nenhuma foto cadastrada no momento. O carrossel exibirá fotos padrão.
+                  </p>
+                ) : (
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    {fotosCarrossel.map((foto) => (
+                      <div key={foto.id} className="relative group rounded-xl overflow-hidden border border-slate-200 aspect-square">
+                        <img 
+                          src={foto.url} 
+                          alt="Foto do Carrossel" 
+                          className="w-full h-full object-cover"
+                          referrerPolicy="no-referrer"
+                        />
+                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity flex items-start justify-end p-2">
+                          <button
+                            onClick={() => handleDeleteFotoCarrossel(foto)}
+                            disabled={loading}
+                            className="bg-red-500 hover:bg-red-600 text-white p-2 rounded-lg transition-colors shadow-lg"
+                            title="Remover foto"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
                       </div>
                     ))}
                   </div>

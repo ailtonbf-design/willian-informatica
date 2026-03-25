@@ -77,7 +77,8 @@ service cloud.firestore {
       allow read: if true;
       // Allow updates without auth for the hardcoded admin panel
       allow create, update: if (configId == 'cursoDestaque' && isValidConfiguracao(request.resource.data)) ||
-                               (configId == 'vagas' && hasOnlyAllowedFields(['lista']) && request.resource.data.lista is list);
+                               (configId == 'vagas' && hasOnlyAllowedFields(['lista']) && request.resource.data.lista is list) ||
+                               (configId == 'carrossel' && hasOnlyAllowedFields(['lista']) && request.resource.data.lista is list);
       allow delete: if false;
     }
   }
