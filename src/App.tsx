@@ -764,19 +764,11 @@ export default function App() {
                     <p className="text-slate-600 font-medium">No momento não temos vagas abertas. Volte em breve!</p>
                   </div>
                 ) : (
-                  <div className="space-y-3 p-2">
+                  <div className="flex flex-col">
                     {vagasList.map((vaga) => (
-                      <div key={vaga.id} className="bg-slate-50 p-4 rounded-xl border border-slate-100">
+                      <div key={vaga.id} className="p-5 border-b border-gray-200 last:border-0 hover:bg-gray-50 transition-colors">
                         <h4 className="text-lg font-bold text-slate-800">{vaga.titulo}</h4>
-                        <p className="text-sm text-slate-600 mt-2 whitespace-pre-wrap">{vaga.descricao}</p>
-                        <a 
-                          href={`https://wa.me/5517992451458?text=Olá! Gostaria de me candidatar à vaga de ${vaga.titulo}.`} 
-                          target="_blank" 
-                          rel="noopener noreferrer"
-                          className="mt-4 inline-block bg-green-500 hover:bg-green-600 text-white text-sm font-bold py-2 px-4 rounded-lg transition-colors"
-                        >
-                          Me candidatar
-                        </a>
+                        <p className="text-sm text-slate-600 mt-2 whitespace-pre-wrap leading-relaxed">{vaga.descricao}</p>
                       </div>
                     ))}
                   </div>
