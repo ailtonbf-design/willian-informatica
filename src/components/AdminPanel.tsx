@@ -53,7 +53,9 @@ export function AdminPanel() {
   const [error, setError] = useState('');
   
   // Auth state
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(() => {
+    return localStorage.getItem('admin_logged_in') === 'true';
+  });
   const [authChecking, setAuthChecking] = useState(false);
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -202,6 +204,7 @@ export function AdminPanel() {
     setTimeout(() => {
       if (username === 'Admin' && password === 'Winfo2335') {
         setIsAuthenticated(true);
+        localStorage.setItem('admin_logged_in', 'true');
       } else {
         setError('Usuário ou senha incorretos.');
       }
@@ -211,6 +214,7 @@ export function AdminPanel() {
 
   const handleLogout = async () => {
     setIsAuthenticated(false);
+    localStorage.removeItem('admin_logged_in');
     setUsername('');
     setPassword('');
   };
