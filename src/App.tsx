@@ -198,10 +198,10 @@ export default function App() {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex gap-8 items-center">
-            <a href="#cursos" className="text-slate-700 hover:text-red-600 font-medium transition-colors">Cursos</a>
-            <a href="#aluno-empreendedor" className="text-slate-700 hover:text-red-600 font-medium transition-colors">Aluno Empreendedor</a>
-            <a href="#vagas" className="text-slate-700 hover:text-red-600 font-medium transition-colors">Vagas de Emprego</a>
-            <a href="#quem-somos" className="text-slate-700 hover:text-red-600 font-medium transition-colors">Quem Somos</a>
+            <a href="#treinamento" className="text-slate-700 hover:text-red-600 font-medium transition-colors">Cursos</a>
+            <a href="#empreendedor" className="text-slate-700 hover:text-red-600 font-medium transition-colors">Aluno Empreendedor</a>
+            <a href="#treinamento" className="text-slate-700 hover:text-red-600 font-medium transition-colors">Vagas de Emprego</a>
+            <a href="#quemsomos" className="text-slate-700 hover:text-red-600 font-medium transition-colors">Quem Somos</a>
           </nav>
 
           {/* CTA & Mobile Menu */}
@@ -305,7 +305,7 @@ export default function App() {
       </section>
 
       {/* DESTAQUE DA SEMANA (Offer Banner) */}
-      <section className="bg-red-800 py-12 relative overflow-hidden">
+      <section id="destaque" className="bg-red-800 py-12 relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-white/10 via-transparent to-transparent" />
 
         <div className="container mx-auto px-6 relative z-10">
@@ -394,7 +394,7 @@ export default function App() {
 
 
       {/* ESCOLHA SUA ÁREA (Aluno) */}
-      <section className="py-24 bg-slate-50 relative">
+      <section id="treinamento" className="py-24 bg-slate-50 relative">
         <div className="container mx-auto px-6">
           {/* Vagas de Emprego Atualizadas - Promessa + Bônus */}
           <motion.div
@@ -441,7 +441,7 @@ export default function App() {
           </motion.div>
 
           {/* Novo Banner Aluno Empreendedor */}
-          <div className="flex flex-col md:flex-row bg-gray-200 rounded-3xl overflow-hidden shadow-lg border border-gray-200 mt-16 max-w-6xl mx-auto">
+          <div id="empreendedor" className="flex flex-col md:flex-row bg-gray-200 rounded-3xl overflow-hidden shadow-lg border border-gray-200 mt-16 max-w-6xl mx-auto">
             {/* Lado Esquerdo (Sólido - Textos e Botão) */}
             <div className="w-full md:w-1/2 p-8 md:p-16 flex flex-col justify-center bg-gray-200 relative z-10">
               <h3 className="text-slate-900 font-bold text-3xl md:text-4xl">Aluno Empreendedor</h3>
@@ -469,7 +469,7 @@ export default function App() {
       </section>
 
       {/* WP ESCOLA DE VENDAS & NEGÓCIOS (Empresário) */}
-      <section className="relative bg-slate-900 pt-32 pb-24 overflow-hidden">
+      <section id="wpescola" className="relative bg-slate-900 pt-32 pb-24 overflow-hidden">
         {/* Background Image */}
         <div className="absolute inset-0 z-0">
           <img
@@ -526,7 +526,7 @@ export default function App() {
       </section>
 
       {/* AUTORIDADE E CERTIFICAÇÃO */}
-      <section className="py-24 bg-slate-50 relative overflow-hidden">
+      <section id="certificado" className="py-24 bg-slate-50 relative overflow-hidden">
         {/* Decorative background elements */}
         <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-red/5 rounded-full blur-3xl -mr-64 -mt-64" />
         <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-blue-100/50 rounded-full blur-3xl -ml-32 -mb-32" />
@@ -610,7 +610,7 @@ export default function App() {
       </section>
 
       {/* QUEM SOMOS */}
-      <section className="py-24 bg-white relative overflow-hidden">
+      <section id="quemsomos" className="py-24 bg-white relative overflow-hidden">
         <div className="container mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center max-w-6xl mx-auto">
             {/* Coluna da Esquerda (Imagem Criativa) */}
@@ -767,10 +767,10 @@ export default function App() {
             <div>
               <h4 className="text-white font-semibold mb-6 uppercase tracking-wider text-sm">Links Rápidos</h4>
               <ul className="space-y-3">
-                <li><a href="#cursos" className="hover:text-white transition-colors">Cursos</a></li>
-                <li><a href="#aluno-empreendedor" className="hover:text-white transition-colors">Aluno Empreendedor</a></li>
-                <li><a href="#vagas" className="hover:text-white transition-colors">Vagas de Emprego</a></li>
-                <li><a href="#quem-somos" className="hover:text-white transition-colors">Quem Somos</a></li>
+                <li><a href="#treinamento" className="hover:text-white transition-colors">Cursos</a></li>
+                <li><a href="#empreendedor" className="hover:text-white transition-colors">Aluno Empreendedor</a></li>
+                <li><a href="#treinamento" className="hover:text-white transition-colors">Vagas de Emprego</a></li>
+                <li><a href="#quemsomos" className="hover:text-white transition-colors">Quem Somos</a></li>
               </ul>
             </div>
           </div>
