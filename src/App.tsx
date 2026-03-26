@@ -305,7 +305,7 @@ export default function App() {
       </section>
 
       {/* DESTAQUE DA SEMANA (Offer Banner) */}
-      <section id="destaque" className="bg-red-800 py-12 relative overflow-hidden">
+      <section id="destaque" className="scroll-mt-24 md:scroll-mt-32 bg-red-800 py-12 relative overflow-hidden">
         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-white/10 via-transparent to-transparent" />
 
         <div className="container mx-auto px-6 relative z-10">
@@ -394,7 +394,7 @@ export default function App() {
 
 
       {/* ESCOLHA SUA ÁREA (Aluno) */}
-      <section id="treinamento" className="py-24 bg-slate-50 relative">
+      <section id="treinamento" className="scroll-mt-24 md:scroll-mt-32 py-24 bg-slate-50 relative">
         <div className="container mx-auto px-6">
           {/* Vagas de Emprego Atualizadas - Promessa + Bônus */}
           <motion.div
@@ -441,7 +441,7 @@ export default function App() {
           </motion.div>
 
           {/* Novo Banner Aluno Empreendedor */}
-          <div id="empreendedor" className="flex flex-col md:flex-row bg-gray-200 rounded-3xl overflow-hidden shadow-lg border border-gray-200 mt-16 max-w-6xl mx-auto">
+          <div id="empreendedor" className="scroll-mt-24 md:scroll-mt-32 flex flex-col md:flex-row bg-gray-200 rounded-3xl overflow-hidden shadow-lg border border-gray-200 mt-16 max-w-6xl mx-auto">
             {/* Lado Esquerdo (Sólido - Textos e Botão) */}
             <div className="w-full md:w-1/2 p-8 md:p-16 flex flex-col justify-center bg-gray-200 relative z-10">
               <h3 className="text-slate-900 font-bold text-3xl md:text-4xl">Aluno Empreendedor</h3>
@@ -469,7 +469,7 @@ export default function App() {
       </section>
 
       {/* WP ESCOLA DE VENDAS & NEGÓCIOS (Empresário) */}
-      <section id="wpescola" className="relative bg-slate-900 pt-32 pb-24 overflow-hidden">
+      <section id="wpescola" className="scroll-mt-24 md:scroll-mt-32 relative bg-slate-900 pt-32 pb-24 overflow-hidden">
         {/* Background Image */}
         <div className="absolute inset-0 z-0">
           <img
@@ -526,7 +526,7 @@ export default function App() {
       </section>
 
       {/* AUTORIDADE E CERTIFICAÇÃO */}
-      <section id="certificado" className="py-24 bg-slate-50 relative overflow-hidden">
+      <section id="certificado" className="scroll-mt-24 md:scroll-mt-32 py-24 bg-slate-50 relative overflow-hidden">
         {/* Decorative background elements */}
         <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-red/5 rounded-full blur-3xl -mr-64 -mt-64" />
         <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-blue-100/50 rounded-full blur-3xl -ml-32 -mb-32" />
@@ -610,7 +610,7 @@ export default function App() {
       </section>
 
       {/* QUEM SOMOS */}
-      <section id="quemsomos" className="py-24 bg-white relative overflow-hidden">
+      <section id="quemsomos" className="scroll-mt-24 md:scroll-mt-32 py-24 bg-white relative overflow-hidden">
         <div className="container mx-auto px-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center max-w-6xl mx-auto">
             {/* Coluna da Esquerda (Imagem Criativa) */}
