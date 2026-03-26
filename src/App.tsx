@@ -206,9 +206,9 @@ export default function App() {
 
           {/* CTA & Mobile Menu */}
           <div className="flex items-center gap-4">
-            <button className="bg-red-600 text-white px-6 py-2 rounded-full font-bold hover:bg-red-700 hidden md:block transition-colors">
+            <a href="https://wa.me/5517991879478?text=Ol%C3%A1%2C%20quero%20me%20metricular%20na%20William%20Inform%C3%A1tica%21" target="_blank" rel="noopener noreferrer" className="bg-red-600 text-white px-6 py-2 rounded-full font-bold hover:bg-red-700 hidden md:block transition-colors">
               Matricule-se
-            </button>
+            </a>
             <button className="md:hidden p-2 text-slate-700 hover:text-red-600 transition-colors">
               <Menu className="w-6 h-6" />
             </button>
@@ -561,7 +561,7 @@ export default function App() {
                 <p className="text-slate-700 mb-6 relative z-10 leading-relaxed">
                   Dr. Augusto Cury também utiliza esta certificação em sua metodologia, atestando o padrão de excelência do nosso ensino.
                 </p>
-                <a href="#" className="inline-flex items-center font-semibold text-brand-red hover:text-brand-red-hover transition-colors relative z-10">
+                <a href="http://www.certificadopremium.com.br" target="_blank" rel="noopener noreferrer" className="inline-flex items-center font-semibold text-brand-red hover:text-brand-red-hover transition-colors relative z-10">
                   www.certificadopremium.com.br <ArrowRight className="ml-2 w-4 h-4" />
                 </a>
 
@@ -741,14 +741,11 @@ export default function App() {
                 Transformando vidas através da educação tecnológica e empreendedora há mais de três décadas.
               </p>
               <div className="flex gap-4">
-                <a href="#" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-brand-red hover:text-white transition-colors">
+                <a href="https://www.instagram.com/williaminformatica/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-brand-red hover:text-white transition-colors">
                   <Instagram className="w-5 h-5" />
                 </a>
-                <a href="#" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-brand-red hover:text-white transition-colors">
+                <a href="https://www.facebook.com/escolawilliaminformatica" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-brand-red hover:text-white transition-colors">
                   <Facebook className="w-5 h-5" />
-                </a>
-                <a href="#" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-brand-red hover:text-white transition-colors">
-                  <Linkedin className="w-5 h-5" />
                 </a>
               </div>
             </div>
@@ -758,15 +755,11 @@ export default function App() {
               <ul className="space-y-4">
                 <li className="flex items-start gap-3">
                   <MapPin className="w-5 h-5 text-brand-red shrink-0 mt-0.5" />
-                  <span>Av. Principal, 1000 - Centro<br/>Cidade - Estado</span>
+                  <span>Rua Brandão Veras, 777<br/>Bebedouro/SP</span>
                 </li>
                 <li className="flex items-center gap-3">
                   <Phone className="w-5 h-5 text-brand-red shrink-0" />
-                  <span>(00) 0000-0000</span>
-                </li>
-                <li className="flex items-center gap-3">
-                  <Mail className="w-5 h-5 text-brand-red shrink-0" />
-                  <span>contato@williaminformatica.com.br</span>
+                  <span>17 3342-6732</span>
                 </li>
               </ul>
             </div>
@@ -774,10 +767,10 @@ export default function App() {
             <div>
               <h4 className="text-white font-semibold mb-6 uppercase tracking-wider text-sm">Links Rápidos</h4>
               <ul className="space-y-3">
-                <li><a href="#" className="hover:text-white transition-colors">Sobre Nós</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Nossos Cursos</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">WP Escola de Vendas & Negócios</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Política de Privacidade</a></li>
+                <li><a href="#cursos" className="hover:text-white transition-colors">Cursos</a></li>
+                <li><a href="#aluno-empreendedor" className="hover:text-white transition-colors">Aluno Empreendedor</a></li>
+                <li><a href="#vagas" className="hover:text-white transition-colors">Vagas de Emprego</a></li>
+                <li><a href="#quem-somos" className="hover:text-white transition-colors">Quem Somos</a></li>
               </ul>
             </div>
           </div>
@@ -790,7 +783,7 @@ export default function App() {
 
       {/* Floating WhatsApp Button */}
       <a
-        href="https://wa.me/5517991879478?text=Ol%C3%A1%21%20Gostaria%20de%20informa%C3%A7%C3%B5es%20sobre%20os%20cursos."
+        href="https://wa.me/5517991879478?text=Ol%C3%A1%2C%20quero%20informa%C3%A7%C3%B5es%20dos%20cursos%20da%20William%20Inform%C3%A1tica%21"
         target="_blank"
         rel="noopener noreferrer"
         className="fixed bottom-6 right-6 z-50 bg-[#25D366] text-white p-4 rounded-full shadow-lg hover:scale-110 hover:shadow-2xl transition-all duration-300 flex items-center justify-center group"
