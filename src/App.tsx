@@ -58,9 +58,15 @@ export default function App() {
   const [leadCategory, setLeadCategory] = useState('');
   const [leadName, setLeadName] = useState('');
   const [leadWhatsapp, setLeadWhatsapp] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const [inlineLeadName, setInlineLeadName] = useState('');
+  const [inlineLeadWhatsapp, setInlineLeadWhatsapp] = useState('');
+  const [isSubmittingInline, setIsSubmittingInline] = useState(false);
 
   const handleLeadSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSubmitting(true);
     try {
       const leadsRef = collection(db, 'leads');
       await addDoc(leadsRef, {
@@ -77,6 +83,31 @@ export default function App() {
     } catch (error) {
       console.error("Erro ao enviar lead:", error);
       alert("Ocorreu um erro ao enviar seus dados. Por favor, tente novamente.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleInlineLeadSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmittingInline(true);
+    try {
+      const leadsRef = collection(db, 'leads');
+      await addDoc(leadsRef, {
+        nome: inlineLeadName,
+        whatsapp: inlineLeadWhatsapp,
+        categoria: 'Curso em Destaque',
+        status: 'Novo',
+        createdAt: serverTimestamp()
+      });
+      alert(`Sucesso! Seus dados foram enviados. Entraremos em contato em breve.`);
+      setInlineLeadName('');
+      setInlineLeadWhatsapp('');
+    } catch (error) {
+      console.error("Erro ao enviar lead:", error);
+      alert("Ocorreu um erro ao enviar seus dados. Por favor, tente novamente.");
+    } finally {
+      setIsSubmittingInline(false);
     }
   };
 
@@ -328,24 +359,31 @@ export default function App() {
                 </h2>
               </div>
               <div className="bg-white/10 backdrop-blur-md p-6 md:p-8 rounded-2xl border border-white/20">
-                <form className="flex flex-col gap-4 w-full">
+                <form onSubmit={handleInlineLeadSubmit} className="flex flex-col gap-4 w-full">
                   <div className="flex flex-col sm:flex-row gap-3 w-full">
                     <input
                       type="text"
+                      required
+                      value={inlineLeadName}
+                      onChange={(e) => setInlineLeadName(e.target.value)}
                       placeholder="Seu Nome"
                       className="w-full flex-1 min-w-0 bg-white rounded-lg px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-red"
                     />
                     <input
                       type="tel"
+                      required
+                      value={inlineLeadWhatsapp}
+                      onChange={(e) => setInlineLeadWhatsapp(e.target.value)}
                       placeholder="Seu WhatsApp"
                       className="w-full flex-1 min-w-0 bg-white rounded-lg px-4 py-3 text-slate-900 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-red"
                     />
                   </div>
                   <button
-                    type="button"
-                    className="w-full bg-slate-900 text-white font-bold px-6 py-4 rounded-lg hover:bg-slate-800 transition-colors shadow-lg shadow-slate-900/20 text-sm md:text-base whitespace-normal md:whitespace-nowrap text-center"
+                    type="submit"
+                    disabled={isSubmittingInline}
+                    className="w-full bg-slate-900 text-white font-bold px-6 py-4 rounded-lg hover:bg-slate-800 transition-colors shadow-lg shadow-slate-900/20 text-sm md:text-base whitespace-normal md:whitespace-nowrap text-center disabled:opacity-70"
                   >
-                    Garantir Desconto + Diagnóstico
+                    {isSubmittingInline ? 'Enviando...' : 'Garantir Desconto + Diagnóstico'}
                   </button>
                 </form>
               </div>
@@ -916,9 +954,10 @@ export default function App() {
 
                 <button 
                   type="submit" 
-                  className="w-full mt-4 bg-slate-900 hover:bg-slate-800 text-white font-bold py-3.5 px-4 rounded-lg transition-colors shadow-lg shadow-slate-900/20"
+                  disabled={isSubmitting}
+                  className="w-full mt-4 bg-slate-900 hover:bg-slate-800 text-white font-bold py-3.5 px-4 rounded-lg transition-colors shadow-lg shadow-slate-900/20 disabled:opacity-70"
                 >
-                  Quero Garantir Minha Vaga
+                  {isSubmitting ? 'Enviando...' : 'Quero Garantir Minha Vaga'}
                 </button>
               </form>
             </div>
