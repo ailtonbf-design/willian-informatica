@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { doc, setDoc, getDoc } from 'firebase/firestore';
+import { doc, setDoc, getDoc, collection, query, where, getDocs, updateDoc, deleteDoc, orderBy } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
-import { db, storage } from '../firebase';
+import { signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from 'firebase/auth';
+import { db, storage, auth } from '../firebase';
 import { Save, LogIn, LogOut, CheckCircle, Upload, Trash2, Briefcase, BookOpen, Image as ImageIcon, Users, MessageCircle } from 'lucide-react';
 
 interface Vaga {
@@ -51,10 +52,22 @@ export function AdminPanel() {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState('');
   
-  // Hardcoded login state
+  // Auth state
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [authChecking, setAuthChecking] = useState(true);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (user) => {
+      if (user) {
+        setIsAuthenticated(true);
+      } else {
+        setIsAuthenticated(false);
+      }
+      setAuthChecking(false);
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   useEffect(() => {
     if (isAuthenticated) {
@@ -111,32 +124,35 @@ export function AdminPanel() {
     setLeads([]); // Limpa a tabela antes de carregar
     
     try {
-      // EXEMPLO DE CHAMADA REAL PARA API/FIREBASE:
-      // const response = await fetch(`/api/leads?cat=${encodeURIComponent(categoria)}`);
-      // const data = await response.json();
-      // setLeads(data);
-
-      // MOCK DATA (Simulando o retorno do banco de dados)
-      await new Promise(resolve => setTimeout(resolve, 500)); // Simula delay de rede
+      const leadsRef = collection(db, 'leads');
+      const q = query(
+        leadsRef, 
+        where('categoria', '==', categoria),
+        orderBy('createdAt', 'desc')
+      );
       
-      const mockDB: Record<string, Lead[]> = {
-        'Curso em Destaque': [
-          { id: '1', nome: 'João Silva', whatsapp: '11999999999', categoria: 'Curso em Destaque', status: 'Novo', data: '2026-03-26' },
-          { id: '2', nome: 'Maria Souza', whatsapp: '11888888888', categoria: 'Curso em Destaque', status: 'Em Atendimento', data: '2026-03-25' }
-        ],
-        'Treinamento Grátis': [
-          { id: '3', nome: 'Carlos Mendes', whatsapp: '11777777777', categoria: 'Treinamento Grátis', status: 'Novo', data: '2026-03-26' }
-        ],
-        'Aluno Empreendedor': [],
-        'WP Escola de Negócios': [
-          { id: '4', nome: 'Ana Paula', whatsapp: '11666666666', categoria: 'WP Escola de Negócios', status: 'Matriculado', data: '2026-03-20' }
-        ],
-        'Certificado Premium': [
-          { id: '5', nome: 'Pedro Henrique', whatsapp: '11555555555', categoria: 'Certificado Premium', status: 'Novo', data: '2026-03-26' }
-        ]
-      };
+      const querySnapshot = await getDocs(q);
+      const leadsData: Lead[] = [];
+      
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        let dataFormatada = '';
+        if (data.createdAt) {
+          const date = data.createdAt.toDate();
+          dataFormatada = date.toLocaleDateString('pt-BR');
+        }
+        
+        leadsData.push({
+          id: doc.id,
+          nome: data.nome || '',
+          whatsapp: data.whatsapp || '',
+          categoria: data.categoria || '',
+          status: data.status || 'Novo',
+          data: dataFormatada
+        });
+      });
 
-      setLeads(mockDB[categoria] || []);
+      setLeads(leadsData);
     } catch (err) {
       console.error("Erro ao carregar leads:", err);
       setError("Não foi possível carregar os leads.");
@@ -146,48 +162,65 @@ export function AdminPanel() {
   };
 
   useEffect(() => {
-    if (activeTab === 'leads') {
+    if (activeTab === 'leads' && isAuthenticated) {
       carregarLeads(activeLeadCategory);
     }
-  }, [activeTab, activeLeadCategory]);
+  }, [activeTab, activeLeadCategory, isAuthenticated]);
 
   const handleStatusChange = async (leadId: string, novoStatus: string) => {
-    // Aqui você faria a chamada para o banco de dados:
-    // await fetch(`/api/leads/${leadId}`, { method: 'PATCH', body: JSON.stringify({ status: novoStatus }) });
-    
-    setLeads(prev => prev.map(lead => 
-      lead.id === leadId ? { ...lead, status: novoStatus } : lead
-    ));
-    setSuccess(true);
-    setTimeout(() => setSuccess(false), 2000);
+    try {
+      const leadRef = doc(db, 'leads', leadId);
+      await updateDoc(leadRef, { status: novoStatus });
+      
+      setLeads(prev => prev.map(lead => 
+        lead.id === leadId ? { ...lead, status: novoStatus } : lead
+      ));
+      setSuccess(true);
+      setTimeout(() => setSuccess(false), 2000);
+    } catch (err) {
+      console.error("Erro ao atualizar status:", err);
+      setError("Erro ao atualizar o status do lead.");
+    }
   };
 
   const handleDeleteLead = async (leadId: string) => {
     if (!window.confirm('Tem certeza que deseja excluir este lead?')) return;
     
-    // Aqui você faria a chamada para o banco de dados:
-    // await fetch(`/api/leads/${leadId}`, { method: 'DELETE' });
-    
-    setLeads(prev => prev.filter(lead => lead.id !== leadId));
-    setSuccess(true);
-    setTimeout(() => setSuccess(false), 2000);
+    try {
+      const leadRef = doc(db, 'leads', leadId);
+      await deleteDoc(leadRef);
+      
+      setLeads(prev => prev.filter(lead => lead.id !== leadId));
+      setSuccess(true);
+      setTimeout(() => setSuccess(false), 2000);
+    } catch (err) {
+      console.error("Erro ao excluir lead:", err);
+      setError("Erro ao excluir o lead.");
+    }
   };
   // -----------------------------
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (username === 'Admin' && password === 'Winfo2335') {
-      setIsAuthenticated(true);
-      setError('');
-    } else {
-      setError('Usuário ou senha incorretos');
+    setLoading(true);
+    setError('');
+    const provider = new GoogleAuthProvider();
+    try {
+      await signInWithPopup(auth, provider);
+    } catch (err: any) {
+      console.error(err);
+      setError('Erro ao fazer login. Tente novamente.');
+    } finally {
+      setLoading(false);
     }
   };
 
-  const handleLogout = () => {
-    setIsAuthenticated(false);
-    setUsername('');
-    setPassword('');
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   const handleSaveCurso = async (e: React.FormEvent) => {
@@ -408,45 +441,35 @@ export function AdminPanel() {
     }
   };
 
+  if (authChecking) {
+    return (
+      <div className="min-h-screen bg-slate-50 flex items-center justify-center p-6">
+        <div className="w-8 h-8 border-4 border-slate-200 border-t-brand-red rounded-full animate-spin"></div>
+      </div>
+    );
+  }
+
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center p-6">
         <div className="bg-white p-8 rounded-2xl shadow-xl max-w-md w-full text-center">
           <h2 className="text-2xl font-bold text-slate-900 mb-6">Painel Administrativo</h2>
-          <p className="text-slate-600 mb-8">Insira suas credenciais para acessar as configurações.</p>
+          <p className="text-slate-600 mb-8">Faça login com sua conta Google para acessar as configurações.</p>
           
-          <form onSubmit={handleLogin} className="space-y-4 text-left">
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">Usuário</label>
-              <input
-                type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                className="w-full px-4 py-2 rounded-lg border border-slate-200 focus:ring-2 focus:ring-brand-red outline-none"
-                placeholder="Digite o usuário"
-                required
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">Senha</label>
-              <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-2 rounded-lg border border-slate-200 focus:ring-2 focus:ring-brand-red outline-none"
-                placeholder="Digite a senha"
-                required
-              />
-            </div>
-            
-            <button
-              type="submit"
-              className="w-full bg-slate-900 text-white font-bold py-3 px-4 rounded-lg hover:bg-slate-800 transition-colors flex items-center justify-center gap-2 mt-6"
-            >
-              <LogIn className="w-5 h-5" />
-              Entrar
-            </button>
-          </form>
+          <button
+            onClick={handleLogin}
+            disabled={loading}
+            className="w-full bg-slate-900 text-white font-bold py-3 px-4 rounded-lg hover:bg-slate-800 transition-colors flex items-center justify-center gap-2 mt-6 disabled:opacity-70"
+          >
+            {loading ? (
+              <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+            ) : (
+              <>
+                <LogIn className="w-5 h-5" />
+                Entrar com Google
+              </>
+            )}
+          </button>
           
           {error && <p className="text-red-500 mt-4 text-sm">{error}</p>}
         </div>

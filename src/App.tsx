@@ -1,10 +1,10 @@
-import { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { motion, useInView, animate } from 'motion/react';
 import { BookOpen, Rocket, ArrowRight, CheckCircle2, Users, Award, Clock, MapPin, Phone, Mail, Instagram, Facebook, Linkedin, Code, Briefcase, Palette, Star, Target, Menu, X } from 'lucide-react';
 import Carousel3D from './components/Carousel3D';
 import { AdminPanel } from './components/AdminPanel';
 import { db } from './firebase';
-import { doc, onSnapshot } from 'firebase/firestore';
+import { doc, onSnapshot, collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 30 },
@@ -59,12 +59,25 @@ export default function App() {
   const [leadName, setLeadName] = useState('');
   const [leadWhatsapp, setLeadWhatsapp] = useState('');
 
-  const handleLeadSubmit = (e: React.FormEvent) => {
+  const handleLeadSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    alert(`Sucesso!\nNome: ${leadName}\nWhatsApp: ${leadWhatsapp}\nCategoria: ${leadCategory}`);
-    setIsLeadModalOpen(false);
-    setLeadName('');
-    setLeadWhatsapp('');
+    try {
+      const leadsRef = collection(db, 'leads');
+      await addDoc(leadsRef, {
+        nome: leadName,
+        whatsapp: leadWhatsapp,
+        categoria: leadCategory,
+        status: 'Novo',
+        createdAt: serverTimestamp()
+      });
+      alert(`Sucesso! Seus dados foram enviados. Entraremos em contato em breve.`);
+      setIsLeadModalOpen(false);
+      setLeadName('');
+      setLeadWhatsapp('');
+    } catch (error) {
+      console.error("Erro ao enviar lead:", error);
+      alert("Ocorreu um erro ao enviar seus dados. Por favor, tente novamente.");
+    }
   };
 
   const cursosCarreira = [

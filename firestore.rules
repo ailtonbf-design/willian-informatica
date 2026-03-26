@@ -10,8 +10,10 @@ service cloud.firestore {
     // Collection: leads
     // Document ID: Auto-generated
     // Fields:
-    //   - name: string (required, length 1-100) - Full name of the lead
-    //   - email: string (required, valid email) - Email address of the lead
+    //   - nome: string (required, length 1-100) - Full name of the lead
+    //   - whatsapp: string (required, length 1-20) - WhatsApp number
+    //   - categoria: string (required) - Category of the lead
+    //   - status: string (required) - Status (Novo, Em Atendimento, etc)
     //   - createdAt: timestamp (required) - When the lead registered
     //
     // ===============================================================
@@ -26,24 +28,31 @@ service cloud.firestore {
 
     function isAdmin() {
       return isAuthenticated() &&
-        (get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin' ||
-          (request.auth.token.email == "ailtonbf@gmail.com" && request.auth.token.email_verified == true)); // Default admin
+        (
+          (request.auth.token.email == "ailtonbf@gmail.com" && request.auth.token.email_verified == true)
+        ); // Default admin
     }
 
     function hasOnlyAllowedFields(fields) {
       return request.resource.data.keys().hasOnly(fields);
     }
 
-    function isValidEmail(email) {
-      return email is string &&
-        email.matches("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$");
+    function isValidLead(data) {
+      return hasOnlyAllowedFields(['nome', 'whatsapp', 'categoria', 'status', 'createdAt']) &&
+             data.nome is string && data.nome.size() > 0 && data.nome.size() <= 100 &&
+             data.whatsapp is string && data.whatsapp.size() > 0 && data.whatsapp.size() <= 20 &&
+             data.categoria is string && data.categoria.size() > 0 && data.categoria.size() <= 100 &&
+             data.status is string && data.status in ['Novo', 'Em Atendimento', 'Matriculado', 'Perdido'] &&
+             data.createdAt is timestamp;
     }
 
-    function isValidLead(data) {
-      return hasOnlyAllowedFields(['name', 'email', 'createdAt']) &&
-             data.name is string && data.name.size() > 0 && data.name.size() <= 100 &&
-             data.email is string && isValidEmail(data.email) &&
-             data.createdAt is timestamp;
+    function isValidLeadUpdate(data) {
+      return hasOnlyAllowedFields(['nome', 'whatsapp', 'categoria', 'status', 'createdAt']) &&
+             data.nome == resource.data.nome &&
+             data.whatsapp == resource.data.whatsapp &&
+             data.categoria == resource.data.categoria &&
+             data.createdAt == resource.data.createdAt &&
+             data.status is string && data.status in ['Novo', 'Em Atendimento', 'Matriculado', 'Perdido'];
     }
 
     function isValidConfiguracao(data) {
@@ -69,16 +78,19 @@ service cloud.firestore {
       // Anyone can create a lead (e.g., landing page form)
       allow create: if isValidLead(request.resource.data);
       // Only admins can read, update, or delete leads
-      allow read, update, delete: if isAdmin();
+      allow read, delete: if isAdmin();
+      allow update: if isAdmin() && isValidLeadUpdate(request.resource.data);
     }
 
     match /configuracoes/{configId} {
       // Anyone can read configurations
       allow read: if true;
-      // Allow updates without auth for the hardcoded admin panel
-      allow create, update: if (configId == 'cursoDestaque' && isValidConfiguracao(request.resource.data)) ||
+      // Only admins can update configurations
+      allow create, update: if isAdmin() && (
+                               (configId == 'cursoDestaque' && isValidConfiguracao(request.resource.data)) ||
                                (configId == 'vagas' && hasOnlyAllowedFields(['lista']) && request.resource.data.lista is list) ||
-                               (configId == 'carrossel' && hasOnlyAllowedFields(['lista']) && request.resource.data.lista is list);
+                               (configId == 'carrossel' && hasOnlyAllowedFields(['lista']) && request.resource.data.lista is list)
+                             );
       allow delete: if false;
     }
   }
