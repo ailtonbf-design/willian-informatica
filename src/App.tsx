@@ -119,7 +119,7 @@ export default function App() {
     };
   }, []);
 
-  const isAdminRoute = typeof window !== 'undefined' && (window.location.pathname === '/admin' || window.location.search.includes('admin=true'));
+  const isAdminRoute = typeof window !== 'undefined' && window.location.pathname === '/admin';
 
   if (isAdminRoute) {
     return <AdminPanel />;
