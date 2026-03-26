@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 import { db, storage } from '../firebase';
-import { Save, LogIn, LogOut, CheckCircle, Upload, Trash2, Briefcase, BookOpen, Image as ImageIcon } from 'lucide-react';
+import { Save, LogIn, LogOut, CheckCircle, Upload, Trash2, Briefcase, BookOpen, Image as ImageIcon, Users, MessageCircle } from 'lucide-react';
 
 interface Vaga {
   id: string;
@@ -15,8 +15,17 @@ interface FotoCarrossel {
   url: string;
 }
 
+interface Lead {
+  id: string;
+  nome: string;
+  whatsapp: string;
+  categoria: string;
+  status: string;
+  data: string;
+}
+
 export function AdminPanel() {
-  const [activeTab, setActiveTab] = useState<'curso' | 'vagas' | 'fotosCarrossel'>('curso');
+  const [activeTab, setActiveTab] = useState<'curso' | 'vagas' | 'fotosCarrossel' | 'leads'>('curso');
   
   // Curso Destaque State
   const [titulo, setTitulo] = useState('');
@@ -32,6 +41,11 @@ export function AdminPanel() {
   const [fotosCarrossel, setFotosCarrossel] = useState<FotoCarrossel[]>([]);
   const [novaFotoPreview, setNovaFotoPreview] = useState('');
   const [novaFotoFile, setNovaFotoFile] = useState<File | null>(null);
+
+  // Leads State
+  const [leads, setLeads] = useState<Lead[]>([]);
+  const [activeLeadCategory, setActiveLeadCategory] = useState<string>('Curso em Destaque');
+  const leadCategories = ['Curso em Destaque', 'Treinamento Grátis', 'Aluno Empreendedor', 'WP Escola de Negócios', 'Certificado Premium'];
 
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -90,6 +104,75 @@ export function AdminPanel() {
       console.error("Erro ao carregar fotos do carrossel:", err);
     }
   };
+
+  // --- LÓGICA DE LEADS / CRM ---
+  const carregarLeads = async (categoria: string) => {
+    setLoading(true);
+    setLeads([]); // Limpa a tabela antes de carregar
+    
+    try {
+      // EXEMPLO DE CHAMADA REAL PARA API/FIREBASE:
+      // const response = await fetch(`/api/leads?cat=${encodeURIComponent(categoria)}`);
+      // const data = await response.json();
+      // setLeads(data);
+
+      // MOCK DATA (Simulando o retorno do banco de dados)
+      await new Promise(resolve => setTimeout(resolve, 500)); // Simula delay de rede
+      
+      const mockDB: Record<string, Lead[]> = {
+        'Curso em Destaque': [
+          { id: '1', nome: 'João Silva', whatsapp: '11999999999', categoria: 'Curso em Destaque', status: 'Novo', data: '2026-03-26' },
+          { id: '2', nome: 'Maria Souza', whatsapp: '11888888888', categoria: 'Curso em Destaque', status: 'Em Atendimento', data: '2026-03-25' }
+        ],
+        'Treinamento Grátis': [
+          { id: '3', nome: 'Carlos Mendes', whatsapp: '11777777777', categoria: 'Treinamento Grátis', status: 'Novo', data: '2026-03-26' }
+        ],
+        'Aluno Empreendedor': [],
+        'WP Escola de Negócios': [
+          { id: '4', nome: 'Ana Paula', whatsapp: '11666666666', categoria: 'WP Escola de Negócios', status: 'Matriculado', data: '2026-03-20' }
+        ],
+        'Certificado Premium': [
+          { id: '5', nome: 'Pedro Henrique', whatsapp: '11555555555', categoria: 'Certificado Premium', status: 'Novo', data: '2026-03-26' }
+        ]
+      };
+
+      setLeads(mockDB[categoria] || []);
+    } catch (err) {
+      console.error("Erro ao carregar leads:", err);
+      setError("Não foi possível carregar os leads.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    if (activeTab === 'leads') {
+      carregarLeads(activeLeadCategory);
+    }
+  }, [activeTab, activeLeadCategory]);
+
+  const handleStatusChange = async (leadId: string, novoStatus: string) => {
+    // Aqui você faria a chamada para o banco de dados:
+    // await fetch(`/api/leads/${leadId}`, { method: 'PATCH', body: JSON.stringify({ status: novoStatus }) });
+    
+    setLeads(prev => prev.map(lead => 
+      lead.id === leadId ? { ...lead, status: novoStatus } : lead
+    ));
+    setSuccess(true);
+    setTimeout(() => setSuccess(false), 2000);
+  };
+
+  const handleDeleteLead = async (leadId: string) => {
+    if (!window.confirm('Tem certeza que deseja excluir este lead?')) return;
+    
+    // Aqui você faria a chamada para o banco de dados:
+    // await fetch(`/api/leads/${leadId}`, { method: 'DELETE' });
+    
+    setLeads(prev => prev.filter(lead => lead.id !== leadId));
+    setSuccess(true);
+    setTimeout(() => setSuccess(false), 2000);
+  };
+  // -----------------------------
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
@@ -419,6 +502,17 @@ export function AdminPanel() {
             <ImageIcon className="w-5 h-5" />
             Fotos do Carrossel
           </button>
+          <button
+            onClick={() => { setActiveTab('leads'); setError(''); setSuccess(false); }}
+            className={`flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-colors ${
+              activeTab === 'leads' 
+                ? 'bg-slate-900 text-white shadow-md' 
+                : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'
+            }`}
+          >
+            <Users className="w-5 h-5" />
+            Gestão de Leads
+          </button>
         </div>
 
         <div className="bg-white rounded-2xl shadow-xl p-8">
@@ -699,6 +793,114 @@ export function AdminPanel() {
                     ))}
                   </div>
                 )}
+              </div>
+            </>
+          )}
+
+          {activeTab === 'leads' && (
+            <>
+              <h2 className="text-xl font-bold text-slate-800 mb-6 border-b border-slate-100 pb-4">
+                Gestão de Leads / CRM
+              </h2>
+
+              {/* Navegação de Abas (Categorias de Leads) */}
+              <div className="w-full overflow-x-auto pb-2 mb-6 scrollbar-hide">
+                <div className="flex gap-2 min-w-max border-b border-slate-200">
+                  {leadCategories.map((cat) => (
+                    <button
+                      key={cat}
+                      onClick={() => setActiveLeadCategory(cat)}
+                      className={`px-4 py-3 text-sm font-semibold transition-colors border-b-2 ${
+                        activeLeadCategory === cat
+                          ? 'border-brand-red text-brand-red'
+                          : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'
+                      }`}
+                    >
+                      {cat}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Tabela de Dados (Data Grid) */}
+              <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left border-collapse">
+                    <thead>
+                      <tr className="bg-slate-50 border-b border-slate-200 text-slate-600 text-sm">
+                        <th className="p-4 font-semibold">Nome do Lead</th>
+                        <th className="p-4 font-semibold">WhatsApp</th>
+                        <th className="p-4 font-semibold">Status / Notas</th>
+                        <th className="p-4 font-semibold text-right">Ações</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-slate-100">
+                      {loading ? (
+                        <tr>
+                          <td colSpan={4} className="p-8 text-center text-slate-500">
+                            <div className="flex flex-col items-center justify-center">
+                              <div className="w-8 h-8 border-4 border-slate-200 border-t-brand-red rounded-full animate-spin mb-4"></div>
+                              Carregando leads...
+                            </div>
+                          </td>
+                        </tr>
+                      ) : leads.length === 0 ? (
+                        <tr>
+                          <td colSpan={4} className="p-8 text-center text-slate-500">
+                            Nenhum lead encontrado para esta categoria.
+                          </td>
+                        </tr>
+                      ) : (
+                        leads.map((lead) => (
+                          <tr key={lead.id} className="hover:bg-slate-50 transition-colors">
+                            <td className="p-4">
+                              <div className="font-medium text-slate-900">{lead.nome}</div>
+                              <div className="text-xs text-slate-400 mt-0.5">{lead.data}</div>
+                            </td>
+                            <td className="p-4 text-slate-600">{lead.whatsapp}</td>
+                            <td className="p-4">
+                              <select
+                                value={lead.status}
+                                onChange={(e) => handleStatusChange(lead.id, e.target.value)}
+                                className={`text-sm rounded-lg border px-3 py-1.5 outline-none focus:ring-2 focus:ring-brand-red/20 transition-colors ${
+                                  lead.status === 'Novo' ? 'bg-blue-50 border-blue-200 text-blue-700' :
+                                  lead.status === 'Em Atendimento' ? 'bg-amber-50 border-amber-200 text-amber-700' :
+                                  lead.status === 'Matriculado' ? 'bg-emerald-50 border-emerald-200 text-emerald-700' :
+                                  'bg-slate-50 border-slate-200 text-slate-700'
+                                }`}
+                              >
+                                <option value="Novo">Novo</option>
+                                <option value="Em Atendimento">Em Atendimento</option>
+                                <option value="Matriculado">Matriculado</option>
+                                <option value="Perdido">Perdido</option>
+                              </select>
+                            </td>
+                            <td className="p-4 text-right">
+                              <div className="flex items-center justify-end gap-2">
+                                <a
+                                  href={`https://wa.me/${lead.whatsapp.replace(/\D/g, '')}`}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="p-2 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-colors shadow-sm"
+                                  title="Chamar no WhatsApp"
+                                >
+                                  <MessageCircle className="w-4 h-4" />
+                                </a>
+                                <button
+                                  onClick={() => handleDeleteLead(lead.id)}
+                                  className="p-2 bg-white border border-red-200 text-red-500 hover:bg-red-50 hover:border-red-300 rounded-lg transition-colors shadow-sm"
+                                  title="Excluir Lead"
+                                >
+                                  <Trash2 className="w-4 h-4" />
+                                </button>
+                              </div>
+                            </td>
+                          </tr>
+                        ))
+                      )}
+                    </tbody>
+                  </table>
+                </div>
               </div>
             </>
           )}

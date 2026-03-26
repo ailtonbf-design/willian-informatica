@@ -53,6 +53,19 @@ function CountUpAnimation({
 
 export default function App() {
   const [modalAtivo, setModalAtivo] = useState<'carreira' | 'negocio' | 'vagas' | null>(null);
+  
+  const [isLeadModalOpen, setIsLeadModalOpen] = useState(false);
+  const [leadCategory, setLeadCategory] = useState('');
+  const [leadName, setLeadName] = useState('');
+  const [leadWhatsapp, setLeadWhatsapp] = useState('');
+
+  const handleLeadSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    alert(`Sucesso!\nNome: ${leadName}\nWhatsApp: ${leadWhatsapp}\nCategoria: ${leadCategory}`);
+    setIsLeadModalOpen(false);
+    setLeadName('');
+    setLeadWhatsapp('');
+  };
 
   const cursosCarreira = [
     { nome: 'Operador de Tecnologia', imagem: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=150&h=150&fit=crop' },
@@ -367,7 +380,12 @@ export default function App() {
                   <span><span className="font-bold">Currículo Profissional</span> - Técnicas para elaboração de currículos</span>
                 </li>
               </ul>
-              <button className="w-full mt-6 bg-red-600 hover:bg-red-700 text-white font-bold py-3.5 px-6 rounded-xl transition-colors shadow-lg shadow-red-900/20">Quero me cadastrar</button>
+              <button 
+                onClick={() => { setLeadCategory('Treinamento Grátis'); setIsLeadModalOpen(true); }}
+                className="w-full mt-6 bg-red-600 hover:bg-red-700 text-white font-bold py-3.5 px-6 rounded-xl transition-colors shadow-lg shadow-red-900/20"
+              >
+                Quero me cadastrar
+              </button>
             </div>
           </motion.div>
 
@@ -377,7 +395,10 @@ export default function App() {
             <div className="w-full md:w-1/2 p-8 md:p-16 flex flex-col justify-center bg-gray-200 relative z-10">
               <h3 className="text-slate-900 font-bold text-3xl md:text-4xl">Aluno Empreendedor</h3>
               <p className="text-gray-600 mt-4">Um diferencial exclusivo para nossos alunos. Aqui você não apenas aprende... você aprende a empreender. Saiba como participar e ter acesso ao programa, desenvolvendo habilidades que vão além da sala de aula.</p>
-              <button className="bg-red-600 hover:bg-red-700 text-white rounded-full px-8 py-3 font-bold w-fit mt-8 transition-colors">
+              <button 
+                onClick={() => { setLeadCategory('Aluno Empreendedor'); setIsLeadModalOpen(true); }}
+                className="bg-red-600 hover:bg-red-700 text-white rounded-full px-8 py-3 font-bold w-fit mt-8 transition-colors"
+              >
                 Quero me inscrever
               </button>
             </div>
@@ -444,6 +465,7 @@ export default function App() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ delay: 0.2 }}
+              onClick={() => { setLeadCategory('WP Escola de Negócios'); setIsLeadModalOpen(true); }}
               className="bg-brand-red hover:bg-brand-red-hover text-white text-lg font-bold py-4 px-8 rounded-full shadow-[0_0_40px_-10px_rgba(220,38,38,0.5)] hover:shadow-[0_0_60px_-15px_rgba(220,38,38,0.7)] transition-all duration-300 transform hover:-translate-y-1"
             >
               Quero me cadastrar
@@ -497,7 +519,10 @@ export default function App() {
                   <p className="text-red-900 font-medium text-sm mb-3">
                     Cadastre-se e receba gratuitamente um treinamento de Evolução Pessoal e Profissional.
                   </p>
-                  <button className="bg-red-600 hover:bg-red-700 text-white text-sm font-bold py-2.5 px-5 rounded-full w-full transition-colors">
+                  <button 
+                    onClick={() => { setLeadCategory('Certificado Premium'); setIsLeadModalOpen(true); }}
+                    className="bg-red-600 hover:bg-red-700 text-white text-sm font-bold py-2.5 px-5 rounded-full w-full transition-colors"
+                  >
                     Quero meu treinamento grátis
                   </button>
                 </div>
@@ -804,6 +829,86 @@ export default function App() {
                 </a>
               </div>
             )}
+          </motion.div>
+        </div>
+      )}
+
+      {/* LEAD CAPTURE MODAL */}
+      {isLeadModalOpen && (
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/60 backdrop-blur-sm p-4">
+          <div 
+            className="absolute inset-0" 
+            onClick={() => setIsLeadModalOpen(false)}
+          ></div>
+          
+          <motion.div 
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.95 }}
+            className="bg-white rounded-xl shadow-2xl w-full max-w-md relative z-10 overflow-hidden"
+          >
+            {/* Header */}
+            <div className="flex items-center justify-between p-6 border-b border-slate-100">
+              <div>
+                <h2 className="text-2xl font-bold text-slate-900">Cadastro</h2>
+                <p className="text-slate-500 text-sm mt-1">{leadCategory}</p>
+              </div>
+              <button 
+                onClick={() => setIsLeadModalOpen(false)}
+                className="p-2 bg-slate-100 hover:bg-slate-200 rounded-full text-slate-500 transition-colors"
+                aria-label="Fechar"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+
+            {/* Body / Form */}
+            <div className="p-6">
+              <p className="text-slate-600 mb-6 text-sm">
+                Preencha seus dados abaixo para liberar o seu acesso imediato.
+              </p>
+
+              <form onSubmit={handleLeadSubmit} className="space-y-4">
+                <input type="hidden" name="categoria" value={leadCategory} />
+                
+                <div>
+                  <label htmlFor="nome" className="block text-sm font-medium text-slate-700 mb-1">
+                    Nome Completo
+                  </label>
+                  <input 
+                    type="text" 
+                    id="nome" 
+                    required 
+                    value={leadName}
+                    onChange={(e) => setLeadName(e.target.value)}
+                    placeholder="Digite seu nome"
+                    className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-brand-red focus:border-brand-red outline-none transition-all"
+                  />
+                </div>
+
+                <div>
+                  <label htmlFor="whatsapp" className="block text-sm font-medium text-slate-700 mb-1">
+                    WhatsApp
+                  </label>
+                  <input 
+                    type="tel" 
+                    id="whatsapp" 
+                    required 
+                    value={leadWhatsapp}
+                    onChange={(e) => setLeadWhatsapp(e.target.value)}
+                    placeholder="(00) 00000-0000"
+                    className="w-full px-4 py-3 rounded-lg border border-slate-300 focus:ring-2 focus:ring-brand-red focus:border-brand-red outline-none transition-all"
+                  />
+                </div>
+
+                <button 
+                  type="submit" 
+                  className="w-full mt-4 bg-slate-900 hover:bg-slate-800 text-white font-bold py-3.5 px-4 rounded-lg transition-colors shadow-lg shadow-slate-900/20"
+                >
+                  Quero Garantir Minha Vaga
+                </button>
+              </form>
+            </div>
           </motion.div>
         </div>
       )}
