@@ -54,19 +54,12 @@ export function AdminPanel() {
   
   // Auth state
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-  const [authChecking, setAuthChecking] = useState(true);
+  const [authChecking, setAuthChecking] = useState(false);
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        setIsAuthenticated(true);
-      } else {
-        setIsAuthenticated(false);
-      }
-      setAuthChecking(false);
-    });
-
-    return () => unsubscribe();
+    // Removed Firebase auth listener to use hardcoded login
   }, []);
 
   useEffect(() => {
@@ -204,23 +197,22 @@ export function AdminPanel() {
     e.preventDefault();
     setLoading(true);
     setError('');
-    const provider = new GoogleAuthProvider();
-    try {
-      await signInWithPopup(auth, provider);
-    } catch (err: any) {
-      console.error(err);
-      setError('Erro ao fazer login. Tente novamente.');
-    } finally {
+    
+    // Hardcoded login for prototype
+    setTimeout(() => {
+      if (username === 'Admin' && password === 'Winfo2335') {
+        setIsAuthenticated(true);
+      } else {
+        setError('Usuário ou senha incorretos.');
+      }
       setLoading(false);
-    }
+    }, 500);
   };
 
   const handleLogout = async () => {
-    try {
-      await signOut(auth);
-    } catch (err) {
-      console.error(err);
-    }
+    setIsAuthenticated(false);
+    setUsername('');
+    setPassword('');
   };
 
   const handleSaveCurso = async (e: React.FormEvent) => {
@@ -452,26 +444,52 @@ export function AdminPanel() {
   if (!isAuthenticated) {
     return (
       <div className="min-h-screen bg-slate-50 flex items-center justify-center p-6">
-        <div className="bg-white p-8 rounded-2xl shadow-xl max-w-md w-full text-center">
-          <h2 className="text-2xl font-bold text-slate-900 mb-6">Painel Administrativo</h2>
-          <p className="text-slate-600 mb-8">Faça login com sua conta Google para acessar as configurações.</p>
+        <div className="bg-white p-8 rounded-2xl shadow-xl max-w-md w-full">
+          <div className="text-center mb-8">
+            <h2 className="text-2xl font-bold text-slate-900 mb-2">Painel Administrativo</h2>
+            <p className="text-slate-600">Faça login para acessar as configurações.</p>
+          </div>
           
-          <button
-            onClick={handleLogin}
-            disabled={loading}
-            className="w-full bg-slate-900 text-white font-bold py-3 px-4 rounded-lg hover:bg-slate-800 transition-colors flex items-center justify-center gap-2 mt-6 disabled:opacity-70"
-          >
-            {loading ? (
-              <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
-            ) : (
-              <>
-                <LogIn className="w-5 h-5" />
-                Entrar com Google
-              </>
-            )}
-          </button>
-          
-          {error && <p className="text-red-500 mt-4 text-sm">{error}</p>}
+          <form onSubmit={handleLogin} className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1">Usuário</label>
+              <input
+                type="text"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-red focus:border-transparent outline-none"
+                placeholder="Digite o usuário"
+              />
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1">Senha</label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-brand-red focus:border-transparent outline-none"
+                placeholder="Digite a senha"
+              />
+            </div>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full bg-slate-900 text-white font-bold py-3 px-4 rounded-lg hover:bg-slate-800 transition-colors flex items-center justify-center gap-2 mt-6 disabled:opacity-70"
+            >
+              {loading ? (
+                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+              ) : (
+                <>
+                  <LogIn className="w-5 h-5" />
+                  Entrar no Painel
+                </>
+              )}
+            </button>
+            
+            {error && <p className="text-red-500 mt-4 text-sm text-center">{error}</p>}
+          </form>
         </div>
       </div>
     );
