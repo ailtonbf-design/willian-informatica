@@ -176,7 +176,8 @@ export default function App() {
     };
   }, []);
 
-  const isAdminRoute = typeof window !== 'undefined' && window.location.pathname === '/admin';
+  const isAdminRoute = typeof window !== 'undefined' && window.location.pathname.toLowerCase().replace(/\/$/, '') === '/admin';
+  console.log('Current Path:', window.location.pathname, 'isAdminRoute:', isAdminRoute);
 
   if (isAdminRoute) {
     return <AdminPanel />;

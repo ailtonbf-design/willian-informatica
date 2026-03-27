@@ -26,6 +26,7 @@ interface Lead {
 }
 
 export function AdminPanel() {
+  console.log('AdminPanel rendered');
   const [activeTab, setActiveTab] = useState<'curso' | 'vagas' | 'fotosCarrossel' | 'leads'>('curso');
   
   // Curso Destaque State
