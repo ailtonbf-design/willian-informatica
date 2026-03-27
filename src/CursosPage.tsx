@@ -122,7 +122,9 @@ export default function CursosPage() {
                 transition={{ delay: 0.2 }}
                 className="text-white text-2xl md:text-5xl lg:text-6xl font-black leading-tight uppercase tracking-tighter drop-shadow-lg"
               >
-                MAIS DE 50 CURSOS NAS MELHORES ÁREAS DO MERCADO DE TRABALHO
+                MAIS DE 50 CURSOS <br className="hidden md:block" />
+                NAS MELHORES ÁREAS <br className="hidden md:block" />
+                DO MERCADO DE TRABALHO
               </motion.h1>
               
               {/* Espaçador Mobile para não cobrir as pessoas na base da imagem */}
