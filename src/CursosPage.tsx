@@ -91,35 +91,43 @@ export default function CursosPage() {
       <Header />
       
       <main className="flex-grow">
-        {/* Hero Banner Premium Blended */}
-        <section className="relative min-h-[400px] md:min-h-[500px] flex items-center justify-center bg-[#001f3f] overflow-hidden">
-          {/* Background Image with Blending */}
+        {/* Hero Banner Responsivo */}
+        <section className="relative min-h-[500px] md:min-h-[600px] flex items-stretch overflow-hidden bg-slate-900">
+          {/* Background Images */}
           <div className="absolute inset-0 z-0">
-            <img 
-              src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1920&q=80" 
-              alt="Ambiente de aprendizado dinâmico" 
-              className="w-full h-full object-cover opacity-40 mix-blend-overlay"
-              referrerPolicy="no-referrer"
+            {/* Mobile Background */}
+            <div 
+              className="block md:hidden w-full h-full bg-cover bg-center bg-no-repeat"
+              style={{ backgroundImage: "url('https://res.cloudinary.com/dapsovbs5/image/upload/v1774640856/Banner-William-Mobile_vhgiy3.webp')" }}
             />
-            <div className="absolute inset-0 bg-gradient-to-b from-[#001f3f]/90 via-[#001f3f]/70 to-[#001f3f]" />
+            {/* Desktop Background */}
+            <div 
+              className="hidden md:block w-full h-full bg-cover bg-right bg-no-repeat"
+              style={{ backgroundImage: "url('https://res.cloudinary.com/dapsovbs5/image/upload/v1774640856/Banner-Cursos-Willian_pkkw3z.webp')" }}
+            />
           </div>
 
-          <div className="container mx-auto px-6 relative z-10 text-center">
-            <motion.p 
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              className="text-white font-serif italic text-2xl md:text-3xl mb-4 tracking-wide"
-            >
-              Portal de Cursos William Informática
-            </motion.p>
-            <motion.h1 
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.2 }}
-              className="text-white text-3xl md:text-6xl font-black leading-tight max-w-5xl mx-auto uppercase tracking-tighter"
-            >
-              MAIS DE 50 CURSOS NAS MELHORES ÁREAS DO MERCADO DE TRABALHO
-            </motion.h1>
+          <div className="container mx-auto px-6 relative z-10 flex flex-col justify-start md:justify-center pt-16 md:pt-0">
+            <div className="text-center md:text-left md:max-w-xl lg:max-w-2xl">
+              <motion.p 
+                initial={{ opacity: 0, y: -20 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="text-orange-400 font-serif italic text-lg md:text-2xl mb-3 tracking-wide drop-shadow-md"
+              >
+                Portal de Cursos William Informática
+              </motion.p>
+              <motion.h1 
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                transition={{ delay: 0.2 }}
+                className="text-white text-3xl md:text-5xl lg:text-6xl font-black leading-tight uppercase tracking-tighter drop-shadow-lg"
+              >
+                MAIS DE 50 CURSOS NAS MELHORES ÁREAS DO MERCADO DE TRABALHO
+              </motion.h1>
+              
+              {/* Espaçador Mobile para não cobrir as pessoas na base da imagem */}
+              <div className="h-64 md:hidden"></div>
+            </div>
           </div>
         </section>
 
