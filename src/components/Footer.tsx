@@ -8,7 +8,7 @@ export function Footer() {
         <div className="grid md:grid-cols-4 gap-12 mb-12">
           <div className="col-span-1 md:col-span-2">
             <img 
-              src="https://res.cloudinary.com/dapsovbs5/image/upload/v1774208363/Design_sem_nome_acqxgq.webp" 
+              src="https://res.cloudinary.com/dapsovbs5/image/upload/v1774637435/Logo-Willian_g1zxno.webp" 
               alt="William Informática" 
               className="h-[77px] md:h-[83px] w-auto object-contain mb-6" 
             />

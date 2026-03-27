@@ -21,7 +21,7 @@ export function Header() {
         <div className="flex-shrink-0">
           <a href="/">
             <img 
-              src="https://res.cloudinary.com/dapsovbs5/image/upload/v1774207958/WhatsApp_Image_2026-03-21_at_19.02.03_1_ohotur.jpg" 
+              src="https://res.cloudinary.com/dapsovbs5/image/upload/v1774637435/Logo-Willian_g1zxno.webp" 
               alt="William Informática" 
               className="h-[58px] md:h-[90px] w-auto object-contain mix-blend-multiply" 
             />

@@ -17,13 +17,13 @@ interface Curso {
 
 const mockData: Curso[] = [
   { id: '1', nome: 'Auxiliar Administrativo', categoria: 'Administrativo', cargaHoraria: '40 hora(s)', descricao: 'Aprenda as rotinas essenciais de um escritório moderno, desde organização de documentos até atendimento ao cliente.', imagem: 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=100&h=100&fit=crop' },
-  { id: '2', nome: 'Excel Avançado', categoria: 'Tecnologia', cargaHoraria: '20 hora(s)', descricao: 'Domine fórmulas complexas, tabelas dinâmicas e macros para se tornar um especialista em planilhas.', imagem: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=100&h=100&fit=crop' },
+  { id: '2', nome: 'Excel Avançado', categoria: 'Informática e Tecnologia', cargaHoraria: '20 hora(s)', descricao: 'Domine fórmulas complexas, tabelas dinâmicas e macros para se tornar um especialista em planilhas.', imagem: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=100&h=100&fit=crop' },
   { id: '3', nome: 'Inglês para Negócios', categoria: 'Idiomas', cargaHoraria: '60 hora(s)', descricao: 'Desenvolva fluência em situações corporativas, reuniões e apresentações internacionais.', imagem: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=100&h=100&fit=crop' },
   { id: '4', nome: 'Marketing Digital', categoria: 'Diversas Áreas', cargaHoraria: '30 hora(s)', descricao: 'Estratégias de redes sociais, tráfego pago e branding para escalar resultados online.', imagem: 'https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a?w=100&h=100&fit=crop' },
   { id: '5', nome: 'Preparatório Concursos', categoria: 'Preparatórios', cargaHoraria: '100 hora(s)', descricao: 'Foco total nas matérias mais cobradas em editais públicos de nível médio e superior.', imagem: 'https://images.unsplash.com/photo-1501504905252-473c47e087f8?w=100&h=100&fit=crop' },
 ];
 
-const categorias = ['Todos', 'Tecnologia', 'Diversas Áreas', 'Administrativo', 'Preparatórios', 'Idiomas'];
+const categorias = ['Todos', 'Administrativo', 'Idiomas', 'Informática e Tecnologia', 'Diversas Áreas', 'Preparatórios'];
 
 export default function CursosPage() {
   const [filtroAtivo, setFiltroAtivo] = useState('Todos');
@@ -91,24 +91,32 @@ export default function CursosPage() {
       <Header />
       
       <main className="flex-grow">
-        {/* Hero Banner Premium */}
-        <section className="bg-[#001f3f] py-20 md:py-32 text-center px-6 relative overflow-hidden">
-          <div className="absolute inset-0 opacity-10">
-            <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-blue-400 via-transparent to-transparent"></div>
+        {/* Hero Banner Premium Blended */}
+        <section className="relative min-h-[400px] md:min-h-[500px] flex items-center justify-center bg-[#001f3f] overflow-hidden">
+          {/* Background Image with Blending */}
+          <div className="absolute inset-0 z-0">
+            <img 
+              src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=1920&q=80" 
+              alt="Ambiente de aprendizado dinâmico" 
+              className="w-full h-full object-cover opacity-40 mix-blend-overlay"
+              referrerPolicy="no-referrer"
+            />
+            <div className="absolute inset-0 bg-gradient-to-b from-[#001f3f]/90 via-[#001f3f]/70 to-[#001f3f]" />
           </div>
-          <div className="container mx-auto relative z-10">
+
+          <div className="container mx-auto px-6 relative z-10 text-center">
             <motion.p 
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
-              className="text-blue-300 font-serif italic text-xl md:text-2xl mb-4"
+              className="text-white font-serif italic text-2xl md:text-3xl mb-4 tracking-wide"
             >
-              Portal de Cursos Escola Avançada
+              Portal de Cursos William Informática
             </motion.p>
             <motion.h1 
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.2 }}
-              className="text-white text-3xl md:text-6xl font-black leading-tight max-w-5xl mx-auto uppercase tracking-tight"
+              className="text-white text-3xl md:text-6xl font-black leading-tight max-w-5xl mx-auto uppercase tracking-tighter"
             >
               MAIS DE 50 CURSOS NAS MELHORES ÁREAS DO MERCADO DE TRABALHO
             </motion.h1>
