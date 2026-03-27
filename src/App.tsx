@@ -409,6 +409,12 @@ export default function App() {
           >
             {/* Lado Esquerdo (A Promessa de Empregabilidade) */}
             <div className="w-full md:w-3/5 flex flex-col justify-center items-start text-left">
+              <img 
+                src="https://res.cloudinary.com/dapsovbs5/image/upload/v1774646447/Vagas_lnpe0u.webp" 
+                alt="Vagas de Emprego" 
+                className="w-28 md:w-36 h-auto mb-6 object-contain"
+                referrerPolicy="no-referrer"
+              />
               <h3 className="text-3xl font-bold text-slate-900">Vagas de Emprego</h3>
               <p className="text-gray-600 text-lg mt-4 mb-8">
                 Cadastre-se e receba 02 treinamentos - 100% grátis, que podem garantir sua vaga no mercado de trabalho!
