@@ -243,7 +243,7 @@ export default function App() {
           >
             <motion.h1 variants={fadeInUp} className="font-heading text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-[1.1] tracking-tight mb-6">
               <span className="block">Onde você aprende</span>
-              <span className="block text-brand-red">e aprende a empreender.</span>
+              <span className="block text-brand-red">a aprender e a empreender.</span>
             </motion.h1>
             <motion.p variants={fadeInUp} className="text-lg md:text-xl text-slate-300 mb-10 max-w-xl leading-relaxed">
               Formação profissional de excelência para quem busca destaque no mercado de trabalho ou quer escalar o seu próprio negócio.
