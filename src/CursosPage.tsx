@@ -16,17 +16,17 @@ interface Curso {
 }
 
 const mockData: Curso[] = [
-  { id: '1', nome: 'Auxiliar Administrativo', categoria: 'Administrativo', cargaHoraria: '40 hora(s)', descricao: 'Aprenda as rotinas essenciais de um escritório moderno, desde organização de documentos até atendimento ao cliente.', imagem: 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=100&h=100&fit=crop' },
-  { id: '2', nome: 'Excel Avançado', categoria: 'Informática e Tecnologia', cargaHoraria: '20 hora(s)', descricao: 'Domine fórmulas complexas, tabelas dinâmicas e macros para se tornar um especialista em planilhas.', imagem: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=100&h=100&fit=crop' },
+  { id: '1', nome: 'Auxiliar Administrativo', categoria: 'Administração', cargaHoraria: '40 hora(s)', descricao: 'Aprenda as rotinas essenciais de um escritório moderno, desde organização de documentos até atendimento ao cliente.', imagem: 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=100&h=100&fit=crop' },
+  { id: '2', nome: 'Excel Avançado', categoria: 'Informática', cargaHoraria: '20 hora(s)', descricao: 'Domine fórmulas complexas, tabelas dinâmicas e macros para se tornar um especialista em planilhas.', imagem: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=100&h=100&fit=crop' },
   { id: '3', nome: 'Inglês para Negócios', categoria: 'Idiomas', cargaHoraria: '60 hora(s)', descricao: 'Desenvolva fluência em situações corporativas, reuniões e apresentações internacionais.', imagem: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=100&h=100&fit=crop' },
-  { id: '4', nome: 'Marketing Digital', categoria: 'Diversas Áreas', cargaHoraria: '30 hora(s)', descricao: 'Estratégias de redes sociais, tráfego pago e branding para escalar resultados online.', imagem: 'https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a?w=100&h=100&fit=crop' },
+  { id: '4', nome: 'Marketing Digital', categoria: 'Administração', cargaHoraria: '30 hora(s)', descricao: 'Estratégias de redes sociais, tráfego pago e branding para escalar resultados online.', imagem: 'https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a?w=100&h=100&fit=crop' },
   { id: '5', nome: 'Preparatório Concursos', categoria: 'Preparatórios', cargaHoraria: '100 hora(s)', descricao: 'Foco total nas matérias mais cobradas em editais públicos de nível médio e superior.', imagem: 'https://images.unsplash.com/photo-1501504905252-473c47e087f8?w=100&h=100&fit=crop' },
 ];
 
-const categorias = ['Todos', 'Administrativo', 'Idiomas', 'Informática e Tecnologia', 'Diversas Áreas', 'Preparatórios'];
+const categorias = ['Todas', 'Informática', 'Administração', 'Idiomas', 'Preparatórios'];
 
 export default function CursosPage() {
-  const [filtroAtivo, setFiltroAtivo] = useState('Todos');
+  const [filtroAtivo, setFiltroAtivo] = useState('Todas');
   const [selecionados, setSelecionados] = useState<string[]>([]);
   const [cursoDetalhe, setCursoDetalhe] = useState<Curso | null>(null);
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
@@ -39,7 +39,7 @@ export default function CursosPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const cursosFiltrados = useMemo(() => {
-    if (filtroAtivo === 'Todos') return mockData;
+    if (filtroAtivo === 'Todas') return mockData;
     return mockData.filter(c => c.categoria === filtroAtivo);
   }, [filtroAtivo]);
 
