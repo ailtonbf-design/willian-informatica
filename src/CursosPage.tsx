@@ -23,7 +23,7 @@ const mockData: Curso[] = [
   { id: '5', nome: 'Preparatório Concursos', categoria: 'Preparatórios', cargaHoraria: '100 hora(s)', descricao: 'Foco total nas matérias mais cobradas em editais públicos de nível médio e superior.', imagem: 'https://images.unsplash.com/photo-1501504905252-473c47e087f8?w=100&h=100&fit=crop' },
 ];
 
-const categorias = ['Todos', 'Administrativo', 'Tecnologia', 'Idiomas', 'Preparatórios', 'Diversas Áreas'];
+const categorias = ['Todos', 'Tecnologia', 'Diversas Áreas', 'Administrativo', 'Preparatórios', 'Idiomas'];
 
 export default function CursosPage() {
   const [filtroAtivo, setFiltroAtivo] = useState('Todos');
@@ -90,11 +90,34 @@ export default function CursosPage() {
     <div className="min-h-screen bg-slate-50 flex flex-col">
       <Header />
       
-      <main className="flex-grow py-16 md:py-24">
-        <div className="container mx-auto px-6">
-          {/* Título */}
+      <main className="flex-grow">
+        {/* Hero Banner Premium */}
+        <section className="bg-[#001f3f] py-20 md:py-32 text-center px-6 relative overflow-hidden">
+          <div className="absolute inset-0 opacity-10">
+            <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-blue-400 via-transparent to-transparent"></div>
+          </div>
+          <div className="container mx-auto relative z-10">
+            <motion.p 
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="text-blue-300 font-serif italic text-xl md:text-2xl mb-4"
+            >
+              Portal de Cursos Escola Avançada
+            </motion.p>
+            <motion.h1 
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.2 }}
+              className="text-white text-3xl md:text-6xl font-black leading-tight max-w-5xl mx-auto uppercase tracking-tight"
+            >
+              MAIS DE 50 CURSOS NAS MELHORES ÁREAS DO MERCADO DE TRABALHO
+            </motion.h1>
+          </div>
+        </section>
+
+        <div className="container mx-auto px-6 py-16">
+          {/* Título Secundário */}
           <div className="text-center mb-12">
-            <h1 className="text-4xl md:text-5xl font-extrabold text-slate-900 mb-4">Catálogo de Cursos</h1>
             <p className="text-slate-600 text-lg max-w-2xl mx-auto">
               Selecione um ou mais cursos para se inscrever no programa Aluno Empreendedor.
             </p>
