@@ -278,9 +278,9 @@ export default function App() {
             </p>
             <button 
               onClick={() => setModalAtivo('carreira')}
-              className="inline-flex items-center font-semibold text-brand-red group-hover:text-brand-red-hover transition-colors"
+              className="w-full bg-brand-red hover:bg-brand-red-hover text-white font-bold py-3 px-6 rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg shadow-red-900/20"
             >
-              Ver Cursos <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              Ver Cursos <ArrowRight className="w-4 h-4" />
             </button>
           </motion.div>
 
@@ -300,9 +300,9 @@ export default function App() {
             </p>
             <button 
               onClick={() => setModalAtivo('negocio')}
-              className="inline-flex items-center font-semibold text-slate-900 group-hover:text-brand-red transition-colors"
+              className="w-full bg-slate-900 hover:bg-slate-800 text-white font-bold py-3 px-6 rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg shadow-slate-900/20"
             >
-              WP Escola de Vendas & Negócios <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              WP Escola de Vendas & Negócios <ArrowRight className="w-4 h-4" />
             </button>
           </motion.div>
         </div>
@@ -632,14 +632,14 @@ export default function App() {
               </svg>
               <div className="absolute top-1/3 -right-12 w-24 h-24 bg-[radial-gradient(#cbd5e1_2px,transparent_2px)] [background-size:12px_12px] opacity-50 -z-10" />
 
-              <div className="relative rounded-3xl overflow-hidden shadow-2xl z-10">
+              <div className="relative rounded-3xl overflow-hidden shadow-2xl z-10 bg-slate-50">
                 <img 
-                  src="https://res.cloudinary.com/dapsovbs5/image/upload/v1774032713/imagem-2_vr35bs.jpg" 
-                  alt="Equipe da escola" 
-                  className="w-full h-[500px] object-cover object-center hover:scale-105 transition-transform duration-700 ease-in-out"
+                  src="https://res.cloudinary.com/dapsovbs5/image/upload/v1774642531/WhatsApp_Image_2026-03-27_at_17.04.45_samw8n.jpg" 
+                  alt="Fachada da William Informática" 
+                  className="w-full aspect-[4/3] object-contain hover:scale-105 transition-transform duration-700 ease-in-out"
                   referrerPolicy="no-referrer"
                 />
-                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 to-transparent pointer-events-none" />
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/10 to-transparent pointer-events-none" />
               </div>
               
               {/* Floating Card */}
