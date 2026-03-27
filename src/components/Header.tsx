@@ -7,7 +7,8 @@ export function Header() {
 
   const navLinks = [
     { href: '/#destaque', label: 'Destaque' },
-    { href: '/#treinamento', label: 'Cursos' },
+    { href: '/cursos', label: 'Catálogo de Cursos' },
+    { href: '/#treinamento', label: 'Treinamentos' },
     { href: '/#empreendedor', label: 'Aluno Empreendedor' },
     { href: '/#wpescola', label: 'WP Escola' },
     { href: '/#certificado', label: 'Certificado' },

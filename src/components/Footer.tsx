@@ -43,7 +43,8 @@ export function Footer() {
             <h4 className="text-white font-semibold mb-6 uppercase tracking-wider text-sm">Links Rápidos</h4>
             <ul className="space-y-3">
               <li><a href="/#destaque" className="hover:text-white transition-colors">Destaque</a></li>
-              <li><a href="/#treinamento" className="hover:text-white transition-colors">Cursos</a></li>
+              <li><a href="/cursos" className="hover:text-white transition-colors font-bold text-white">Catálogo de Cursos</a></li>
+              <li><a href="/#treinamento" className="hover:text-white transition-colors">Treinamentos</a></li>
               <li><a href="/#empreendedor" className="hover:text-white transition-colors">Aluno Empreendedor</a></li>
               <li><a href="/#wpescola" className="hover:text-white transition-colors">WP Escola</a></li>
               <li><a href="/#certificado" className="hover:text-white transition-colors">Certificado</a></li>

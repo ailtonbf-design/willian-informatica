@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { motion, useInView, animate } from 'motion/react';
-import { BookOpen, Rocket, ArrowRight, CheckCircle2, Users, Award, Clock, MapPin, Phone, Mail, Instagram, Facebook, Linkedin, Code, Briefcase, Palette, Star, Target } from 'lucide-react';
+import { BookOpen, Rocket, ArrowRight, CheckCircle2, Users, Award, Clock, MapPin, Phone, Mail, Instagram, Facebook, Linkedin, Code, Briefcase, Palette, Star, Target, X } from 'lucide-react';
 import Carousel3D from './components/Carousel3D';
 import { AdminPanel } from './components/AdminPanel';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
+import CursosPage from './CursosPage';
 import { db } from './firebase';
 import { doc, onSnapshot, collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
@@ -201,11 +202,18 @@ export default function App() {
     return () => window.removeEventListener('hashchange', handleHashScroll);
   }, []);
 
-  const isAdminRoute = typeof window !== 'undefined' && window.location.pathname.toLowerCase().replace(/\/$/, '') === '/admin';
-  console.log('Current Path:', window.location.pathname, 'isAdminRoute:', isAdminRoute);
+  const currentPath = typeof window !== 'undefined' ? window.location.pathname.toLowerCase().replace(/\/$/, '') : '';
+  const isAdminRoute = currentPath === '/admin';
+  const isCursosRoute = currentPath === '/cursos';
+
+  console.log('Current Path:', window.location.pathname, 'isAdminRoute:', isAdminRoute, 'isCursosRoute:', isCursosRoute);
 
   if (isAdminRoute) {
     return <AdminPanel />;
+  }
+
+  if (isCursosRoute) {
+    return <CursosPage />;
   }
 
   return (

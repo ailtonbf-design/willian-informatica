@@ -12,14 +12,15 @@ interface Curso {
   categoria: string;
   cargaHoraria: string;
   descricao: string;
+  imagem: string;
 }
 
 const mockData: Curso[] = [
-  { id: '1', nome: 'Auxiliar Administrativo', categoria: 'Administrativo', cargaHoraria: '40 hora(s)', descricao: 'Aprenda as rotinas essenciais de um escritório moderno, desde organização de documentos até atendimento ao cliente.' },
-  { id: '2', nome: 'Excel Avançado', categoria: 'Tecnologia', cargaHoraria: '20 hora(s)', descricao: 'Domine fórmulas complexas, tabelas dinâmicas e macros para se tornar um especialista em planilhas.' },
-  { id: '3', nome: 'Inglês para Negócios', categoria: 'Idiomas', cargaHoraria: '60 hora(s)', descricao: 'Desenvolva fluência em situações corporativas, reuniões e apresentações internacionais.' },
-  { id: '4', nome: 'Marketing Digital', categoria: 'Diversas Áreas', cargaHoraria: '30 hora(s)', descricao: 'Estratégias de redes sociais, tráfego pago e branding para escalar resultados online.' },
-  { id: '5', nome: 'Preparatório Concursos', categoria: 'Preparatórios', cargaHoraria: '100 hora(s)', descricao: 'Foco total nas matérias mais cobradas em editais públicos de nível médio e superior.' },
+  { id: '1', nome: 'Auxiliar Administrativo', categoria: 'Administrativo', cargaHoraria: '40 hora(s)', descricao: 'Aprenda as rotinas essenciais de um escritório moderno, desde organização de documentos até atendimento ao cliente.', imagem: 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=100&h=100&fit=crop' },
+  { id: '2', nome: 'Excel Avançado', categoria: 'Tecnologia', cargaHoraria: '20 hora(s)', descricao: 'Domine fórmulas complexas, tabelas dinâmicas e macros para se tornar um especialista em planilhas.', imagem: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=100&h=100&fit=crop' },
+  { id: '3', nome: 'Inglês para Negócios', categoria: 'Idiomas', cargaHoraria: '60 hora(s)', descricao: 'Desenvolva fluência em situações corporativas, reuniões e apresentações internacionais.', imagem: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=100&h=100&fit=crop' },
+  { id: '4', nome: 'Marketing Digital', categoria: 'Diversas Áreas', cargaHoraria: '30 hora(s)', descricao: 'Estratégias de redes sociais, tráfego pago e branding para escalar resultados online.', imagem: 'https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a?w=100&h=100&fit=crop' },
+  { id: '5', nome: 'Preparatório Concursos', categoria: 'Preparatórios', cargaHoraria: '100 hora(s)', descricao: 'Foco total nas matérias mais cobradas em editais públicos de nível médio e superior.', imagem: 'https://images.unsplash.com/photo-1501504905252-473c47e087f8?w=100&h=100&fit=crop' },
 ];
 
 const categorias = ['Todos', 'Administrativo', 'Tecnologia', 'Idiomas', 'Preparatórios', 'Diversas Áreas'];
@@ -132,26 +133,33 @@ export default function CursosPage() {
                   onClick={() => toggleSelecao(curso.id)}
                 >
                   {/* Check Area */}
-                  <div className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors ${
+                  <div className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors shrink-0 ${
                     isSelected ? 'bg-green-500 text-white' : 'bg-slate-100 text-slate-300'
                   }`}>
                     <Check className="w-6 h-6" />
+                  </div>
+
+                  {/* Course Image */}
+                  <div className="w-12 h-12 rounded-full overflow-hidden border border-slate-200 shrink-0">
+                    <img 
+                      src={curso.imagem} 
+                      alt={curso.nome} 
+                      className="w-full h-full object-cover"
+                      referrerPolicy="no-referrer"
+                    />
                   </div>
 
                   {/* Info */}
                   <div className="flex-grow text-center md:text-left">
                     <button 
                       onClick={(e) => { e.stopPropagation(); setCursoDetalhe(curso); }}
-                      className="text-xl font-bold text-slate-900 hover:text-red-600 transition-colors"
+                      className="text-xl font-bold text-slate-900 hover:text-red-600 transition-colors text-left"
                     >
                       {curso.nome}
                     </button>
-                    <div className="flex flex-wrap justify-center md:justify-start gap-4 mt-2">
-                      <span className="bg-slate-100 text-slate-600 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider">
+                    <div className="flex flex-wrap justify-center md:justify-start gap-4 mt-1">
+                      <span className="bg-slate-100 text-slate-600 px-3 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider">
                         {curso.categoria}
-                      </span>
-                      <span className="flex items-center gap-1.5 text-slate-500 text-sm">
-                        <Clock className="w-4 h-4" /> {curso.cargaHoraria}
                       </span>
                     </div>
                   </div>
@@ -160,10 +168,9 @@ export default function CursosPage() {
                   <div className="flex items-center gap-3">
                     <button 
                       onClick={(e) => { e.stopPropagation(); setCursoDetalhe(curso); }}
-                      className="p-2 text-slate-400 hover:text-slate-600 transition-colors"
-                      title="Ver Detalhes"
+                      className="px-4 py-2 text-sm font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors"
                     >
-                      <Info className="w-6 h-6" />
+                      Detalhes
                     </button>
                   </div>
                 </motion.div>
