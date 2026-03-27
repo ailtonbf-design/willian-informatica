@@ -108,7 +108,7 @@ export default function CursosPage() {
           </div>
 
           <div className="container mx-auto px-6 pt-10 md:pt-0 relative z-10 flex flex-col justify-start md:justify-center">
-            <div className="text-center md:text-left md:max-w-2xl lg:max-w-3xl md:px-24">
+            <div className="text-center md:text-left md:max-w-4xl lg:max-w-5xl md:pl-24 md:pr-0">
               <motion.p 
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -120,11 +120,11 @@ export default function CursosPage() {
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.2 }}
-                className="text-white text-2xl md:text-5xl lg:text-6xl font-black leading-tight uppercase tracking-tighter drop-shadow-lg"
+                className="text-white text-2xl md:text-5xl lg:text-6xl font-black leading-[1.1] uppercase tracking-tighter drop-shadow-lg"
               >
-                MAIS DE 50 CURSOS <br className="hidden md:block" />
-                NAS MELHORES ÁREAS <br className="hidden md:block" />
-                DO MERCADO DE TRABALHO
+                <span className="block md:inline">MAIS DE 50 CURSOS</span> <br className="hidden md:block" />
+                <span className="block md:inline">NAS MELHORES ÁREAS</span> <br className="hidden md:block" />
+                <span className="block md:inline">DO MERCADO DE TRABALHO</span>
               </motion.h1>
               
               {/* Espaçador Mobile para não cobrir as pessoas na base da imagem */}
