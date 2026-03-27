@@ -107,8 +107,8 @@ export default function CursosPage() {
             />
           </div>
 
-          <div className="container mx-auto px-6 relative z-10 flex flex-col justify-start md:justify-center pt-16 md:pt-0">
-            <div className="text-center md:text-left md:max-w-xl lg:max-w-2xl">
+          <div className="container mx-auto px-6 pt-10 md:pt-0 relative z-10 flex flex-col justify-start md:justify-center">
+            <div className="text-center md:text-left md:max-w-2xl lg:max-w-3xl md:px-24">
               <motion.p 
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -120,7 +120,7 @@ export default function CursosPage() {
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.2 }}
-                className="text-white text-3xl md:text-5xl lg:text-6xl font-black leading-tight uppercase tracking-tighter drop-shadow-lg"
+                className="text-white text-2xl md:text-5xl lg:text-6xl font-black leading-tight uppercase tracking-tighter drop-shadow-lg"
               >
                 MAIS DE 50 CURSOS NAS MELHORES ÁREAS DO MERCADO DE TRABALHO
               </motion.h1>
