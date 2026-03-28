@@ -125,8 +125,8 @@ export default function CursosPage() {
             />
           </div>
 
-          <div className="container mx-auto px-6 pt-10 md:pt-0 relative z-10 flex flex-col justify-start md:justify-center">
-            <div className="text-center md:text-left md:max-w-4xl lg:max-w-5xl md:pl-24 md:pr-0">
+          <div className="container mx-auto px-6 pt-10 md:pt-0 relative z-10 flex flex-col justify-start md:justify-center items-center md:items-start">
+            <div className="text-center md:text-left md:max-w-4xl md:pl-12 lg:pl-20">
               <motion.p 
                 initial={{ opacity: 0, y: -20 }}
                 animate={{ opacity: 1, y: 0 }}
