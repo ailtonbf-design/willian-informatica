@@ -48,6 +48,7 @@ export function AdminPanel() {
   const [novoCursoDescricao, setNovoCursoDescricao] = useState('');
   const [novoCursoImagemFile, setNovoCursoImagemFile] = useState<File | null>(null);
   const [novoCursoImagemPreview, setNovoCursoImagemPreview] = useState('');
+  const [editingCursoId, setEditingCursoId] = useState<string | null>(null);
 
   // Fotos Carrossel State
   const [fotosCarrossel, setFotosCarrossel] = useState<FotoCarrossel[]>([]);
@@ -136,41 +137,33 @@ export function AdminPanel() {
     setSuccess(false);
 
     try {
-      let finalImagemUrl = '';
+      // Usamos o preview (Base64 comprimido) diretamente para evitar problemas de permissão no Storage
+      // Se estiver editando e não houver novo preview, mantemos a imagem atual (que já deve estar no preview se carregada no edit)
+      const finalImagemUrl = novoCursoImagemPreview || 'https://placehold.co/400x300?text=Sem+Imagem';
 
-      // Upload image if exists
-      if (novoCursoImagemFile) {
-        try {
-          const storageRef = ref(storage, `cursos/${Date.now()}_${novoCursoImagemFile.name}`);
-          const uploadResult = await uploadBytes(storageRef, novoCursoImagemFile);
-          finalImagemUrl = await getDownloadURL(uploadResult.ref);
-        } catch (uploadErr: any) {
-          console.error("Erro no upload da imagem:", uploadErr);
-          throw new Error("Falha no upload da imagem. Verifique sua conexão ou permissões.");
-        }
-      }
-
-      const novoCurso = {
+      const cursoData = {
         nome: novoCursoNome,
         categoria: novoCursoCategoria,
         carga_horaria: novoCursoCarga,
         descricao: novoCursoDescricao,
-        imagem_url: finalImagemUrl || 'https://placehold.co/400x300?text=Sem+Imagem',
+        imagem_url: finalImagemUrl,
         ativo: true,
-        createdAt: serverTimestamp()
+        updatedAt: serverTimestamp()
       };
 
-      const cursosRef = collection(db, 'cursos');
-      await addDoc(cursosRef, novoCurso);
+      if (editingCursoId) {
+        const cursoRef = doc(db, 'cursos', editingCursoId);
+        await updateDoc(cursoRef, cursoData);
+      } else {
+        const cursosRef = collection(db, 'cursos');
+        await addDoc(cursosRef, {
+          ...cursoData,
+          createdAt: serverTimestamp()
+        });
+      }
 
       // Reset form and close modal
-      setNovoCursoNome('');
-      setNovoCursoCategoria('Administrativo');
-      setNovoCursoCarga('');
-      setNovoCursoDescricao('');
-      setNovoCursoImagemFile(null);
-      setNovoCursoImagemPreview('');
-      setIsModalOpen(false);
+      closeCursoModal();
       
       setSuccess(true);
       setTimeout(() => setSuccess(false), 3000);
@@ -178,26 +171,75 @@ export function AdminPanel() {
       // Refresh list
       loadTodosCursos();
     } catch (err: any) {
-      console.error("Erro ao cadastrar curso:", err);
-      setError(err.message || "Erro ao cadastrar o curso.");
+      console.error("Erro detalhado ao salvar curso:", err);
+      setError("Erro ao salvar no banco de dados. Verifique sua conexão.");
     } finally {
       setLoading(false);
     }
+  };
+
+  const closeCursoModal = () => {
+    setNovoCursoNome('');
+    setNovoCursoCategoria('Administrativo');
+    setNovoCursoCarga('');
+    setNovoCursoDescricao('');
+    setNovoCursoImagemFile(null);
+    setNovoCursoImagemPreview('');
+    setEditingCursoId(null);
+    setIsModalOpen(false);
+  };
+
+  const handleEditClick = (curso: any) => {
+    setEditingCursoId(curso.id);
+    setNovoCursoNome(curso.nome || '');
+    setNovoCursoCategoria(curso.categoria || 'Administrativo');
+    setNovoCursoCarga(curso.carga_horaria || '');
+    setNovoCursoDescricao(curso.descricao || '');
+    setNovoCursoImagemPreview(curso.imagem_url || '');
+    setIsModalOpen(true);
   };
 
   const handleNovoCursoImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
+    // Limite de 2MB para o arquivo original
     if (file.size > 2 * 1024 * 1024) {
-      setError('A imagem deve ter no máximo 2MB.');
+      setError('A imagem original é muito grande. Escolha uma menor que 2MB.');
       return;
     }
 
     setNovoCursoImagemFile(file);
+    
+    // Processamento e compressão da imagem para Base64
     const reader = new FileReader();
     reader.onload = (event) => {
-      setNovoCursoImagemPreview(event.target?.result as string);
+      const img = new Image();
+      img.onload = () => {
+        const canvas = document.createElement('canvas');
+        let width = img.width;
+        let height = img.height;
+        const MAX_DIMENSION = 600; // Reduzimos para garantir que caiba no limite do documento Firestore (1MB)
+
+        if (width > height && width > MAX_DIMENSION) {
+          height *= MAX_DIMENSION / width;
+          width = MAX_DIMENSION;
+        } else if (height > MAX_DIMENSION) {
+          width *= MAX_DIMENSION / height;
+          height = MAX_DIMENSION;
+        }
+
+        canvas.width = width;
+        canvas.height = height;
+        const ctx = canvas.getContext('2d');
+        ctx?.drawImage(img, 0, 0, width, height);
+        
+        // Comprime para JPEG com qualidade 0.7 para economizar espaço no Firestore
+        const compressedBase64 = canvas.toDataURL('image/jpeg', 0.7);
+        setNovoCursoImagemPreview(compressedBase64);
+        setError('');
+      };
+      img.src = event.target?.result as string;
     };
     reader.readAsDataURL(file);
   };
@@ -977,7 +1019,15 @@ export function AdminPanel() {
               <div className="flex justify-between items-center mb-6">
                 <h2 className="text-2xl font-bold text-slate-900">Gerenciar Todos os Cursos</h2>
                 <button
-                  onClick={() => setIsModalOpen(true)}
+                  onClick={() => {
+                    setEditingCursoId(null);
+                    setNovoCursoNome('');
+                    setNovoCursoCategoria('Administrativo');
+                    setNovoCursoCarga('');
+                    setNovoCursoDescricao('');
+                    setNovoCursoImagemPreview('');
+                    setIsModalOpen(true);
+                  }}
                   className="bg-emerald-600 text-white px-6 py-2.5 rounded-xl font-bold hover:bg-emerald-700 transition-all flex items-center gap-2 shadow-sm hover:shadow-md active:scale-95"
                 >
                   <Plus className="w-5 h-5" />
@@ -1006,7 +1056,13 @@ export function AdminPanel() {
                           <td className="px-4 py-3 text-sm text-slate-800 font-medium">{curso.nome}</td>
                           <td className="px-4 py-3 text-sm text-slate-600">{curso.categoria}</td>
                           <td className="px-4 py-3 text-sm text-slate-600">{curso.carga_horaria}</td>
-                          <td className="px-4 py-3 text-sm">
+                          <td className="px-4 py-3 text-sm flex gap-3">
+                            <button
+                              onClick={() => handleEditClick(curso)}
+                              className="text-blue-600 hover:text-blue-800 font-medium transition-colors"
+                            >
+                              Editar
+                            </button>
                             <button
                               onClick={() => handleDeleteCurso(curso.id)}
                               className="text-red-600 hover:text-red-800 font-medium transition-colors"
@@ -1026,9 +1082,11 @@ export function AdminPanel() {
                 <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
                   <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
                     <div className="p-6 border-b border-slate-100 flex justify-between items-center sticky top-0 bg-white z-10">
-                      <h3 className="text-xl font-bold text-slate-900">Novo Cadastro de Curso</h3>
+                      <h3 className="text-xl font-bold text-slate-900">
+                        {editingCursoId ? 'Editar Curso' : 'Novo Cadastro de Curso'}
+                      </h3>
                       <button 
-                        onClick={() => setIsModalOpen(false)}
+                        onClick={closeCursoModal}
                         className="text-slate-400 hover:text-slate-600 transition-colors"
                       >
                         <LogOut className="w-6 h-6 rotate-180" />

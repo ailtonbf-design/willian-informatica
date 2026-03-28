@@ -288,7 +288,7 @@ export default function CursosPage() {
                 
                 <div className="space-y-6">
                   <div>
-                    <h4 className="font-bold text-slate-800 mb-2">Sobre o curso:</h4>
+                    <h4 className="font-bold text-slate-800 mb-2">Conteúdo do curso:</h4>
                     <p className="text-slate-600 leading-relaxed">{cursoDetalhe.descricao}</p>
                   </div>
                   
