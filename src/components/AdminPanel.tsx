@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { doc, setDoc, getDoc, collection, query, where, getDocs, updateDoc, deleteDoc, orderBy, addDoc } from 'firebase/firestore';
+import { doc, setDoc, getDoc, collection, query, where, getDocs, updateDoc, deleteDoc, orderBy, addDoc, serverTimestamp } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 import { signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from 'firebase/auth';
 import { db, storage, auth } from '../firebase';
@@ -77,6 +77,12 @@ export function AdminPanel() {
 
   useEffect(() => {
     if (isAuthenticated) {
+      // Garantir que temos uma sessão do Firebase Auth para as regras de Storage/Firestore
+      if (!auth.currentUser) {
+        import('firebase/auth').then(({ signInAnonymously }) => {
+          signInAnonymously(auth).catch(err => console.error("Erro ao entrar anonimamente:", err));
+        });
+      }
       loadCurrentData();
       loadVagas();
       loadFotosCarrossel();
@@ -140,9 +146,14 @@ export function AdminPanel() {
 
       // Upload image if exists
       if (novoCursoImagemFile) {
-        const storageRef = ref(storage, `cursos/${Date.now()}_${novoCursoImagemFile.name}`);
-        const uploadResult = await uploadBytes(storageRef, novoCursoImagemFile);
-        finalImagemUrl = await getDownloadURL(uploadResult.ref);
+        try {
+          const storageRef = ref(storage, `cursos/${Date.now()}_${novoCursoImagemFile.name}`);
+          const uploadResult = await uploadBytes(storageRef, novoCursoImagemFile);
+          finalImagemUrl = await getDownloadURL(uploadResult.ref);
+        } catch (uploadErr: any) {
+          console.error("Erro no upload da imagem:", uploadErr);
+          throw new Error("Falha no upload da imagem. Verifique sua conexão ou permissões.");
+        }
       }
 
       const novoCurso = {
@@ -152,7 +163,7 @@ export function AdminPanel() {
         descricao: novoCursoDescricao,
         imagem_url: finalImagemUrl || 'https://placehold.co/400x300?text=Sem+Imagem',
         ativo: true,
-        createdAt: new Date()
+        createdAt: serverTimestamp()
       };
 
       const cursosRef = collection(db, 'cursos');
@@ -1031,6 +1042,11 @@ export function AdminPanel() {
                     </div>
                     
                     <form onSubmit={handleCreateCurso} className="p-8 space-y-6">
+                      {error && (
+                        <div className="bg-red-50 text-red-700 p-4 rounded-xl border border-red-200 text-sm font-medium">
+                          {error}
+                        </div>
+                      )}
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                         <div className="space-y-4">
                           <div>
