@@ -41,7 +41,13 @@ export function AdminPanel() {
 
   // Todos Cursos State
   const [todosCursos, setTodosCursos] = useState<any[]>([]);
-  const [isPopulating, setIsPopulating] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [novoCursoNome, setNovoCursoNome] = useState('');
+  const [novoCursoCategoria, setNovoCursoCategoria] = useState('Administrativo');
+  const [novoCursoCarga, setNovoCursoCarga] = useState('');
+  const [novoCursoDescricao, setNovoCursoDescricao] = useState('');
+  const [novoCursoImagemFile, setNovoCursoImagemFile] = useState<File | null>(null);
+  const [novoCursoImagemPreview, setNovoCursoImagemPreview] = useState('');
 
   // Fotos Carrossel State
   const [fotosCarrossel, setFotosCarrossel] = useState<FotoCarrossel[]>([]);
@@ -118,62 +124,77 @@ export function AdminPanel() {
     }
   };
 
-  const handlePopulateCursos = async () => {
-    if (!window.confirm('Deseja popular o banco de dados com a lista de cursos padrão? Isso não excluirá os existentes.')) return;
-    
-    setIsPopulating(true);
+  const handleCreateCurso = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!novoCursoNome || !novoCursoCategoria || !novoCursoCarga || !novoCursoDescricao) {
+      setError('Por favor, preencha todos os campos obrigatórios.');
+      return;
+    }
+
     setLoading(true);
-    
-    const cursosParaInserir = [
-      { nome: 'Auxiliar Administrativo', categoria: 'Administração', carga_horaria: '40h', descricao: 'Rotinas administrativas, organização e atendimento.', imagem_url: 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=400&h=300&fit=crop', ativo: true },
-      { nome: 'Atendimento ao Cliente', categoria: 'Administração', carga_horaria: '20h', descricao: 'Técnicas de comunicação e fidelização de clientes.', imagem_url: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&h=300&fit=crop', ativo: true },
-      { nome: 'Secretariado Executivo', categoria: 'Administração', carga_horaria: '30h', descricao: 'Gestão de agenda, redação oficial e etiqueta corporativa.', imagem_url: 'https://images.unsplash.com/photo-1521791136064-7986c2920216?w=400&h=300&fit=crop', ativo: true },
-      { nome: 'Gestão de Pequenos Negócios', categoria: 'Administração', carga_horaria: '40h', descricao: 'Planejamento, finanças e marketing para microempresas.', imagem_url: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=400&h=300&fit=crop', ativo: true },
-      { nome: 'Empreendedorismo', categoria: 'Administração', carga_horaria: '30h', descricao: 'Como transformar ideias em negócios lucrativos.', imagem_url: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=400&h=300&fit=crop', ativo: true },
-      { nome: 'Liderança e Gestão de Equipes', categoria: 'Administração', carga_horaria: '20h', descricao: 'Desenvolvimento de competências de liderança e motivação.', imagem_url: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=400&h=300&fit=crop', ativo: true },
-      { nome: 'Oratória e Comunicação', categoria: 'Administração', carga_horaria: '16h', descricao: 'Falar em público com confiança e clareza.', imagem_url: 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=400&h=300&fit=crop', ativo: true },
-      { nome: 'Hardware e Redes', categoria: 'Informática', carga_horaria: '60h', descricao: 'Montagem, manutenção e configuração de redes locais.', imagem_url: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=400&h=300&fit=crop', ativo: true },
-      { nome: 'Manutenção de Computadores', categoria: 'Informática', carga_horaria: '40h', descricao: 'Diagnóstico e reparo de hardware e software.', imagem_url: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=400&h=300&fit=crop', ativo: true },
-      { nome: 'Segurança Cibernética', categoria: 'Informática', carga_horaria: '40h', descricao: 'Proteção de dados e prevenção contra ataques digitais.', imagem_url: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=400&h=300&fit=crop', ativo: true },
-      { nome: 'Lógica de Programação', categoria: 'Informática', carga_horaria: '30h', descricao: 'Fundamentos essenciais para qualquer linguagem de programação.', imagem_url: 'https://images.unsplash.com/photo-1516116216624-53e697fedbea?w=400&h=300&fit=crop', ativo: true },
-      { nome: 'Banco de Dados SQL', categoria: 'Informática', carga_horaria: '30h', descricao: 'Criação e manipulação de bancos de dados relacionais.', imagem_url: 'https://images.unsplash.com/photo-1544383835-bda2bc66a55d?w=400&h=300&fit=crop', ativo: true },
-      { nome: 'Robótica com Arduino', categoria: 'Informática', carga_horaria: '40h', descricao: 'Programação de microcontroladores e automação básica.', imagem_url: 'https://images.unsplash.com/photo-1561557944-6e7860d1a7eb?w=400&h=300&fit=crop', ativo: true },
-      { nome: 'UX/UI Design', categoria: 'Informática', carga_horaria: '40h', descricao: 'Design de interfaces e experiência do usuário.', imagem_url: 'https://images.unsplash.com/photo-1586717791821-3f44a563eb4c?w=400&h=300&fit=crop', ativo: true },
-      { nome: 'Figma para Iniciantes', categoria: 'Informática', carga_horaria: '20h', descricao: 'Ferramenta líder para design de produtos digitais.', imagem_url: 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=400&h=300&fit=crop', ativo: true },
-      { nome: 'Logística e Supply Chain', categoria: 'Administração', carga_horaria: '40h', descricao: 'Gestão de estoque, transporte e cadeia de suprimentos.', imagem_url: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=400&h=300&fit=crop', ativo: true },
-      { nome: 'Direito do Consumidor', categoria: 'Administração', carga_horaria: '20h', descricao: 'Direitos e deveres nas relações de consumo.', imagem_url: 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=400&h=300&fit=crop', ativo: true },
-      { nome: 'Primeiros Socorros', categoria: 'Preparatórios', carga_horaria: '16h', descricao: 'Procedimentos básicos de emergência e salvamento.', imagem_url: 'https://images.unsplash.com/photo-1516549655169-df83a0774514?w=400&h=300&fit=crop', ativo: true },
-      { nome: 'Cuidador de Idosos', categoria: 'Preparatórios', carga_horaria: '60h', descricao: 'Cuidados físicos e emocionais para a terceira idade.', imagem_url: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=400&h=300&fit=crop', ativo: true },
-      { nome: 'Eletricista Residencial', categoria: 'Preparatórios', carga_horaria: '80h', descricao: 'Instalações elétricas seguras e normas técnicas.', imagem_url: 'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=400&h=300&fit=crop', ativo: true },
-      { nome: 'Mecânica de Motos', categoria: 'Preparatórios', carga_horaria: '100h', descricao: 'Manutenção preventiva e corretiva de motocicletas.', imagem_url: 'https://images.unsplash.com/photo-1558981403-c5f9899a28bc?w=400&h=300&fit=crop', ativo: true },
-      { nome: 'Manutenção de Celulares', categoria: 'Informática', carga_horaria: '40h', descricao: 'Reparo de hardware e software de smartphones.', imagem_url: 'https://images.unsplash.com/photo-1512428559087-560fa5ceab42?w=400&h=300&fit=crop', ativo: true },
-      { nome: 'Mestre de Obras', categoria: 'Preparatórios', carga_horaria: '120h', descricao: 'Gestão de canteiro de obras e leitura de projetos.', imagem_url: 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=400&h=300&fit=crop', ativo: true }
-    ];
+    setError('');
+    setSuccess(false);
 
     try {
-      const cursosRef = collection(db, 'cursos');
-      let count = 0;
-      
-      for (const curso of cursosParaInserir) {
-        // Check if already exists
-        const q = query(cursosRef, where('nome', '==', curso.nome));
-        const existing = await getDocs(q);
-        
-        if (existing.empty) {
-          await addDoc(cursosRef, curso);
-          count++;
-        }
+      let finalImagemUrl = '';
+
+      // Upload image if exists
+      if (novoCursoImagemFile) {
+        const storageRef = ref(storage, `cursos/${Date.now()}_${novoCursoImagemFile.name}`);
+        const uploadResult = await uploadBytes(storageRef, novoCursoImagemFile);
+        finalImagemUrl = await getDownloadURL(uploadResult.ref);
       }
+
+      const novoCurso = {
+        nome: novoCursoNome,
+        categoria: novoCursoCategoria,
+        carga_horaria: novoCursoCarga,
+        descricao: novoCursoDescricao,
+        imagem_url: finalImagemUrl || 'https://placehold.co/400x300?text=Sem+Imagem',
+        ativo: true,
+        createdAt: new Date()
+      };
+
+      const cursosRef = collection(db, 'cursos');
+      await addDoc(cursosRef, novoCurso);
+
+      // Reset form and close modal
+      setNovoCursoNome('');
+      setNovoCursoCategoria('Administrativo');
+      setNovoCursoCarga('');
+      setNovoCursoDescricao('');
+      setNovoCursoImagemFile(null);
+      setNovoCursoImagemPreview('');
+      setIsModalOpen(false);
       
-      alert(`${count} novos cursos inseridos com sucesso!`);
+      setSuccess(true);
+      setTimeout(() => setSuccess(false), 3000);
+      
+      // Refresh list
       loadTodosCursos();
-    } catch (err) {
-      console.error("Erro ao popular cursos:", err);
-      alert("Erro ao popular cursos.");
+    } catch (err: any) {
+      console.error("Erro ao cadastrar curso:", err);
+      setError(err.message || "Erro ao cadastrar o curso.");
     } finally {
-      setIsPopulating(false);
       setLoading(false);
     }
+  };
+
+  const handleNovoCursoImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > 2 * 1024 * 1024) {
+      setError('A imagem deve ter no máximo 2MB.');
+      return;
+    }
+
+    setNovoCursoImagemFile(file);
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      setNovoCursoImagemPreview(event.target?.result as string);
+    };
+    reader.readAsDataURL(file);
   };
 
   const handleDeleteCurso = async (id: string) => {
@@ -951,16 +972,11 @@ export function AdminPanel() {
               <div className="flex justify-between items-center mb-6">
                 <h2 className="text-2xl font-bold text-slate-900">Gerenciar Todos os Cursos</h2>
                 <button
-                  onClick={handlePopulateCursos}
-                  disabled={isPopulating}
-                  className="bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-green-700 transition-colors disabled:opacity-50 flex items-center gap-2"
+                  onClick={() => setIsModalOpen(true)}
+                  className="bg-emerald-600 text-white px-6 py-2.5 rounded-xl font-bold hover:bg-emerald-700 transition-all flex items-center gap-2 shadow-sm hover:shadow-md active:scale-95"
                 >
-                  {isPopulating ? (
-                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
-                  ) : (
-                    <Plus className="w-4 h-4" />
-                  )}
-                  {isPopulating ? 'Populando...' : 'Popular com Lista Padrão'}
+                  <Plus className="w-5 h-5" />
+                  Cadastrar Curso
                 </button>
               </div>
               
@@ -999,6 +1015,136 @@ export function AdminPanel() {
                   </tbody>
                 </table>
               </div>
+
+              {/* Modal de Cadastro de Curso */}
+              {isModalOpen && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm">
+                  <div className="bg-white rounded-2xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+                    <div className="p-6 border-b border-slate-100 flex justify-between items-center sticky top-0 bg-white z-10">
+                      <h3 className="text-xl font-bold text-slate-900">Novo Cadastro de Curso</h3>
+                      <button 
+                        onClick={() => setIsModalOpen(false)}
+                        className="text-slate-400 hover:text-slate-600 transition-colors"
+                      >
+                        <LogOut className="w-6 h-6 rotate-180" />
+                      </button>
+                    </div>
+                    
+                    <form onSubmit={handleCreateCurso} className="p-8 space-y-6">
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div className="space-y-4">
+                          <div>
+                            <label className="block text-sm font-semibold text-slate-700 mb-1.5">Nome do Curso</label>
+                            <input
+                              type="text"
+                              value={novoCursoNome}
+                              onChange={(e) => setNovoCursoNome(e.target.value)}
+                              placeholder="Ex: Auxiliar Administrativo"
+                              className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all"
+                              required
+                            />
+                          </div>
+                          
+                          <div>
+                            <label className="block text-sm font-semibold text-slate-700 mb-1.5">Categoria</label>
+                            <select
+                              value={novoCursoCategoria}
+                              onChange={(e) => setNovoCursoCategoria(e.target.value)}
+                              className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all bg-white"
+                              required
+                            >
+                              <option value="Administrativo">Administrativo</option>
+                              <option value="Idiomas">Idiomas</option>
+                              <option value="Informática e Tecnologia">Informática e Tecnologia</option>
+                              <option value="Diversas Áreas">Diversas Áreas</option>
+                              <option value="Preparatórios">Preparatórios</option>
+                            </select>
+                          </div>
+
+                          <div>
+                            <label className="block text-sm font-semibold text-slate-700 mb-1.5">Carga Horária</label>
+                            <input
+                              type="text"
+                              value={novoCursoCarga}
+                              onChange={(e) => setNovoCursoCarga(e.target.value)}
+                              placeholder="Ex: 40h"
+                              className="w-full px-4 py-2.5 rounded-xl border border-slate-200 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all"
+                              required
+                            />
+                          </div>
+                        </div>
+
+                        <div className="space-y-4">
+                          <label className="block text-sm font-semibold text-slate-700 mb-1.5">Imagem do Curso</label>
+                          <div className="relative group">
+                            <div className={`w-full h-48 rounded-2xl border-2 border-dashed transition-all flex flex-col items-center justify-center overflow-hidden bg-slate-50 ${novoCursoImagemPreview ? 'border-emerald-200' : 'border-slate-300 hover:border-emerald-400'}`}>
+                              {novoCursoImagemPreview ? (
+                                <img src={novoCursoImagemPreview} alt="Preview" className="w-full h-full object-cover" />
+                              ) : (
+                                <>
+                                  <Upload className="w-10 h-10 text-slate-400 mb-2" />
+                                  <p className="text-xs text-slate-500 font-medium">Clique para selecionar</p>
+                                </>
+                              )}
+                              <input 
+                                type="file" 
+                                accept="image/*"
+                                onChange={handleNovoCursoImageChange}
+                                className="absolute inset-0 opacity-0 cursor-pointer"
+                              />
+                            </div>
+                            {novoCursoImagemPreview && (
+                              <button 
+                                type="button"
+                                onClick={() => { setNovoCursoImagemFile(null); setNovoCursoImagemPreview(''); }}
+                                className="absolute top-2 right-2 bg-red-500 text-white p-1.5 rounded-full shadow-lg hover:bg-red-600 transition-colors"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </button>
+                            )}
+                          </div>
+                        </div>
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-semibold text-slate-700 mb-1.5">Conteúdo do Curso</label>
+                        <textarea
+                          value={novoCursoDescricao}
+                          onChange={(e) => setNovoCursoDescricao(e.target.value)}
+                          placeholder="Descreva o que o aluno vai aprender neste curso..."
+                          rows={5}
+                          className="w-full px-4 py-3 rounded-xl border border-slate-200 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none transition-all resize-none"
+                          required
+                        />
+                      </div>
+
+                      <div className="flex gap-4 pt-4">
+                        <button
+                          type="button"
+                          onClick={() => setIsModalOpen(false)}
+                          className="flex-1 px-6 py-3 rounded-xl font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 transition-all"
+                        >
+                          Cancelar
+                        </button>
+                        <button
+                          type="submit"
+                          disabled={loading}
+                          className="flex-[2] px-6 py-3 rounded-xl font-bold text-white bg-emerald-600 hover:bg-emerald-700 transition-all flex items-center justify-center gap-2 disabled:opacity-70"
+                        >
+                          {loading ? (
+                            <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                          ) : (
+                            <>
+                              <Save className="w-5 h-5" />
+                              Salvar Curso
+                            </>
+                          )}
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              )}
             </div>
           )}
 
