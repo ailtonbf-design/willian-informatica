@@ -138,7 +138,7 @@ export default function CursosPage() {
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.2 }}
-                className="text-white text-lg md:text-4xl lg:text-5xl font-black leading-[1.1] uppercase tracking-tighter drop-shadow-lg"
+                className="text-white text-2xl md:text-4xl lg:text-5xl font-black leading-[1.1] uppercase tracking-tighter drop-shadow-lg"
               >
                 <span className="block md:inline">MAIS DE 50 CURSOS</span> <br className="hidden md:block" />
                 <span className="block md:inline">NAS MELHORES ÁREAS</span> <br className="hidden md:block" />
