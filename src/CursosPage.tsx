@@ -287,12 +287,7 @@ export default function CursosPage() {
                 </div>
                 
                 <div className="space-y-6 overflow-y-auto flex-1 pr-2 scrollbar-thin scrollbar-thumb-slate-200">
-                  <div>
-                    <h4 className="font-bold text-slate-800 mb-2">Conteúdo do curso:</h4>
-                    <p className="text-slate-600 leading-relaxed whitespace-pre-wrap">{cursoDetalhe.descricao}</p>
-                  </div>
-                  
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-2 gap-4 mb-6">
                     <div className="bg-slate-50 p-4 rounded-2xl">
                       <p className="text-xs text-slate-400 uppercase font-bold mb-1">Categoria</p>
                       <p className="font-bold text-slate-800">{cursoDetalhe.categoria}</p>
@@ -301,6 +296,11 @@ export default function CursosPage() {
                       <p className="text-xs text-slate-400 uppercase font-bold mb-1">Carga Horária</p>
                       <p className="font-bold text-slate-800">{cursoDetalhe.cargaHoraria}</p>
                     </div>
+                  </div>
+
+                  <div>
+                    <h4 className="font-bold text-slate-800 mb-2">Conteúdo do curso:</h4>
+                    <p className="text-slate-600 leading-relaxed whitespace-pre-wrap">{cursoDetalhe.descricao}</p>
                   </div>
                 </div>
 
