@@ -273,10 +273,10 @@ export default function CursosPage() {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.9 }}
-              className="bg-white w-full max-w-lg rounded-3xl shadow-2xl relative overflow-hidden"
+              className="bg-white w-full max-w-lg rounded-3xl shadow-2xl relative overflow-hidden flex flex-col max-h-[90vh]"
             >
-              <div className="p-8">
-                <div className="flex justify-between items-start mb-6">
+              <div className="p-8 flex flex-col h-full overflow-hidden">
+                <div className="flex justify-between items-start mb-6 shrink-0">
                   <div>
                     <span className="text-red-600 font-bold uppercase tracking-widest text-xs mb-2 block">Detalhes do Curso</span>
                     <h3 className="text-3xl font-extrabold text-slate-900">{cursoDetalhe.nome}</h3>
@@ -286,10 +286,10 @@ export default function CursosPage() {
                   </button>
                 </div>
                 
-                <div className="space-y-6">
+                <div className="space-y-6 overflow-y-auto flex-1 pr-2 scrollbar-thin scrollbar-thumb-slate-200">
                   <div>
                     <h4 className="font-bold text-slate-800 mb-2">Conteúdo do curso:</h4>
-                    <p className="text-slate-600 leading-relaxed">{cursoDetalhe.descricao}</p>
+                    <p className="text-slate-600 leading-relaxed whitespace-pre-wrap">{cursoDetalhe.descricao}</p>
                   </div>
                   
                   <div className="grid grid-cols-2 gap-4">
@@ -304,17 +304,19 @@ export default function CursosPage() {
                   </div>
                 </div>
 
-                <button 
-                  onClick={() => {
-                    if (!selecionados.includes(cursoDetalhe.id)) {
-                      toggleSelecao(cursoDetalhe.id);
-                    }
-                    setCursoDetalhe(null);
-                  }}
-                  className="w-full mt-8 bg-slate-900 text-white font-bold py-4 rounded-xl hover:bg-slate-800 transition-colors"
-                >
-                  Selecionar este curso
-                </button>
+                <div className="pt-6 shrink-0">
+                  <button 
+                    onClick={() => {
+                      if (!selecionados.includes(cursoDetalhe.id)) {
+                        toggleSelecao(cursoDetalhe.id);
+                      }
+                      setCursoDetalhe(null);
+                    }}
+                    className="w-full bg-slate-900 text-white font-bold py-4 rounded-xl hover:bg-slate-800 transition-colors"
+                  >
+                    Selecionar este curso
+                  </button>
+                </div>
               </div>
             </motion.div>
           </div>
