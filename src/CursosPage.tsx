@@ -15,7 +15,7 @@ interface Curso {
   imagem: string;
 }
 
-const categorias = ['Todas', 'Informática', 'Administração', 'Idiomas', 'Preparatórios'];
+const categorias = ['Todas', 'Informática e Tecnologia', 'Administrativo', 'Idiomas', 'Preparatórios', 'Diversas Áreas'];
 
 export default function CursosPage() {
   const [cursos, setCursos] = useState<Curso[]>([]);
