@@ -77,12 +77,6 @@ export function AdminPanel() {
 
   useEffect(() => {
     if (isAuthenticated) {
-      // Garantir que temos uma sessão do Firebase Auth para as regras de Storage/Firestore
-      if (!auth.currentUser) {
-        import('firebase/auth').then(({ signInAnonymously }) => {
-          signInAnonymously(auth).catch(err => console.error("Erro ao entrar anonimamente:", err));
-        });
-      }
       loadCurrentData();
       loadVagas();
       loadFotosCarrossel();
