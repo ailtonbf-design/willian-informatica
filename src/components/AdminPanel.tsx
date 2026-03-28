@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { doc, setDoc, getDoc, collection, query, where, getDocs, updateDoc, deleteDoc, orderBy } from 'firebase/firestore';
+import { doc, setDoc, getDoc, collection, query, where, getDocs, updateDoc, deleteDoc, orderBy, addDoc } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 import { signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from 'firebase/auth';
 import { db, storage, auth } from '../firebase';
-import { Save, LogIn, LogOut, CheckCircle, Upload, Trash2, Briefcase, BookOpen, Image as ImageIcon, Users, MessageCircle } from 'lucide-react';
+import { Save, LogIn, LogOut, CheckCircle, Upload, Trash2, Briefcase, BookOpen, Image as ImageIcon, Users, MessageCircle, Plus } from 'lucide-react';
 
 interface Vaga {
   id: string;
@@ -27,7 +27,7 @@ interface Lead {
 
 export function AdminPanel() {
   console.log('AdminPanel rendered');
-  const [activeTab, setActiveTab] = useState<'curso' | 'vagas' | 'fotosCarrossel' | 'leads'>('curso');
+  const [activeTab, setActiveTab] = useState<'curso' | 'vagas' | 'fotosCarrossel' | 'leads' | 'todosCursos'>('curso');
   
   // Curso Destaque State
   const [titulo, setTitulo] = useState('');
@@ -38,6 +38,10 @@ export function AdminPanel() {
   const [vagas, setVagas] = useState<Vaga[]>([]);
   const [novaVagaTitulo, setNovaVagaTitulo] = useState('');
   const [novaVagaDescricao, setNovaVagaDescricao] = useState('');
+
+  // Todos Cursos State
+  const [todosCursos, setTodosCursos] = useState<any[]>([]);
+  const [isPopulating, setIsPopulating] = useState(false);
 
   // Fotos Carrossel State
   const [fotosCarrossel, setFotosCarrossel] = useState<FotoCarrossel[]>([]);
@@ -70,6 +74,7 @@ export function AdminPanel() {
       loadCurrentData();
       loadVagas();
       loadFotosCarrossel();
+      loadTodosCursos();
     }
   }, [isAuthenticated]);
 
@@ -98,6 +103,93 @@ export function AdminPanel() {
       }
     } catch (err) {
       console.error("Erro ao carregar vagas:", err);
+    }
+  };
+
+  const loadTodosCursos = async () => {
+    try {
+      const cursosRef = collection(db, 'cursos');
+      const q = query(cursosRef, orderBy('nome', 'asc'));
+      const snapshot = await getDocs(q);
+      const cursosData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      setTodosCursos(cursosData);
+    } catch (err) {
+      console.error("Erro ao carregar todos os cursos:", err);
+    }
+  };
+
+  const handlePopulateCursos = async () => {
+    if (!window.confirm('Deseja popular o banco de dados com a lista de cursos padrão? Isso não excluirá os existentes.')) return;
+    
+    setIsPopulating(true);
+    setLoading(true);
+    
+    const cursosParaInserir = [
+      { nome: 'Auxiliar Administrativo', categoria: 'Administração', carga_horaria: '40h', descricao: 'Rotinas administrativas, organização e atendimento.', imagem_url: 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=400&h=300&fit=crop', ativo: true },
+      { nome: 'Atendimento ao Cliente', categoria: 'Administração', carga_horaria: '20h', descricao: 'Técnicas de comunicação e fidelização de clientes.', imagem_url: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?w=400&h=300&fit=crop', ativo: true },
+      { nome: 'Secretariado Executivo', categoria: 'Administração', carga_horaria: '30h', descricao: 'Gestão de agenda, redação oficial e etiqueta corporativa.', imagem_url: 'https://images.unsplash.com/photo-1521791136064-7986c2920216?w=400&h=300&fit=crop', ativo: true },
+      { nome: 'Gestão de Pequenos Negócios', categoria: 'Administração', carga_horaria: '40h', descricao: 'Planejamento, finanças e marketing para microempresas.', imagem_url: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=400&h=300&fit=crop', ativo: true },
+      { nome: 'Empreendedorismo', categoria: 'Administração', carga_horaria: '30h', descricao: 'Como transformar ideias em negócios lucrativos.', imagem_url: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?w=400&h=300&fit=crop', ativo: true },
+      { nome: 'Liderança e Gestão de Equipes', categoria: 'Administração', carga_horaria: '20h', descricao: 'Desenvolvimento de competências de liderança e motivação.', imagem_url: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=400&h=300&fit=crop', ativo: true },
+      { nome: 'Oratória e Comunicação', categoria: 'Administração', carga_horaria: '16h', descricao: 'Falar em público com confiança e clareza.', imagem_url: 'https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=400&h=300&fit=crop', ativo: true },
+      { nome: 'Hardware e Redes', categoria: 'Informática', carga_horaria: '60h', descricao: 'Montagem, manutenção e configuração de redes locais.', imagem_url: 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=400&h=300&fit=crop', ativo: true },
+      { nome: 'Manutenção de Computadores', categoria: 'Informática', carga_horaria: '40h', descricao: 'Diagnóstico e reparo de hardware e software.', imagem_url: 'https://images.unsplash.com/photo-1555066931-4365d14bab8c?w=400&h=300&fit=crop', ativo: true },
+      { nome: 'Segurança Cibernética', categoria: 'Informática', carga_horaria: '40h', descricao: 'Proteção de dados e prevenção contra ataques digitais.', imagem_url: 'https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=400&h=300&fit=crop', ativo: true },
+      { nome: 'Lógica de Programação', categoria: 'Informática', carga_horaria: '30h', descricao: 'Fundamentos essenciais para qualquer linguagem de programação.', imagem_url: 'https://images.unsplash.com/photo-1516116216624-53e697fedbea?w=400&h=300&fit=crop', ativo: true },
+      { nome: 'Banco de Dados SQL', categoria: 'Informática', carga_horaria: '30h', descricao: 'Criação e manipulação de bancos de dados relacionais.', imagem_url: 'https://images.unsplash.com/photo-1544383835-bda2bc66a55d?w=400&h=300&fit=crop', ativo: true },
+      { nome: 'Robótica com Arduino', categoria: 'Informática', carga_horaria: '40h', descricao: 'Programação de microcontroladores e automação básica.', imagem_url: 'https://images.unsplash.com/photo-1561557944-6e7860d1a7eb?w=400&h=300&fit=crop', ativo: true },
+      { nome: 'UX/UI Design', categoria: 'Informática', carga_horaria: '40h', descricao: 'Design de interfaces e experiência do usuário.', imagem_url: 'https://images.unsplash.com/photo-1586717791821-3f44a563eb4c?w=400&h=300&fit=crop', ativo: true },
+      { nome: 'Figma para Iniciantes', categoria: 'Informática', carga_horaria: '20h', descricao: 'Ferramenta líder para design de produtos digitais.', imagem_url: 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?w=400&h=300&fit=crop', ativo: true },
+      { nome: 'Logística e Supply Chain', categoria: 'Administração', carga_horaria: '40h', descricao: 'Gestão de estoque, transporte e cadeia de suprimentos.', imagem_url: 'https://images.unsplash.com/photo-1586528116311-ad8dd3c8310d?w=400&h=300&fit=crop', ativo: true },
+      { nome: 'Direito do Consumidor', categoria: 'Administração', carga_horaria: '20h', descricao: 'Direitos e deveres nas relações de consumo.', imagem_url: 'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=400&h=300&fit=crop', ativo: true },
+      { nome: 'Primeiros Socorros', categoria: 'Preparatórios', carga_horaria: '16h', descricao: 'Procedimentos básicos de emergência e salvamento.', imagem_url: 'https://images.unsplash.com/photo-1516549655169-df83a0774514?w=400&h=300&fit=crop', ativo: true },
+      { nome: 'Cuidador de Idosos', categoria: 'Preparatórios', carga_horaria: '60h', descricao: 'Cuidados físicos e emocionais para a terceira idade.', imagem_url: 'https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=400&h=300&fit=crop', ativo: true },
+      { nome: 'Eletricista Residencial', categoria: 'Preparatórios', carga_horaria: '80h', descricao: 'Instalações elétricas seguras e normas técnicas.', imagem_url: 'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=400&h=300&fit=crop', ativo: true },
+      { nome: 'Mecânica de Motos', categoria: 'Preparatórios', carga_horaria: '100h', descricao: 'Manutenção preventiva e corretiva de motocicletas.', imagem_url: 'https://images.unsplash.com/photo-1558981403-c5f9899a28bc?w=400&h=300&fit=crop', ativo: true },
+      { nome: 'Manutenção de Celulares', categoria: 'Informática', carga_horaria: '40h', descricao: 'Reparo de hardware e software de smartphones.', imagem_url: 'https://images.unsplash.com/photo-1512428559087-560fa5ceab42?w=400&h=300&fit=crop', ativo: true },
+      { nome: 'Mestre de Obras', categoria: 'Preparatórios', carga_horaria: '120h', descricao: 'Gestão de canteiro de obras e leitura de projetos.', imagem_url: 'https://images.unsplash.com/photo-1504307651254-35680f356dfd?w=400&h=300&fit=crop', ativo: true }
+    ];
+
+    try {
+      const cursosRef = collection(db, 'cursos');
+      let count = 0;
+      
+      for (const curso of cursosParaInserir) {
+        // Check if already exists
+        const q = query(cursosRef, where('nome', '==', curso.nome));
+        const existing = await getDocs(q);
+        
+        if (existing.empty) {
+          await addDoc(cursosRef, curso);
+          count++;
+        }
+      }
+      
+      alert(`${count} novos cursos inseridos com sucesso!`);
+      loadTodosCursos();
+    } catch (err) {
+      console.error("Erro ao popular cursos:", err);
+      alert("Erro ao popular cursos.");
+    } finally {
+      setIsPopulating(false);
+      setLoading(false);
+    }
+  };
+
+  const handleDeleteCurso = async (id: string) => {
+    if (!window.confirm('Tem certeza que deseja excluir este curso?')) return;
+    
+    setLoading(true);
+    try {
+      await deleteDoc(doc(db, 'cursos', id));
+      setTodosCursos(prev => prev.filter(c => c.id !== id));
+      setSuccess(true);
+      setTimeout(() => setSuccess(false), 2000);
+    } catch (err) {
+      console.error("Erro ao excluir curso:", err);
+      setError("Erro ao excluir o curso.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -549,6 +641,17 @@ export function AdminPanel() {
             Fotos do Carrossel
           </button>
           <button
+            onClick={() => { setActiveTab('todosCursos'); setError(''); setSuccess(false); }}
+            className={`flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-colors ${
+              activeTab === 'todosCursos' 
+                ? 'bg-slate-900 text-white shadow-md' 
+                : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'
+            }`}
+          >
+            <BookOpen className="w-5 h-5" />
+            Todos Cursos
+          </button>
+          <button
             onClick={() => { setActiveTab('leads'); setError(''); setSuccess(false); }}
             className={`flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-colors ${
               activeTab === 'leads' 
@@ -841,6 +944,62 @@ export function AdminPanel() {
                 )}
               </div>
             </>
+          )}
+
+          {activeTab === 'todosCursos' && (
+            <div className="bg-white rounded-2xl p-8 shadow-sm border border-slate-200">
+              <div className="flex justify-between items-center mb-6">
+                <h2 className="text-2xl font-bold text-slate-900">Gerenciar Todos os Cursos</h2>
+                <button
+                  onClick={handlePopulateCursos}
+                  disabled={isPopulating}
+                  className="bg-green-600 text-white px-4 py-2 rounded-lg text-sm font-bold hover:bg-green-700 transition-colors disabled:opacity-50 flex items-center gap-2"
+                >
+                  {isPopulating ? (
+                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                  ) : (
+                    <Plus className="w-4 h-4" />
+                  )}
+                  {isPopulating ? 'Populando...' : 'Popular com Lista Padrão'}
+                </button>
+              </div>
+              
+              <div className="overflow-x-auto">
+                <table className="w-full text-left">
+                  <thead className="bg-slate-50 border-b border-slate-200">
+                    <tr>
+                      <th className="px-4 py-3 text-sm font-semibold text-slate-600">Nome</th>
+                      <th className="px-4 py-3 text-sm font-semibold text-slate-600">Categoria</th>
+                      <th className="px-4 py-3 text-sm font-semibold text-slate-600">Carga</th>
+                      <th className="px-4 py-3 text-sm font-semibold text-slate-600">Ações</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-200">
+                    {todosCursos.length === 0 ? (
+                      <tr>
+                        <td colSpan={4} className="px-4 py-8 text-center text-slate-500 italic">Nenhum curso cadastrado no banco de dados.</td>
+                      </tr>
+                    ) : (
+                      todosCursos.map((curso) => (
+                        <tr key={curso.id} className="hover:bg-slate-50 transition-colors">
+                          <td className="px-4 py-3 text-sm text-slate-800 font-medium">{curso.nome}</td>
+                          <td className="px-4 py-3 text-sm text-slate-600">{curso.categoria}</td>
+                          <td className="px-4 py-3 text-sm text-slate-600">{curso.carga_horaria}</td>
+                          <td className="px-4 py-3 text-sm">
+                            <button
+                              onClick={() => handleDeleteCurso(curso.id)}
+                              className="text-red-600 hover:text-red-800 font-medium transition-colors"
+                            >
+                              Excluir
+                            </button>
+                          </td>
+                        </tr>
+                      ))
+                    )}
+                  </tbody>
+                </table>
+              </div>
+            </div>
           )}
 
           {activeTab === 'leads' && (

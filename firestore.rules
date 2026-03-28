@@ -93,5 +93,19 @@ service cloud.firestore {
                              );
       allow delete: if false;
     }
+
+    match /cursos/{cursoId} {
+      // Anyone can read courses
+      allow read: if true;
+      // Only admins can manage courses
+      allow write: if isAdmin();
+    }
+
+    match /inscricoes_aluno_empreendedor/{inscricaoId} {
+      // Anyone can create an enrollment
+      allow create: if true; // In a real app, we would validate the data
+      // Only admins can read or manage enrollments
+      allow read, write: if isAdmin();
+    }
   }
 }

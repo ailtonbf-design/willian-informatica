@@ -1,10 +1,10 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
 import { motion, AnimatePresence } from 'motion/react';
 import { Check, X, Clock, Info, Send } from 'lucide-react';
 import { db } from './firebase';
-import { collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { collection, addDoc, serverTimestamp, onSnapshot, query, where, orderBy } from 'firebase/firestore';
 
 interface Curso {
   id: string;
@@ -15,21 +15,15 @@ interface Curso {
   imagem: string;
 }
 
-const mockData: Curso[] = [
-  { id: '1', nome: 'Auxiliar Administrativo', categoria: 'Administração', cargaHoraria: '40 hora(s)', descricao: 'Aprenda as rotinas essenciais de um escritório moderno, desde organização de documentos até atendimento ao cliente.', imagem: 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=100&h=100&fit=crop' },
-  { id: '2', nome: 'Excel Avançado', categoria: 'Informática', cargaHoraria: '20 hora(s)', descricao: 'Domine fórmulas complexas, tabelas dinâmicas e macros para se tornar um especialista em planilhas.', imagem: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?w=100&h=100&fit=crop' },
-  { id: '3', nome: 'Inglês para Negócios', categoria: 'Idiomas', cargaHoraria: '60 hora(s)', descricao: 'Desenvolva fluência em situações corporativas, reuniões e apresentações internacionais.', imagem: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=100&h=100&fit=crop' },
-  { id: '4', nome: 'Marketing Digital', categoria: 'Administração', cargaHoraria: '30 hora(s)', descricao: 'Estratégias de redes sociais, tráfego pago e branding para escalar resultados online.', imagem: 'https://images.unsplash.com/photo-1432888498266-38ffec3eaf0a?w=100&h=100&fit=crop' },
-  { id: '5', nome: 'Preparatório Concursos', categoria: 'Preparatórios', cargaHoraria: '100 hora(s)', descricao: 'Foco total nas matérias mais cobradas em editais públicos de nível médio e superior.', imagem: 'https://images.unsplash.com/photo-1501504905252-473c47e087f8?w=100&h=100&fit=crop' },
-];
-
 const categorias = ['Todas', 'Informática', 'Administração', 'Idiomas', 'Preparatórios'];
 
 export default function CursosPage() {
+  const [cursos, setCursos] = useState<Curso[]>([]);
   const [filtroAtivo, setFiltroAtivo] = useState('Todas');
   const [selecionados, setSelecionados] = useState<string[]>([]);
   const [cursoDetalhe, setCursoDetalhe] = useState<Curso | null>(null);
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
+  const [loading, setLoading] = useState(true);
   
   // Form state
   const [prospectoNome, setProspectoNome] = useState('');
@@ -38,10 +32,34 @@ export default function CursosPage() {
   const [alunoEmpreendedorWhatsapp, setAlunoEmpreendedorWhatsapp] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  useEffect(() => {
+    const cursosRef = collection(db, 'cursos');
+    const q = query(cursosRef, where('ativo', '==', true), orderBy('nome', 'asc'));
+    
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      const cursosData = snapshot.docs.map(doc => ({
+        id: doc.id,
+        nome: doc.data().nome,
+        categoria: doc.data().categoria,
+        cargaHoraria: doc.data().carga_horaria,
+        descricao: doc.data().descricao,
+        imagem: doc.data().imagem_url
+      })) as Curso[];
+      
+      setCursos(cursosData);
+      setLoading(false);
+    }, (error) => {
+      console.error("Erro ao carregar cursos:", error);
+      setLoading(false);
+    });
+
+    return () => unsubscribe();
+  }, []);
+
   const cursosFiltrados = useMemo(() => {
-    if (filtroAtivo === 'Todas') return mockData;
-    return mockData.filter(c => c.categoria === filtroAtivo);
-  }, [filtroAtivo]);
+    if (filtroAtivo === 'Todas') return cursos;
+    return cursos.filter(c => c.categoria === filtroAtivo);
+  }, [filtroAtivo, cursos]);
 
   const toggleSelecao = (id: string) => {
     setSelecionados(prev => 
@@ -66,7 +84,7 @@ export default function CursosPage() {
         prospecto: { nome: prospectoNome, whatsapp: prospectoWhatsapp },
         alunoEmpreendedor: { nome: alunoEmpreendedorNome, whatsapp: alunoEmpreendedorWhatsapp },
         cursosIds: selecionados,
-        cursosNomes: mockData.filter(c => selecionados.includes(c.id)).map(c => c.nome),
+        cursosNomes: cursos.filter(c => selecionados.includes(c.id)).map(c => c.nome),
         createdAt: serverTimestamp(),
         data: new Date().toLocaleDateString('pt-BR')
       });
@@ -136,13 +154,22 @@ export default function CursosPage() {
         <div className="container mx-auto px-6 py-16">
           {/* Título Secundário */}
           <div className="text-center mb-12">
-            <p className="text-slate-600 text-lg max-w-2xl mx-auto">
+            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-4">Aluno Empreendedor</h2>
+            <p className="text-slate-600 text-lg max-w-2xl mx-auto mb-4">
+              Um diferencial exclusivo para nossos alunos. Aqui você não apenas aprende...você aprende a empreender.
+            </p>
+            <p className="text-slate-500 text-sm max-w-2xl mx-auto">
               Selecione um ou mais cursos para se inscrever no programa Aluno Empreendedor.
             </p>
           </div>
 
-          {/* Filtros */}
-          <div className="flex flex-wrap justify-center gap-3 mb-12">
+          {/* Instrução UX */}
+          <p className="text-[10px] text-gray-400 mb-4 text-center uppercase tracking-widest">
+            Clique no nome do curso para ver mais detalhes
+          </p>
+
+          {/* Filtros Desktop */}
+          <div className="hidden md:flex flex-wrap justify-center gap-3 mb-12">
             {categorias.map(cat => (
               <button
                 key={cat}
@@ -158,30 +185,45 @@ export default function CursosPage() {
             ))}
           </div>
 
-          {/* Tabela de Cursos */}
-          <div className="max-w-6xl mx-auto space-y-4 mb-16">
+          {/* Filtro Mobile (Dropdown) */}
+          <div className="block md:hidden w-full mb-6">
+            <select
+              value={filtroAtivo}
+              onChange={(e) => setFiltroAtivo(e.target.value)}
+              className="w-full p-3 border border-slate-200 rounded-lg bg-white text-slate-700 font-semibold focus:ring-2 focus:ring-red-600 outline-none shadow-sm"
+            >
+              <option value="Todas">Filtrar categoria...</option>
+              {categorias.filter(c => c !== 'Todas').map(cat => (
+                <option key={cat} value={cat}>{cat}</option>
+              ))}
+            </select>
+          </div>
+
+          {/* Lista de Cursos */}
+          <div className="max-w-4xl mx-auto mb-16">
             {cursosFiltrados.map(curso => {
               const isSelected = selecionados.includes(curso.id);
               return (
                 <motion.div
                   key={curso.id}
                   layout
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  className={`bg-white rounded-2xl p-4 md:p-6 shadow-sm border-2 transition-all cursor-pointer flex flex-col md:flex-row items-center gap-6 ${
-                    isSelected ? 'border-green-500 bg-green-50/30' : 'border-transparent hover:border-slate-200'
-                  }`}
-                  onClick={() => toggleSelecao(curso.id)}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="flex flex-row items-center gap-3 p-3 border-b border-gray-200 bg-white hover:bg-gray-50 transition-colors"
                 >
-                  {/* Check Area */}
-                  <div className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors shrink-0 ${
-                    isSelected ? 'bg-green-500 text-white' : 'bg-slate-100 text-slate-300'
-                  }`}>
-                    <Check className="w-6 h-6" />
-                  </div>
+                  {/* Elemento 1: A Caixa de Seleção (OBRIGATÓRIO) */}
+                  <input 
+                    type="checkbox"
+                    checked={isSelected}
+                    onChange={() => toggleSelecao(curso.id)}
+                    className="w-5 h-5 cursor-pointer accent-red-600 shrink-0"
+                  />
 
-                  {/* Course Image */}
-                  <div className="w-12 h-12 rounded-full overflow-hidden border border-slate-200 shrink-0">
+                  {/* Elemento 2: A Imagem */}
+                  <div 
+                    className="w-12 h-12 min-w-[48px] rounded overflow-hidden cursor-pointer shrink-0"
+                    onClick={() => setCursoDetalhe(curso)}
+                  >
                     <img 
                       src={curso.imagem} 
                       alt={curso.nome} 
@@ -190,29 +232,14 @@ export default function CursosPage() {
                     />
                   </div>
 
-                  {/* Info */}
-                  <div className="flex-grow text-center md:text-left">
-                    <button 
-                      onClick={(e) => { e.stopPropagation(); setCursoDetalhe(curso); }}
-                      className="text-xl font-bold text-slate-900 hover:text-red-600 transition-colors text-left"
+                  {/* Elemento 3: O Nome do Curso (Linha Única) */}
+                  <div className="flex-1 min-w-0">
+                    <h4 
+                      onClick={() => setCursoDetalhe(curso)}
+                      className="text-sm font-semibold text-gray-800 truncate cursor-pointer hover:text-blue-600 transition-colors"
                     >
                       {curso.nome}
-                    </button>
-                    <div className="flex flex-wrap justify-center md:justify-start gap-4 mt-1">
-                      <span className="bg-slate-100 text-slate-600 px-3 py-0.5 rounded-full text-[10px] font-bold uppercase tracking-wider">
-                        {curso.categoria}
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Actions */}
-                  <div className="flex items-center gap-3">
-                    <button 
-                      onClick={(e) => { e.stopPropagation(); setCursoDetalhe(curso); }}
-                      className="px-4 py-2 text-sm font-bold text-slate-600 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors"
-                    >
-                      Detalhes
-                    </button>
+                    </h4>
                   </div>
                 </motion.div>
               );

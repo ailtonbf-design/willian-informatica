@@ -40,9 +40,47 @@
           "description": "URL da imagem do curso destaque"
         }
       }
+    },
+    "Curso": {
+      "title": "Curso",
+      "description": "Um curso oferecido pela instituição.",
+      "type": "object",
+      "properties": {
+        "nome": {
+          "type": "string",
+          "description": "Nome do curso"
+        },
+        "descricao": {
+          "type": "string",
+          "description": "Conteúdo ou descrição do curso"
+        },
+        "carga_horaria": {
+          "type": "string",
+          "description": "Carga horária do curso"
+        },
+        "categoria": {
+          "type": "string",
+          "description": "Categoria do curso (Informática, Administração, Idiomas, Preparatórios)"
+        },
+        "imagem_url": {
+          "type": "string",
+          "description": "URL da imagem do curso"
+        },
+        "ativo": {
+          "type": "boolean",
+          "description": "Se o curso está ativo no catálogo"
+        }
+      },
+      "required": ["nome", "descricao", "carga_horaria", "categoria", "imagem_url", "ativo"]
     }
   },
   "firestore": {
+    "/cursos/{cursoId}": {
+      "schema": {
+        "$ref": "#/entities/Curso"
+      },
+      "description": "Coleção de cursos oferecidos."
+    },
     "/leads/{leadId}": {
       "schema": {
         "$ref": "#/entities/Lead"
