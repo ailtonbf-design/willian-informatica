@@ -73,7 +73,25 @@ export function AdminPanel() {
   const [password, setPassword] = useState('');
 
   useEffect(() => {
-    // Removed Firebase auth listener to use hardcoded login
+    // Check for hardcoded login
+    const loggedIn = localStorage.getItem('admin_logged_in');
+    if (loggedIn === 'true') {
+      setIsAuthenticated(true);
+    }
+
+    // Try to sign in anonymously to satisfy Firebase requirements if needed
+    // but handle the error gracefully if it's restricted
+    const initAuth = async () => {
+      try {
+        // Only try if not already authenticated via hardcoded login
+        if (!loggedIn) {
+          // await signInAnonymously(auth);
+        }
+      } catch (err: any) {
+        console.warn("Anonymous auth restricted, using hardcoded login only:", err.message);
+      }
+    };
+    initAuth();
   }, []);
 
   useEffect(() => {
