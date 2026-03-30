@@ -6,11 +6,11 @@ export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const navLinks = [
-    { href: '/#destaque', label: 'Destaque' },
-    { href: '/#treinamento', label: 'Treinamentos' },
+    { href: '/#destaque', label: 'Destaque', mobileLabel: 'Destaque da Semana' },
+    { href: '/#treinamento', label: 'Treinamentos', mobileLabel: 'Vagas de Emprego' },
     { href: '/#empreendedor', label: 'Aluno Empreendedor' },
-    { href: '/#wpescola', label: 'WP Escola' },
-    { href: '/#certificado', label: 'Certificado' },
+    { href: '/#wpescola', label: 'WP Escola', mobileLabel: 'WP Escola de Vendas & Negócios' },
+    { href: '/#certificado', label: 'Certificado', mobileLabel: 'Certificado Premium' },
     { href: '/#quemsomos', label: 'Quem Somos' },
   ];
 
@@ -72,7 +72,7 @@ export function Header() {
                   onClick={() => setIsMenuOpen(false)}
                   className="text-slate-700 hover:text-red-600 font-medium transition-colors py-2"
                 >
-                  {link.label}
+                  {link.mobileLabel || link.label}
                 </a>
               ))}
               <a 
