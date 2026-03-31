@@ -38,21 +38,23 @@ service cloud.firestore {
     }
 
     function isValidLead(data) {
-      return hasOnlyAllowedFields(['nome', 'whatsapp', 'categoria', 'status', 'createdAt']) &&
+      return hasOnlyAllowedFields(['nome', 'whatsapp', 'categoria', 'status', 'createdAt', 'notas']) &&
              data.nome is string && data.nome.size() > 0 && data.nome.size() <= 100 &&
              data.whatsapp is string && data.whatsapp.size() > 0 && data.whatsapp.size() <= 20 &&
              data.categoria is string && data.categoria.size() > 0 && data.categoria.size() <= 100 &&
              data.status is string && data.status in ['Novo', 'Em Atendimento', 'Matriculado', 'Perdido'] &&
-             data.createdAt is timestamp;
+             data.createdAt is timestamp &&
+             (!('notas' in data) || (data.notas is string && data.notas.size() <= 1000));
     }
 
     function isValidLeadUpdate(data) {
-      return hasOnlyAllowedFields(['nome', 'whatsapp', 'categoria', 'status', 'createdAt']) &&
+      return hasOnlyAllowedFields(['nome', 'whatsapp', 'categoria', 'status', 'createdAt', 'notas']) &&
              data.nome == resource.data.nome &&
              data.whatsapp == resource.data.whatsapp &&
              data.categoria == resource.data.categoria &&
              data.createdAt == resource.data.createdAt &&
-             data.status is string && data.status in ['Novo', 'Em Atendimento', 'Matriculado', 'Perdido'];
+             data.status is string && data.status in ['Novo', 'Em Atendimento', 'Matriculado', 'Perdido'] &&
+             (!('notas' in data) || (data.notas is string && data.notas.size() <= 1000));
     }
 
     function isValidConfiguracao(data) {
