@@ -698,7 +698,7 @@ export function AdminPanel() {
 
   return (
     <div className="min-h-screen bg-slate-50 py-12 px-6">
-      <div className="max-w-4xl mx-auto">
+      <div className={`${activeTab === 'leads' ? 'max-w-full' : 'max-w-4xl'} mx-auto transition-all duration-300`}>
         <div className="flex items-center justify-between mb-8">
           <h1 className="text-3xl font-bold text-slate-900">Painel Administrativo</h1>
           <button
@@ -1253,123 +1253,170 @@ export function AdminPanel() {
           )}
 
           {activeTab === 'leads' && (
-            <>
-              <h2 className="text-xl font-bold text-slate-800 mb-6 border-b border-slate-100 pb-4">
-                Gestão de Leads / CRM
-              </h2>
-
-              {/* Navegação de Abas (Categorias de Leads) */}
-              <div className="w-full overflow-x-auto pb-2 mb-6 scrollbar-hide">
-                <div className="flex gap-2 min-w-max border-b border-slate-200">
-                  {leadCategories.map((cat) => (
-                    <button
-                      key={cat}
-                      onClick={() => setActiveLeadCategory(cat)}
-                      className={`px-4 py-3 text-sm font-semibold transition-colors border-b-2 ${
-                        activeLeadCategory === cat
-                          ? 'border-brand-red text-brand-red'
-                          : 'border-transparent text-slate-500 hover:text-slate-700 hover:border-slate-300'
-                      }`}
-                    >
-                      {cat}
-                    </button>
-                  ))}
+            <div className="flex flex-col lg:flex-row gap-8">
+              {/* Sidebar Lateral Interna */}
+              <aside className="w-full lg:w-64 shrink-0">
+                <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden sticky top-6">
+                  <div className="p-4 border-b border-slate-100 bg-slate-50/50">
+                    <h3 className="font-bold text-slate-800 flex items-center gap-2">
+                      <Users className="w-4 h-4 text-brand-red" />
+                      Filtros de Leads
+                    </h3>
+                  </div>
+                  <nav className="p-2 flex flex-col gap-1">
+                    {leadCategories.map((cat) => (
+                      <button
+                        key={cat}
+                        onClick={() => setActiveLeadCategory(cat)}
+                        className={`w-full text-left px-4 py-3 rounded-xl text-sm font-semibold transition-all flex items-center justify-between group ${
+                          activeLeadCategory === cat
+                            ? 'bg-brand-red text-white shadow-md shadow-brand-red/20'
+                            : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
+                        }`}
+                      >
+                        {cat}
+                        {activeLeadCategory === cat && (
+                          <div className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
+                        )}
+                      </button>
+                    ))}
+                  </nav>
                 </div>
-              </div>
+              </aside>
 
-              {/* Tabela de Dados (Data Grid) */}
-              <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-                <div className="overflow-x-auto">
-                  <table className="w-full text-left border-collapse">
-                    <thead>
-                      <tr className="bg-slate-50 border-b border-slate-200 text-slate-600 text-sm">
-                        <th className="p-4 font-semibold">Nome do Lead</th>
-                        <th className="p-4 font-semibold">WhatsApp</th>
-                        <th className="p-4 font-semibold">Status / Notas</th>
-                        <th className="p-4 font-semibold text-right">Ações</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-slate-100">
-                      {loading ? (
-                        <tr>
-                          <td colSpan={4} className="p-8 text-center text-slate-500">
-                            <div className="flex flex-col items-center justify-center">
-                              <div className="w-8 h-8 border-4 border-slate-200 border-t-brand-red rounded-full animate-spin mb-4"></div>
-                              Carregando leads...
-                            </div>
-                          </td>
+              {/* Área Principal da Tabela */}
+              <div className="flex-1 min-w-0">
+                <div className="flex items-center justify-between mb-6">
+                  <h2 className="text-2xl font-bold text-slate-900">
+                    {activeLeadCategory}
+                  </h2>
+                  <div className="text-sm text-slate-500 font-medium">
+                    Total: {leads.length} registros
+                  </div>
+                </div>
+
+                <div className="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+                  <div className="overflow-x-auto">
+                    <table className="w-full text-left border-collapse">
+                      <thead>
+                        <tr className="bg-slate-50 border-b border-slate-200 text-slate-600 text-xs uppercase tracking-wider">
+                          <th className="p-4 font-bold">Nome do Prospecto</th>
+                          <th className="p-4 font-bold">Origem / Indicação</th>
+                          <th className="p-4 font-bold">Cursos de Interesse</th>
+                          <th className="p-4 font-bold">WhatsApp</th>
+                          <th className="p-4 font-bold">Status</th>
+                          <th className="p-4 font-bold text-right">Ações</th>
                         </tr>
-                      ) : leads.length === 0 ? (
-                        <tr>
-                          <td colSpan={4} className="p-8 text-center text-slate-500">
-                            Nenhum lead encontrado para esta categoria.
-                          </td>
-                        </tr>
-                      ) : (
-                        leads.map((lead) => (
-                          <tr key={lead.id} className="hover:bg-slate-50 transition-colors">
-                            <td className="p-4">
-                              <div className="font-medium text-slate-900">{lead.nome}</div>
-                              <div className="flex items-center gap-2 mt-0.5">
-                                <span className="text-xs text-slate-400">{lead.data}</span>
-                                {activeLeadCategory === 'Todos os Leads' && (
-                                  <span className="text-[10px] bg-slate-100 text-slate-500 px-1.5 py-0.5 rounded border border-slate-200">
-                                    {lead.categoria}
-                                  </span>
-                                )}
-                              </div>
-                              {lead.notas && (
-                                <div className="text-[10px] text-slate-500 mt-1 bg-slate-50 p-1 rounded border border-slate-100 italic">
-                                  {lead.notas}
-                                </div>
-                              )}
-                            </td>
-                            <td className="p-4 text-slate-600">{lead.whatsapp}</td>
-                            <td className="p-4">
-                              <select
-                                value={lead.status}
-                                onChange={(e) => handleStatusChange(lead.id, e.target.value)}
-                                className={`text-sm rounded-lg border px-3 py-1.5 outline-none focus:ring-2 focus:ring-brand-red/20 transition-colors ${
-                                  lead.status === 'Novo' ? 'bg-blue-50 border-blue-200 text-blue-700' :
-                                  lead.status === 'Em Atendimento' ? 'bg-amber-50 border-amber-200 text-amber-700' :
-                                  lead.status === 'Matriculado' ? 'bg-emerald-50 border-emerald-200 text-emerald-700' :
-                                  'bg-slate-50 border-slate-200 text-slate-700'
-                                }`}
-                              >
-                                <option value="Novo">Novo</option>
-                                <option value="Em Atendimento">Em Atendimento</option>
-                                <option value="Matriculado">Matriculado</option>
-                                <option value="Perdido">Perdido</option>
-                              </select>
-                            </td>
-                            <td className="p-4 text-right">
-                              <div className="flex items-center justify-end gap-2">
-                                <a
-                                  href={`https://wa.me/${lead.whatsapp.replace(/\D/g, '')}`}
-                                  target="_blank"
-                                  rel="noopener noreferrer"
-                                  className="p-2 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-colors shadow-sm"
-                                  title="Chamar no WhatsApp"
-                                >
-                                  <MessageCircle className="w-4 h-4" />
-                                </a>
-                                <button
-                                  onClick={() => handleDeleteLead(lead.id)}
-                                  className="p-2 bg-white border border-red-200 text-red-500 hover:bg-red-50 hover:border-red-300 rounded-lg transition-colors shadow-sm"
-                                  title="Excluir Lead"
-                                >
-                                  <Trash2 className="w-4 h-4" />
-                                </button>
+                      </thead>
+                      <tbody className="divide-y divide-slate-100">
+                        {loading ? (
+                          <tr>
+                            <td colSpan={6} className="p-12 text-center text-slate-500">
+                              <div className="flex flex-col items-center justify-center">
+                                <div className="w-10 h-10 border-4 border-slate-200 border-t-brand-red rounded-full animate-spin mb-4"></div>
+                                <span className="font-medium">Carregando dados do CRM...</span>
                               </div>
                             </td>
                           </tr>
-                        ))
-                      )}
-                    </tbody>
-                  </table>
+                        ) : leads.length === 0 ? (
+                          <tr>
+                            <td colSpan={6} className="p-12 text-center text-slate-500 italic">
+                              Nenhum lead encontrado nesta categoria.
+                            </td>
+                          </tr>
+                        ) : (
+                          leads.map((lead) => {
+                            // Parsing das notas para extrair indicação e cursos
+                            const indicacaoMatch = lead.notas?.match(/Indicado por: (.*?) \((.*?)\)/);
+                            const cursosMatch = lead.notas?.match(/Cursos: (.*)/);
+                            
+                            const indicador = indicacaoMatch ? indicacaoMatch[1] : 'Direto / Site';
+                            const indicadorWhats = indicacaoMatch ? indicacaoMatch[2] : '';
+                            const cursosArray = cursosMatch ? cursosMatch[1].split(',').map(c => c.trim()) : [];
+
+                            return (
+                              <tr key={lead.id} className="hover:bg-slate-50/80 transition-colors even:bg-slate-50/30">
+                                <td className="p-4">
+                                  <div className="font-bold text-slate-900">{lead.nome}</div>
+                                  <div className="text-[10px] text-slate-400 mt-0.5 font-medium uppercase tracking-tighter">
+                                    {lead.data}
+                                    {activeLeadCategory === 'Todos os Leads' && (
+                                      <span className="ml-2 text-brand-red">• {lead.categoria}</span>
+                                    )}
+                                  </div>
+                                </td>
+                                <td className="p-4">
+                                  <div className="text-sm font-medium text-slate-700">{indicador}</div>
+                                  {indicadorWhats && (
+                                    <div className="text-xs text-slate-400 font-mono">{indicadorWhats}</div>
+                                  )}
+                                </td>
+                                <td className="p-4">
+                                  <div className="flex flex-wrap gap-1.5">
+                                    {cursosArray.length > 0 ? (
+                                      cursosArray.map((curso, idx) => (
+                                        <span 
+                                          key={idx}
+                                          className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-brand-red/5 text-brand-red border border-brand-red/10"
+                                        >
+                                          {curso}
+                                        </span>
+                                      ))
+                                    ) : (
+                                      <span className="text-xs text-slate-400 italic">Não informado</span>
+                                    )}
+                                  </div>
+                                </td>
+                                <td className="p-4">
+                                  <div className="flex items-center gap-2">
+                                    <span className="text-sm font-mono text-slate-600">{lead.whatsapp}</span>
+                                    <a
+                                      href={`https://wa.me/${lead.whatsapp.replace(/\D/g, '')}`}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="p-1.5 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-all shadow-sm hover:scale-110"
+                                      title="Chamar no WhatsApp"
+                                    >
+                                      <MessageCircle className="w-3.5 h-3.5" />
+                                    </a>
+                                  </div>
+                                </td>
+                                <td className="p-4">
+                                  <select
+                                    value={lead.status}
+                                    onChange={(e) => handleStatusChange(lead.id, e.target.value)}
+                                    className={`text-xs font-bold rounded-full border px-3 py-1 outline-none focus:ring-2 focus:ring-brand-red/20 transition-all cursor-pointer ${
+                                      lead.status === 'Novo' ? 'bg-blue-50 border-blue-200 text-blue-700' :
+                                      lead.status === 'Em Atendimento' ? 'bg-amber-50 border-amber-200 text-amber-700' :
+                                      lead.status === 'Matriculado' ? 'bg-emerald-50 border-emerald-200 text-emerald-700' :
+                                      'bg-slate-50 border-slate-200 text-slate-700'
+                                    }`}
+                                  >
+                                    <option value="Novo">Novo</option>
+                                    <option value="Em Atendimento">Em Atendimento</option>
+                                    <option value="Matriculado">Matriculado</option>
+                                    <option value="Perdido">Perdido</option>
+                                  </select>
+                                </td>
+                                <td className="p-4 text-right">
+                                  <button
+                                    onClick={() => handleDeleteLead(lead.id)}
+                                    className="p-2 text-slate-400 hover:text-red-500 hover:bg-red-50 rounded-lg transition-all"
+                                    title="Excluir Lead"
+                                  >
+                                    <Trash2 className="w-4 h-4" />
+                                  </button>
+                                </td>
+                              </tr>
+                            );
+                          })
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
               </div>
-            </>
+            </div>
           )}
         </div>
       </div>
