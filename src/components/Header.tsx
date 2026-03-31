@@ -6,7 +6,7 @@ export function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const navLinks = [
-    { href: '/#destaque', label: 'Destaque', mobileLabel: 'Destaque da Semana' },
+    { href: '/#destaque', label: 'Destaque', mobileLabel: 'Curso Destaque da Semana' },
     { href: '/#treinamento', label: 'Treinamentos', mobileLabel: 'Vagas de Emprego' },
     { href: '/#empreendedor', label: 'Aluno Empreendedor' },
     { href: '/#wpescola', label: 'WP Escola', mobileLabel: 'WP Escola de Vendas & Negócios' },
