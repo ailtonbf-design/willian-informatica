@@ -23,6 +23,7 @@ interface Lead {
   categoria: string;
   status: string;
   data: string;
+  notas?: string;
 }
 
 export function AdminPanel() {
@@ -322,7 +323,8 @@ export function AdminPanel() {
           whatsapp: data.whatsapp || '',
           categoria: data.categoria || '',
           status: data.status || 'Novo',
-          data: dataFormatada
+          data: dataFormatada,
+          notas: data.notas || ''
         });
       });
 
@@ -1293,6 +1295,11 @@ export function AdminPanel() {
                             <td className="p-4">
                               <div className="font-medium text-slate-900">{lead.nome}</div>
                               <div className="text-xs text-slate-400 mt-0.5">{lead.data}</div>
+                              {lead.notas && (
+                                <div className="text-[10px] text-slate-500 mt-1 bg-slate-50 p-1 rounded border border-slate-100 italic">
+                                  {lead.notas}
+                                </div>
+                              )}
                             </td>
                             <td className="p-4 text-slate-600">{lead.whatsapp}</td>
                             <td className="p-4">

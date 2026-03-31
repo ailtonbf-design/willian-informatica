@@ -81,15 +81,14 @@ export default function CursosPage() {
     try {
       const selectedCursosNomes = cursos.filter(c => selecionados.includes(c.id)).map(c => c.nome);
       
-      const leadRef = collection(db, 'leads_empreendedor');
+      const leadRef = collection(db, 'leads');
       await addDoc(leadRef, {
-        nome_prospecto: prospectoNome,
-        whatsapp_prospecto: prospectoWhatsapp,
-        nome_empreendedor: alunoEmpreendedorNome,
-        whatsapp_empreendedor: alunoEmpreendedorWhatsapp,
-        cursos_info: selectedCursosNomes,
-        data_cadastro: serverTimestamp(),
-        status: 'Pendente'
+        nome: prospectoNome,
+        whatsapp: prospectoWhatsapp,
+        categoria: 'Aluno Empreendedor',
+        status: 'Novo',
+        createdAt: serverTimestamp(),
+        notas: `Indicado por: ${alunoEmpreendedorNome} (${alunoEmpreendedorWhatsapp}). Cursos: ${selectedCursosNomes.join(', ')}`
       });
       
       alert('Inscrição enviada com sucesso!');
