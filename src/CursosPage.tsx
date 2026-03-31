@@ -93,11 +93,6 @@ export default function CursosPage() {
       
       alert('Inscrição enviada com sucesso!');
       
-      // WhatsApp redirect
-      const message = `Nova Inscrição recebida no site! Prospecto: ${prospectoNome}, Indicado por: ${alunoEmpreendedorNome}.`;
-      const whatsappUrl = `https://wa.me/5517991879478?text=${encodeURIComponent(message)}`;
-      window.open(whatsappUrl, '_blank');
-
       // Reset form and close modal
       setIsContactModalOpen(false);
       setSelecionados([]);

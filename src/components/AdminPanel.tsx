@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { doc, setDoc, getDoc, collection, query, where, getDocs, updateDoc, deleteDoc, orderBy, addDoc, serverTimestamp } from 'firebase/firestore';
+import { doc, setDoc, getDoc, collection, query, where, getDocs, updateDoc, deleteDoc, orderBy, addDoc, serverTimestamp, onSnapshot } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 import { signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from 'firebase/auth';
 import { db, storage, auth } from '../firebase';
-import { Save, LogIn, LogOut, CheckCircle, Upload, Trash2, Briefcase, BookOpen, Image as ImageIcon, Users, MessageCircle, Plus } from 'lucide-react';
+import { Save, LogIn, LogOut, CheckCircle, Upload, Trash2, Briefcase, BookOpen, Image as ImageIcon, Users, MessageCircle, Plus, Bell } from 'lucide-react';
 
 interface Vaga {
   id: string;
@@ -24,6 +24,7 @@ interface Lead {
   status: string;
   data: string;
   notas?: string;
+  createdAt?: any;
 }
 
 export function AdminPanel() {
@@ -59,6 +60,7 @@ export function AdminPanel() {
   // Leads State
   const [leads, setLeads] = useState<Lead[]>([]);
   const [activeLeadCategory, setActiveLeadCategory] = useState<string>('Todos os Leads');
+  const [leadsStats, setLeadsStats] = useState<Record<string, { novos: number, atendimento: number }>>({});
   const leadCategories = ['Todos os Leads', 'Curso em Destaque', 'Treinamento Grátis', 'Programa Aluno Empreendedor', 'WP Escola de Negócios', 'Certificado Premium'];
 
   const [loading, setLoading] = useState(false);
@@ -294,70 +296,71 @@ export function AdminPanel() {
   };
 
   // --- LÓGICA DE LEADS / CRM ---
-  const carregarLeads = async (categoria: string) => {
+  // Real-time Leads Listener
+  useEffect(() => {
+    if (!isAuthenticated) return;
+
     setLoading(true);
-    setLeads([]);
+    const leadsRef = collection(db, 'leads');
     
-    try {
-      const leadsRef = collection(db, 'leads');
-      let q;
+    const unsubscribe = onSnapshot(leadsRef, (snapshot) => {
+      const allLeads: Lead[] = [];
+      const stats: Record<string, { novos: number, atendimento: number }> = {};
       
-      if (categoria === 'Todos os Leads') {
-        q = query(leadsRef);
-      } else {
-        q = query(
-          leadsRef, 
-          where('categoria', '==', categoria)
-        );
-      }
-      
-      const querySnapshot = await getDocs(q);
-      const leadsData: any[] = [];
-      
-      querySnapshot.forEach((doc) => {
-        const data = doc.data() as any;
-        leadsData.push({ id: doc.id, ...data });
+      // Initialize stats for all categories
+      leadCategories.forEach(cat => {
+        stats[cat] = { novos: 0, atendimento: 0 };
       });
 
-      // Ordenar em memória por data decrescente
-      leadsData.sort((a, b) => {
+      snapshot.forEach((doc) => {
+        const data = doc.data() as any;
+        const lead: Lead = {
+          id: doc.id,
+          nome: data.nome || '',
+          whatsapp: data.whatsapp || '',
+          categoria: data.categoria || '',
+          status: data.status || 'Novo',
+          data: data.createdAt ? data.createdAt.toDate().toLocaleDateString('pt-BR') : 'Sem data',
+          notas: data.notas || '',
+          createdAt: data.createdAt
+        };
+        allLeads.push(lead);
+
+        // Update stats for specific category
+        if (stats[lead.categoria]) {
+          if (lead.status === 'Novo') stats[lead.categoria].novos++;
+          if (lead.status === 'Em Atendimento') stats[lead.categoria].atendimento++;
+        }
+        
+        // Update stats for "Todos os Leads"
+        if (lead.status === 'Novo') stats['Todos os Leads'].novos++;
+        if (lead.status === 'Em Atendimento') stats['Todos os Leads'].atendimento++;
+      });
+
+      setLeadsStats(stats);
+
+      // Filter and sort for current view
+      let filtered = allLeads;
+      if (activeLeadCategory !== 'Todos os Leads') {
+        filtered = allLeads.filter(l => l.categoria === activeLeadCategory);
+      }
+
+      filtered.sort((a, b) => {
         const dateA = a.createdAt?.toDate?.() || new Date(0);
         const dateB = b.createdAt?.toDate?.() || new Date(0);
         return dateB.getTime() - dateA.getTime();
       });
 
-      const formattedLeads: Lead[] = leadsData.map(data => {
-        let dataFormatada = 'Sem data';
-        if (data.createdAt) {
-          const date = data.createdAt.toDate();
-          dataFormatada = date.toLocaleDateString('pt-BR');
-        }
-        
-        return {
-          id: data.id,
-          nome: data.nome || '',
-          whatsapp: data.whatsapp || '',
-          categoria: data.categoria || '',
-          status: data.status || 'Novo',
-          data: dataFormatada,
-          notas: data.notas || ''
-        };
-      });
-
-      setLeads(formattedLeads);
-    } catch (err) {
-      console.error("Erro ao carregar leads:", err);
-      setError("Não foi possível carregar os leads.");
-    } finally {
+      setLeads(filtered);
       setLoading(false);
-    }
-  };
+    }, (err) => {
+      console.error("Erro no onSnapshot de leads:", err);
+      setError("Erro ao sincronizar leads em tempo real.");
+      setLoading(false);
+    });
 
-  useEffect(() => {
-    if (activeTab === 'leads' && isAuthenticated) {
-      carregarLeads(activeLeadCategory);
-    }
-  }, [activeTab, activeLeadCategory, isAuthenticated]);
+    return () => unsubscribe();
+  }, [isAuthenticated, activeLeadCategory]);
 
   const handleStatusChange = async (leadId: string, novoStatus: string) => {
     try {
@@ -1264,22 +1267,48 @@ export function AdminPanel() {
                     </h3>
                   </div>
                   <nav className="p-2 flex flex-col gap-1">
-                    {leadCategories.map((cat) => (
-                      <button
-                        key={cat}
-                        onClick={() => setActiveLeadCategory(cat)}
-                        className={`w-full text-left px-4 py-3 rounded-xl text-sm font-semibold transition-all flex items-center justify-between group ${
-                          activeLeadCategory === cat
-                            ? 'bg-brand-red text-white shadow-md shadow-brand-red/20'
-                            : 'text-slate-600 hover:bg-slate-50 hover:text-slate-900'
-                        }`}
-                      >
-                        {cat}
-                        {activeLeadCategory === cat && (
-                          <div className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
-                        )}
-                      </button>
-                    ))}
+                    {leadCategories.map((cat) => {
+                      const isTodos = cat === 'Todos os Leads';
+                      const stats = leadsStats[cat] || { novos: 0, atendimento: 0 };
+                      const hasNovos = !isTodos && stats.novos > 0;
+                      const hasAtendimento = !isTodos && stats.atendimento > 0;
+
+                      let buttonClass = '';
+                      if (hasNovos) {
+                        buttonClass = 'bg-red-600 text-white shadow-md shadow-red-200';
+                      } else if (hasAtendimento) {
+                        buttonClass = 'bg-green-600 text-white shadow-md shadow-green-200';
+                      } else if (activeLeadCategory === cat) {
+                        buttonClass = isTodos 
+                          ? 'bg-slate-800 text-white shadow-md' 
+                          : 'bg-brand-red text-white shadow-md shadow-brand-red/20';
+                      } else {
+                        buttonClass = 'text-slate-600 hover:bg-slate-50 hover:text-slate-900';
+                      }
+
+                      return (
+                        <button
+                          key={cat}
+                          onClick={() => setActiveLeadCategory(cat)}
+                          className={`w-full text-left px-4 py-3 rounded-xl text-sm font-semibold transition-all flex items-center justify-between group ${buttonClass}`}
+                        >
+                          <div className="flex items-center gap-2">
+                            {hasNovos && <Bell className="w-4 h-4 animate-pulse" />}
+                            <span>
+                              {cat} {hasNovos && `(${stats.novos})`}
+                            </span>
+                          </div>
+                          
+                          {activeLeadCategory === cat && !hasNovos && !hasAtendimento && !isTodos && (
+                            <div className="w-1.5 h-1.5 rounded-full bg-white animate-pulse" />
+                          )}
+
+                          {hasNovos && (
+                            <div className="w-2 h-2 rounded-full bg-white/40 animate-ping" />
+                          )}
+                        </button>
+                      );
+                    })}
                   </nav>
                 </div>
               </aside>
