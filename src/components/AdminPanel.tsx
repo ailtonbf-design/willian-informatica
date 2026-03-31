@@ -1281,7 +1281,7 @@ export function AdminPanel() {
                       } else if (activeLeadCategory === cat) {
                         buttonClass = isTodos 
                           ? 'bg-slate-800 text-white shadow-md' 
-                          : 'bg-brand-red text-white shadow-md shadow-brand-red/20';
+                          : 'bg-blue-600 text-white shadow-md shadow-blue-200';
                       } else {
                         buttonClass = 'text-slate-600 hover:bg-slate-50 hover:text-slate-900';
                       }
