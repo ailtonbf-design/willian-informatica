@@ -79,17 +79,27 @@ export default function CursosPage() {
     e.preventDefault();
     setIsSubmitting(true);
     try {
-      const inscricaoRef = collection(db, 'inscricoes_aluno_empreendedor');
-      await addDoc(inscricaoRef, {
-        prospecto: { nome: prospectoNome, whatsapp: prospectoWhatsapp },
-        alunoEmpreendedor: { nome: alunoEmpreendedorNome, whatsapp: alunoEmpreendedorWhatsapp },
-        cursosIds: selecionados,
-        cursosNomes: cursos.filter(c => selecionados.includes(c.id)).map(c => c.nome),
-        createdAt: serverTimestamp(),
-        data: new Date().toLocaleDateString('pt-BR')
+      const selectedCursosNomes = cursos.filter(c => selecionados.includes(c.id)).map(c => c.nome);
+      
+      const leadRef = collection(db, 'leads_empreendedor');
+      await addDoc(leadRef, {
+        nome_prospecto: prospectoNome,
+        whatsapp_prospecto: prospectoWhatsapp,
+        nome_empreendedor: alunoEmpreendedorNome,
+        whatsapp_empreendedor: alunoEmpreendedorWhatsapp,
+        cursos_info: selectedCursosNomes,
+        data_cadastro: serverTimestamp(),
+        status: 'Pendente'
       });
       
-      alert('Inscrição realizada com sucesso! Entraremos em contato em breve.');
+      alert('Inscrição enviada com sucesso!');
+      
+      // WhatsApp redirect
+      const message = `Nova Inscrição recebida no site! Prospecto: ${prospectoNome}, Indicado por: ${alunoEmpreendedorNome}.`;
+      const whatsappUrl = `https://wa.me/5517991879478?text=${encodeURIComponent(message)}`;
+      window.open(whatsappUrl, '_blank');
+
+      // Reset form and close modal
       setIsContactModalOpen(false);
       setSelecionados([]);
       setProspectoNome('');
@@ -98,7 +108,7 @@ export default function CursosPage() {
       setAlunoEmpreendedorWhatsapp('');
     } catch (error) {
       console.error("Erro ao salvar inscrição:", error);
-      alert("Ocorreu um erro ao processar sua inscrição. Tente novamente.");
+      alert("Ocorreu um erro ao processar sua inscrição. Verifique sua conexão e tente novamente.");
     } finally {
       setIsSubmitting(false);
     }

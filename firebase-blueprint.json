@@ -72,6 +72,45 @@
         }
       },
       "required": ["nome", "descricao", "carga_horaria", "categoria", "imagem_url", "ativo"]
+    },
+    "LeadEmpreendedor": {
+      "title": "Lead Empreendedor",
+      "description": "Inscrição no programa Aluno Empreendedor.",
+      "type": "object",
+      "properties": {
+        "nome_prospecto": {
+          "type": "string",
+          "description": "Nome do prospecto"
+        },
+        "whatsapp_prospecto": {
+          "type": "string",
+          "description": "WhatsApp do prospecto"
+        },
+        "nome_empreendedor": {
+          "type": "string",
+          "description": "Nome do aluno empreendedor"
+        },
+        "whatsapp_empreendedor": {
+          "type": "string",
+          "description": "WhatsApp do aluno empreendedor"
+        },
+        "cursos_info": {
+          "type": "array",
+          "items": { "type": "string" },
+          "description": "Nomes dos cursos selecionados"
+        },
+        "data_cadastro": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Data do cadastro"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["Pendente", "Concluído", "Cancelado"],
+          "description": "Status da inscrição"
+        }
+      },
+      "required": ["nome_prospecto", "whatsapp_prospecto", "nome_empreendedor", "whatsapp_empreendedor", "cursos_info", "data_cadastro", "status"]
     }
   },
   "firestore": {
@@ -86,6 +125,12 @@
         "$ref": "#/entities/Lead"
       },
       "description": "Collection of leads who signed up for more information or courses."
+    },
+    "/leads_empreendedor/{leadId}": {
+      "schema": {
+        "$ref": "#/entities/LeadEmpreendedor"
+      },
+      "description": "Coleção de leads do programa Aluno Empreendedor."
     },
     "/configuracoes/{configId}": {
       "schema": {

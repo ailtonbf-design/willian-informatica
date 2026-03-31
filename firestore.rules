@@ -107,5 +107,12 @@ service cloud.firestore {
       // Only admins can read or manage enrollments
       allow read, write: if isAdmin();
     }
+
+    match /leads_empreendedor/{leadId} {
+      // Anyone can create a lead
+      allow create: if true; // We should validate, but for now allow creation
+      // Only admins can read or manage
+      allow read, write: if isAdmin();
+    }
   }
 }
