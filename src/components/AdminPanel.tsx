@@ -58,8 +58,8 @@ export function AdminPanel() {
 
   // Leads State
   const [leads, setLeads] = useState<Lead[]>([]);
-  const [activeLeadCategory, setActiveLeadCategory] = useState<string>('Curso em Destaque');
-  const leadCategories = ['Curso em Destaque', 'Treinamento Grátis', 'Aluno Empreendedor', 'WP Escola de Negócios', 'Certificado Premium'];
+  const [activeLeadCategory, setActiveLeadCategory] = useState<string>('Todos os Leads');
+  const leadCategories = ['Todos os Leads', 'Curso em Destaque', 'Treinamento Grátis', 'Programa Aluno Empreendedor', 'WP Escola de Negócios', 'Certificado Premium'];
 
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -296,39 +296,55 @@ export function AdminPanel() {
   // --- LÓGICA DE LEADS / CRM ---
   const carregarLeads = async (categoria: string) => {
     setLoading(true);
-    setLeads([]); // Limpa a tabela antes de carregar
+    setLeads([]);
     
     try {
       const leadsRef = collection(db, 'leads');
-      const q = query(
-        leadsRef, 
-        where('categoria', '==', categoria),
-        orderBy('createdAt', 'desc')
-      );
+      let q;
+      
+      if (categoria === 'Todos os Leads') {
+        q = query(leadsRef);
+      } else {
+        q = query(
+          leadsRef, 
+          where('categoria', '==', categoria)
+        );
+      }
       
       const querySnapshot = await getDocs(q);
-      const leadsData: Lead[] = [];
+      const leadsData: any[] = [];
       
       querySnapshot.forEach((doc) => {
-        const data = doc.data();
-        let dataFormatada = '';
+        const data = doc.data() as any;
+        leadsData.push({ id: doc.id, ...data });
+      });
+
+      // Ordenar em memória por data decrescente
+      leadsData.sort((a, b) => {
+        const dateA = a.createdAt?.toDate?.() || new Date(0);
+        const dateB = b.createdAt?.toDate?.() || new Date(0);
+        return dateB.getTime() - dateA.getTime();
+      });
+
+      const formattedLeads: Lead[] = leadsData.map(data => {
+        let dataFormatada = 'Sem data';
         if (data.createdAt) {
           const date = data.createdAt.toDate();
           dataFormatada = date.toLocaleDateString('pt-BR');
         }
         
-        leadsData.push({
-          id: doc.id,
+        return {
+          id: data.id,
           nome: data.nome || '',
           whatsapp: data.whatsapp || '',
           categoria: data.categoria || '',
           status: data.status || 'Novo',
           data: dataFormatada,
           notas: data.notas || ''
-        });
+        };
       });
 
-      setLeads(leadsData);
+      setLeads(formattedLeads);
     } catch (err) {
       console.error("Erro ao carregar leads:", err);
       setError("Não foi possível carregar os leads.");
@@ -1294,7 +1310,14 @@ export function AdminPanel() {
                           <tr key={lead.id} className="hover:bg-slate-50 transition-colors">
                             <td className="p-4">
                               <div className="font-medium text-slate-900">{lead.nome}</div>
-                              <div className="text-xs text-slate-400 mt-0.5">{lead.data}</div>
+                              <div className="flex items-center gap-2 mt-0.5">
+                                <span className="text-xs text-slate-400">{lead.data}</span>
+                                {activeLeadCategory === 'Todos os Leads' && (
+                                  <span className="text-[10px] bg-slate-100 text-slate-500 px-1.5 py-0.5 rounded border border-slate-200">
+                                    {lead.categoria}
+                                  </span>
+                                )}
+                              </div>
                               {lead.notas && (
                                 <div className="text-[10px] text-slate-500 mt-1 bg-slate-50 p-1 rounded border border-slate-100 italic">
                                   {lead.notas}

@@ -85,7 +85,7 @@ export default function CursosPage() {
       await addDoc(leadRef, {
         nome: prospectoNome,
         whatsapp: prospectoWhatsapp,
-        categoria: 'Aluno Empreendedor',
+        categoria: 'Programa Aluno Empreendedor',
         status: 'Novo',
         createdAt: serverTimestamp(),
         notas: `Indicado por: ${alunoEmpreendedorNome} (${alunoEmpreendedorWhatsapp}). Cursos: ${selectedCursosNomes.join(', ')}`
