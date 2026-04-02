@@ -15,7 +15,7 @@ interface Curso {
   imagem: string;
 }
 
-const categorias = ['Todas', 'Informática e Tecnologia', 'Administrativo', 'Idiomas', 'Preparatórios', 'Diversas Áreas'];
+const categorias = ['Todas', 'Informática e Tecnologia', 'Administrativo', 'Idiomas', 'Reforço Escolar', 'Diversas Áreas'];
 
 export default function CursosPage() {
   const [cursos, setCursos] = useState<Curso[]>([]);
@@ -144,7 +144,7 @@ export default function CursosPage() {
                 transition={{ delay: 0.2 }}
                 className="text-white text-2xl md:text-4xl lg:text-5xl font-black leading-[1.1] uppercase tracking-tighter drop-shadow-lg"
               >
-                <span className="block md:inline">MAIS DE 50 CURSOS</span> <br className="hidden md:block" />
+                <span className="block md:inline">MAIS DE 70 CURSOS</span> <br className="hidden md:block" />
                 <span className="block md:inline">NAS MELHORES ÁREAS</span> <br className="hidden md:block" />
                 <span className="block md:inline">DO MERCADO DE TRABALHO</span>
               </motion.h1>

@@ -60,7 +60,7 @@
         },
         "categoria": {
           "type": "string",
-          "description": "Categoria do curso (Informática e Tecnologia, Administrativo, Idiomas, Preparatórios, Diversas Áreas)"
+          "description": "Categoria do curso (Informática e Tecnologia, Administrativo, Idiomas, Reforço Escolar, Diversas Áreas)"
         },
         "imagem_url": {
           "type": "string",

@@ -103,6 +103,29 @@ export function AdminPanel() {
       loadVagas();
       loadFotosCarrossel();
       loadTodosCursos();
+
+      // Migração temporária de categoria: Preparatórios -> Reforço Escolar
+      const migrateCategories = async () => {
+        try {
+          const cursosRef = collection(db, 'cursos');
+          const q = query(cursosRef, where('categoria', '==', 'Preparatórios'));
+          const querySnapshot = await getDocs(q);
+          
+          if (!querySnapshot.empty) {
+            console.log(`Encontrados ${querySnapshot.size} cursos na categoria antiga 'Preparatórios'. Migrando...`);
+            const updatePromises = querySnapshot.docs.map(docRef => 
+              updateDoc(doc(db, 'cursos', docRef.id), { categoria: 'Reforço Escolar' })
+            );
+            await Promise.all(updatePromises);
+            console.log('Migração de categorias concluída com sucesso.');
+            // Recarregar dados após migração
+            loadTodosCursos();
+          }
+        } catch (err) {
+          console.error("Erro na migração de categorias:", err);
+        }
+      };
+      migrateCategories();
     }
   }, [isAuthenticated]);
 
@@ -1164,7 +1187,7 @@ export function AdminPanel() {
                               <option value="Idiomas">Idiomas</option>
                               <option value="Informática e Tecnologia">Informática e Tecnologia</option>
                               <option value="Diversas Áreas">Diversas Áreas</option>
-                              <option value="Preparatórios">Preparatórios</option>
+                              <option value="Reforço Escolar">Reforço Escolar</option>
                             </select>
                           </div>
 
