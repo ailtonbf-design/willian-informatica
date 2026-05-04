@@ -11,15 +11,16 @@ export function Footer() {
               src="https://res.cloudinary.com/dapsovbs5/image/upload/v1774637435/Logo-Willian_g1zxno.webp" 
               alt="William Informática" 
               className="h-[77px] md:h-[83px] w-auto object-contain mb-6" 
+              loading="lazy"
             />
             <p className="max-w-sm mb-8 leading-relaxed">
               Transformando vidas através da educação tecnológica e empreendedora há mais de três décadas.
             </p>
             <div className="flex gap-4">
-              <a href="https://www.instagram.com/williaminformatica/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-brand-red hover:text-white transition-colors">
+              <a href="https://www.instagram.com/williaminformatica/" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-brand-red hover:text-white transition-colors" aria-label="Acessar Instagram">
                 <Instagram className="w-5 h-5" />
               </a>
-              <a href="https://www.facebook.com/escolawilliaminformatica" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-brand-red hover:text-white transition-colors">
+              <a href="https://www.facebook.com/escolawilliaminformatica" target="_blank" rel="noopener noreferrer" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-brand-red hover:text-white transition-colors" aria-label="Acessar Facebook">
                 <Facebook className="w-5 h-5" />
               </a>
             </div>

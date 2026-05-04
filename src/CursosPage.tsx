@@ -233,6 +233,9 @@ export default function CursosPage() {
                       alt={curso.nome} 
                       className="w-full h-full object-cover"
                       referrerPolicy="no-referrer"
+                      loading="lazy"
+                      width="48"
+                      height="48"
                     />
                   </div>
 
@@ -285,7 +288,7 @@ export default function CursosPage() {
                     <span className="text-red-600 font-bold uppercase tracking-widest text-xs mb-2 block">Detalhes do Curso</span>
                     <h3 className="text-3xl font-extrabold text-slate-900">{cursoDetalhe.nome}</h3>
                   </div>
-                  <button onClick={() => setCursoDetalhe(null)} className="p-2 bg-slate-100 hover:bg-slate-200 rounded-full transition-colors">
+                  <button onClick={() => setCursoDetalhe(null)} className="p-2 bg-slate-100 hover:bg-slate-200 rounded-full transition-colors" aria-label="Fechar">
                     <X className="w-5 h-5" />
                   </button>
                 </div>
@@ -340,7 +343,7 @@ export default function CursosPage() {
               <div className="bg-slate-900 p-8 text-white">
                 <div className="flex justify-between items-center mb-4">
                   <h3 className="text-2xl font-bold">Finalizar Inscrição</h3>
-                  <button onClick={() => setIsContactModalOpen(false)} className="text-white/60 hover:text-white">
+                  <button onClick={() => setIsContactModalOpen(false)} className="text-white/60 hover:text-white" aria-label="Fechar">
                     <X className="w-6 h-6" />
                   </button>
                 </div>

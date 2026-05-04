@@ -1,12 +1,13 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState, lazy, Suspense } from 'react';
 import { motion, useInView, animate } from 'motion/react';
 import { BookOpen, Rocket, ArrowRight, CheckCircle2, Users, Award, Clock, MapPin, Phone, Mail, Instagram, Facebook, Linkedin, Code, Briefcase, Palette, Star, Target, X } from 'lucide-react';
 import Carousel3D from './components/Carousel3D';
-import { AdminPanel } from './components/AdminPanel';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
-import CursosPage from './CursosPage';
 import { db } from './firebase';
+
+const AdminPanel = lazy(() => import('./components/AdminPanel').then(m => ({ default: m.AdminPanel })));
+const CursosPage = lazy(() => import('./CursosPage'));
 import { doc, onSnapshot, collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
 const fadeInUp = {
@@ -209,11 +210,19 @@ export default function App() {
   console.log('Current Path:', window.location.pathname, 'isAdminRoute:', isAdminRoute, 'isCursosRoute:', isCursosRoute);
 
   if (isAdminRoute) {
-    return <AdminPanel />;
+    return (
+      <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-slate-50"><div className="w-10 h-10 border-4 border-red-600 border-t-transparent rounded-full animate-spin"></div></div>}>
+        <AdminPanel />
+      </Suspense>
+    );
   }
 
   if (isCursosRoute) {
-    return <CursosPage />;
+    return (
+      <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-slate-50"><div className="w-10 h-10 border-4 border-red-600 border-t-transparent rounded-full animate-spin"></div></div>}>
+        <CursosPage />
+      </Suspense>
+    );
   }
 
   return (
@@ -229,6 +238,7 @@ export default function App() {
             alt="Alunos e profissionais em ambiente premium"
             className="w-full h-full object-cover opacity-60"
             referrerPolicy="no-referrer"
+            fetchPriority="high"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-slate-900/95 via-slate-900/80 to-slate-900/40" />
         </div>
@@ -327,6 +337,9 @@ export default function App() {
                     src="https://res.cloudinary.com/dapsovbs5/image/upload/v1774029343/logop_btmd14.png" 
                     alt="Certificado Premium" 
                     className="h-8 md:h-10 w-auto object-contain" 
+                    loading="lazy"
+                    width="120"
+                    height="40"
                   />
                 </div>
 
@@ -338,6 +351,9 @@ export default function App() {
                     alt={`Curso ${cursoDestaque.titulo}`}
                     className="w-24 h-24 md:w-32 md:h-32 rounded-2xl object-cover shadow-lg border border-white/10 flex-shrink-0" 
                     referrerPolicy="no-referrer"
+                    loading="lazy"
+                    width="128"
+                    height="128"
                   />
                   
                   {/* Textos do Curso */}
@@ -414,6 +430,9 @@ export default function App() {
                 alt="Vagas de Emprego" 
                 className="w-28 md:w-36 h-auto mb-6 object-contain"
                 referrerPolicy="no-referrer"
+                loading="lazy"
+                width="144"
+                height="144"
               />
               <h3 className="text-3xl font-bold text-slate-900">Vagas de Emprego</h3>
               <p className="text-gray-600 text-lg mt-4 mb-8">
@@ -471,6 +490,7 @@ export default function App() {
                 alt="Aluno Empreendedor" 
                 className="absolute inset-0 w-full h-full object-cover object-center"
                 referrerPolicy="no-referrer"
+                loading="lazy"
               />
               <div className="absolute top-0 left-0 w-full h-24 md:h-full md:w-40 bg-gradient-to-b md:bg-gradient-to-r from-gray-200 to-transparent pointer-events-none"></div>
             </div>
@@ -487,6 +507,7 @@ export default function App() {
             alt="Banner WP Escola de Vendas & Negócios"
             className="w-full h-full object-cover opacity-60"
             referrerPolicy="no-referrer"
+            loading="lazy"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-slate-900/90 to-slate-900/70" />
         </div>
@@ -564,6 +585,9 @@ export default function App() {
                   src="https://res.cloudinary.com/dapsovbs5/image/upload/v1774029343/logop_btmd14.png" 
                   alt="Logo Certificado Premium" 
                   className="h-16 mb-6 object-contain relative z-10" 
+                  loading="lazy"
+                  width="180"
+                  height="64"
                 />
                 <p className="text-slate-700 mb-4 relative z-10 leading-relaxed">
                   William Informática é a única Escola de Bebedouro Credenciada com Exclusividade ao Certificado Premium.
@@ -610,6 +634,7 @@ export default function App() {
                     alt="Certificação Premium Augusto Cury" 
                     className="w-full aspect-[4/3] hover:scale-105 transition-transform duration-700 object-cover"
                     referrerPolicy="no-referrer"
+                    loading="lazy"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-slate-900/20 to-transparent pointer-events-none" />
                 </div>
@@ -644,6 +669,7 @@ export default function App() {
                   alt="Fachada da William Informática" 
                   className="w-full aspect-[4/3] object-contain hover:scale-105 transition-transform duration-700 ease-in-out"
                   referrerPolicy="no-referrer"
+                  loading="lazy"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-slate-900/10 to-transparent pointer-events-none" />
               </div>
@@ -778,6 +804,7 @@ export default function App() {
               <button 
                 onClick={() => setModalAtivo(null)}
                 className="p-2 bg-gray-100 hover:bg-gray-200 rounded-full text-slate-500 transition-colors"
+                aria-label="Fechar"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -809,6 +836,9 @@ export default function App() {
                       alt={curso.nome} 
                       className="w-12 h-12 rounded-lg object-cover shadow-sm flex-shrink-0"
                       referrerPolicy="no-referrer"
+                      loading="lazy"
+                      width="48"
+                      height="48"
                     />
                     <span className="text-slate-800 font-medium">{curso.nome}</span>
                   </div>

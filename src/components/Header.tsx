@@ -49,6 +49,8 @@ export function Header() {
           <button 
             onClick={() => setIsMenuOpen(!isMenuOpen)}
             className="md:hidden p-2 text-slate-700 hover:text-red-600 transition-colors"
+            aria-label="Alternar menu mobile"
+            aria-expanded={isMenuOpen}
           >
             {isMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
           </button>
