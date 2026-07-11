@@ -8,6 +8,7 @@ import { db } from './firebase';
 
 const AdminPanel = lazy(() => import('./components/AdminPanel').then(m => ({ default: m.AdminPanel })));
 const CursosPage = lazy(() => import('./CursosPage'));
+const DepoimentosPage = lazy(() => import('./DepoimentosPage'));
 import { doc, onSnapshot, collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
 const fadeInUp = {
@@ -206,8 +207,9 @@ export default function App() {
   const currentPath = typeof window !== 'undefined' ? window.location.pathname.toLowerCase().replace(/\/$/, '') : '';
   const isAdminRoute = currentPath === '/admin';
   const isCursosRoute = currentPath === '/cursos';
+  const isDepoimentosRoute = currentPath === '/depoimentos' || currentPath === '/depoimentos.html' || currentPath === '/deoimentos' || currentPath === '/deoimentos.html';
 
-  console.log('Current Path:', window.location.pathname, 'isAdminRoute:', isAdminRoute, 'isCursosRoute:', isCursosRoute);
+  console.log('Current Path:', window.location.pathname, 'isAdminRoute:', isAdminRoute, 'isCursosRoute:', isCursosRoute, 'isDepoimentosRoute:', isDepoimentosRoute);
 
   if (isAdminRoute) {
     return (
@@ -221,6 +223,14 @@ export default function App() {
     return (
       <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-slate-50"><div className="w-10 h-10 border-4 border-red-600 border-t-transparent rounded-full animate-spin"></div></div>}>
         <CursosPage />
+      </Suspense>
+    );
+  }
+
+  if (isDepoimentosRoute) {
+    return (
+      <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-slate-50"><div className="w-10 h-10 border-4 border-red-600 border-t-transparent rounded-full animate-spin"></div></div>}>
+        <DepoimentosPage />
       </Suspense>
     );
   }

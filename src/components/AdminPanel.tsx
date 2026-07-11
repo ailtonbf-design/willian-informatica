@@ -3,7 +3,7 @@ import { doc, setDoc, getDoc, collection, query, where, getDocs, updateDoc, dele
 import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 import { signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from 'firebase/auth';
 import { db, storage, auth } from '../firebase';
-import { Save, LogIn, LogOut, CheckCircle, Upload, Trash2, Briefcase, BookOpen, Image as ImageIcon, Users, MessageCircle, Plus, Bell } from 'lucide-react';
+import { Save, LogIn, LogOut, CheckCircle, Upload, Trash2, Briefcase, BookOpen, Image as ImageIcon, Users, MessageCircle, Plus, Bell, X } from 'lucide-react';
 
 interface Vaga {
   id: string;
@@ -29,8 +29,19 @@ interface Lead {
 
 export function AdminPanel() {
   console.log('AdminPanel rendered');
-  const [activeTab, setActiveTab] = useState<'curso' | 'vagas' | 'fotosCarrossel' | 'leads' | 'todosCursos'>('curso');
+  const [activeTab, setActiveTab] = useState<'curso' | 'vagas' | 'fotosCarrossel' | 'leads' | 'todosCursos' | 'depoimentos'>('curso');
   
+  // Depoimentos State
+  const [depoimentos, setDepoimentos] = useState<any[]>([]);
+  const [isDepoimentoModalOpen, setIsDepoimentoModalOpen] = useState(false);
+  const [depoimentoNome, setDepoimentoNome] = useState('');
+  const [depoimentoCurso, setDepoimentoCurso] = useState('');
+  const [depoimentoTexto, setDepoimentoTexto] = useState('');
+  const [depoimentoVimeoId, setDepoimentoVimeoId] = useState('');
+  const [depoimentoAvatarUrl, setDepoimentoAvatarUrl] = useState('');
+  const [depoimentoThumbnailUrl, setDepoimentoThumbnailUrl] = useState('');
+  const [editingDepoimentoId, setEditingDepoimentoId] = useState<string | null>(null);
+
   // Curso Destaque State
   const [titulo, setTitulo] = useState('');
   const [descricao, setDescricao] = useState('');
@@ -103,6 +114,7 @@ export function AdminPanel() {
       loadVagas();
       loadFotosCarrossel();
       loadTodosCursos();
+      loadDepoimentos();
 
       // Migração temporária de categoria: Preparatórios -> Reforço Escolar
       const migrateCategories = async () => {
@@ -166,6 +178,74 @@ export function AdminPanel() {
       setTodosCursos(cursosData);
     } catch (err) {
       console.error("Erro ao carregar todos os cursos:", err);
+    }
+  };
+
+  const loadDepoimentos = async () => {
+    try {
+      const depoimentosRef = collection(db, 'depoimentos');
+      const q = query(depoimentosRef);
+      const querySnapshot = await getDocs(q);
+      const list = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+      setDepoimentos(list);
+    } catch (err) {
+      console.error("Erro ao carregar depoimentos:", err);
+    }
+  };
+
+  const handleSaveDepoimento = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    setError('');
+    setSuccess(false);
+
+    try {
+      const payload = {
+        nome: depoimentoNome,
+        curso: depoimentoCurso,
+        texto: depoimentoTexto,
+        vimeoId: depoimentoVimeoId,
+        avatarUrl: depoimentoAvatarUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(depoimentoNome)}&background=fca5a5&color=b91c1c&bold=true`,
+        thumbnailUrl: depoimentoThumbnailUrl || 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=600',
+      };
+
+      if (editingDepoimentoId) {
+        await updateDoc(doc(db, 'depoimentos', editingDepoimentoId), payload);
+        setSuccess(true);
+      } else {
+        await addDoc(collection(db, 'depoimentos'), payload);
+        setSuccess(true);
+      }
+
+      setIsDepoimentoModalOpen(false);
+      setDepoimentoNome('');
+      setDepoimentoCurso('');
+      setDepoimentoTexto('');
+      setDepoimentoVimeoId('');
+      setDepoimentoAvatarUrl('');
+      setDepoimentoThumbnailUrl('');
+      setEditingDepoimentoId(null);
+      loadDepoimentos();
+    } catch (err: any) {
+      setError(err.message || "Erro ao salvar depoimento");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleDeleteDepoimento = async (id: string) => {
+    if (!window.confirm("Deseja realmente excluir este depoimento?")) return;
+    setLoading(true);
+    try {
+      await deleteDoc(doc(db, 'depoimentos', id));
+      loadDepoimentos();
+    } catch (err: any) {
+      console.error("Erro ao deletar depoimento:", err);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -782,6 +862,17 @@ export function AdminPanel() {
             Todos Cursos
           </button>
           <button
+            onClick={() => { setActiveTab('depoimentos'); setError(''); setSuccess(false); }}
+            className={`flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-colors ${
+              activeTab === 'depoimentos' 
+                ? 'bg-slate-900 text-white shadow-md' 
+                : 'bg-white text-slate-600 hover:bg-slate-100 border border-slate-200'
+            }`}
+          >
+            <MessageCircle className="w-5 h-5" />
+            Depoimentos
+          </button>
+          <button
             onClick={() => { setActiveTab('leads'); setError(''); setSuccess(false); }}
             className={`flex items-center gap-2 px-6 py-3 rounded-xl font-semibold transition-colors ${
               activeTab === 'leads' 
@@ -1278,6 +1369,197 @@ export function AdminPanel() {
             </div>
           )}
 
+          {activeTab === 'depoimentos' && (
+            <div className="bg-white rounded-2xl p-8 shadow-sm border border-slate-200">
+              <div className="flex justify-between items-center mb-6">
+                <h2 className="text-2xl font-bold text-slate-900">Gerenciar Depoimentos</h2>
+                <button
+                  onClick={() => {
+                    setEditingDepoimentoId(null);
+                    setDepoimentoNome('');
+                    setDepoimentoCurso('');
+                    setDepoimentoTexto('');
+                    setDepoimentoVimeoId('');
+                    setDepoimentoAvatarUrl('');
+                    setDepoimentoThumbnailUrl('');
+                    setIsDepoimentoModalOpen(true);
+                  }}
+                  className="bg-emerald-600 text-white px-6 py-2.5 rounded-xl font-bold hover:bg-emerald-700 transition-all flex items-center gap-2 shadow-sm hover:shadow-md active:scale-95"
+                >
+                  <Plus className="w-5 h-5" />
+                  Cadastrar Depoimento
+                </button>
+              </div>
+
+              <div className="space-y-4">
+                {depoimentos.length === 0 ? (
+                  <p className="text-slate-500 italic text-center py-8">Nenhum depoimento personalizado cadastrado. Exibindo depoimentos padrão na página.</p>
+                ) : (
+                  <div className="grid gap-4">
+                    {depoimentos.map((dep) => (
+                      <div key={dep.id} className="flex flex-col md:flex-row gap-4 p-4 rounded-xl border border-slate-200 bg-slate-50 items-start justify-between">
+                        <div className="flex items-start gap-4">
+                          <img
+                            src={dep.avatarUrl || `https://ui-avatars.com/api/?name=${encodeURIComponent(dep.nome)}&background=fca5a5&color=b91c1c&bold=true`}
+                            alt={dep.nome}
+                            className="w-12 h-12 rounded-full object-cover shrink-0 border"
+                          />
+                          <div>
+                            <h3 className="font-bold text-slate-800 text-lg">{dep.nome}</h3>
+                            <p className="text-xs font-semibold text-red-600 mb-1">{dep.curso}</p>
+                            <p className="text-slate-600 text-sm max-w-xl leading-relaxed italic">"{dep.texto}"</p>
+                            <p className="text-slate-400 text-xs mt-2 font-medium">Vimeo ID: <span className="font-mono text-slate-500">{dep.vimeoId}</span></p>
+                          </div>
+                        </div>
+
+                        <div className="flex gap-2 shrink-0">
+                          <button
+                            onClick={() => {
+                              setEditingDepoimentoId(dep.id);
+                              setDepoimentoNome(dep.nome);
+                              setDepoimentoCurso(dep.curso);
+                              setDepoimentoTexto(dep.texto);
+                              setDepoimentoVimeoId(dep.vimeoId);
+                              setDepoimentoAvatarUrl(dep.avatarUrl || '');
+                              setDepoimentoThumbnailUrl(dep.thumbnailUrl || '');
+                              setIsDepoimentoModalOpen(true);
+                            }}
+                            className="px-4 py-2 text-sm font-semibold bg-white hover:bg-slate-100 border border-slate-200 rounded-lg text-slate-600 transition-colors"
+                          >
+                            Editar
+                          </button>
+                          <button
+                            onClick={() => handleDeleteDepoimento(dep.id)}
+                            className="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors border border-transparent hover:border-red-100"
+                            aria-label="Excluir"
+                          >
+                            <Trash2 className="w-5 h-5" />
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              {/* Depoimento Modal */}
+              {isDepoimentoModalOpen && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+                  <div className="absolute inset-0" onClick={() => setIsDepoimentoModalOpen(false)}></div>
+                  <div className="bg-white rounded-3xl w-full max-w-lg shadow-2xl relative z-10 overflow-hidden border border-slate-100">
+                    <div className="flex items-center justify-between p-6 border-b border-slate-100 bg-slate-50">
+                      <h3 className="text-xl font-bold text-slate-900">
+                        {editingDepoimentoId ? 'Editar Depoimento' : 'Cadastrar Depoimento'}
+                      </h3>
+                      <button
+                        onClick={() => setIsDepoimentoModalOpen(false)}
+                        className="p-2 bg-gray-100 hover:bg-gray-200 rounded-full text-slate-500 transition-colors"
+                      >
+                        <X className="w-5 h-5" />
+                      </button>
+                    </div>
+
+                    <form onSubmit={handleSaveDepoimento} className="p-6 space-y-4 max-h-[75vh] overflow-y-auto">
+                      <div>
+                        <label className="block text-sm font-semibold text-slate-700 mb-1">Nome do Aluno *</label>
+                        <input
+                          type="text"
+                          required
+                          value={depoimentoNome}
+                          onChange={(e) => setDepoimentoNome(e.target.value)}
+                          placeholder="Ex: Ana Silva"
+                          className="w-full px-4 py-2.5 rounded-xl border border-slate-200 outline-none focus:ring-2 focus:ring-emerald-500"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-semibold text-slate-700 mb-1">Curso / Categoria *</label>
+                        <input
+                          type="text"
+                          required
+                          value={depoimentoCurso}
+                          onChange={(e) => setDepoimentoCurso(e.target.value)}
+                          placeholder="Ex: Informática & Marketing Digital"
+                          className="w-full px-4 py-2.5 rounded-xl border border-slate-200 outline-none focus:ring-2 focus:ring-emerald-500"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-semibold text-slate-700 mb-1">ID do Vídeo no Vimeo *</label>
+                        <input
+                          type="text"
+                          required
+                          value={depoimentoVimeoId}
+                          onChange={(e) => setDepoimentoVimeoId(e.target.value)}
+                          placeholder="Ex: 1001248035"
+                          className="w-full px-4 py-2.5 rounded-xl border border-slate-200 outline-none focus:ring-2 focus:ring-emerald-500"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-semibold text-slate-700 mb-1">Texto do Depoimento *</label>
+                        <textarea
+                          required
+                          value={depoimentoTexto}
+                          onChange={(e) => setDepoimentoTexto(e.target.value)}
+                          placeholder="Escreva o relato do aluno..."
+                          rows={4}
+                          className="w-full px-4 py-2.5 rounded-xl border border-slate-200 outline-none focus:ring-2 focus:ring-emerald-500 resize-none"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-semibold text-slate-700 mb-1">URL da Foto do Aluno (Opcional)</label>
+                        <input
+                          type="text"
+                          value={depoimentoAvatarUrl}
+                          onChange={(e) => setDepoimentoAvatarUrl(e.target.value)}
+                          placeholder="Deixe em branco para usar avatar padrão"
+                          className="w-full px-4 py-2.5 rounded-xl border border-slate-200 outline-none focus:ring-2 focus:ring-emerald-500"
+                        />
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-semibold text-slate-700 mb-1">URL da Imagem de Capa do Vídeo (Opcional)</label>
+                        <input
+                          type="text"
+                          value={depoimentoThumbnailUrl}
+                          onChange={(e) => setDepoimentoThumbnailUrl(e.target.value)}
+                          placeholder="Deixe em branco para usar imagem padrão"
+                          className="w-full px-4 py-2.5 rounded-xl border border-slate-200 outline-none focus:ring-2 focus:ring-emerald-500"
+                        />
+                      </div>
+
+                      <div className="flex gap-4 pt-4 border-t border-slate-100">
+                        <button
+                          type="button"
+                          onClick={() => setIsDepoimentoModalOpen(false)}
+                          className="flex-1 py-3 rounded-xl font-bold bg-slate-100 hover:bg-slate-200 text-slate-600 transition-all"
+                        >
+                          Cancelar
+                        </button>
+                        <button
+                          type="submit"
+                          disabled={loading}
+                          className="flex-1 py-3 rounded-xl font-bold bg-emerald-600 hover:bg-emerald-700 text-white transition-all flex items-center justify-center gap-2"
+                        >
+                          {loading ? (
+                            <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                          ) : (
+                            <>
+                              <Save className="w-5 h-5" />
+                              Salvar
+                            </>
+                          )}
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              )}
+            </div>
+          )}
+
           {activeTab === 'leads' && (
             <div className="flex flex-col lg:flex-row gap-8">
               {/* Sidebar Lateral Interna */}
@@ -1302,9 +1584,7 @@ export function AdminPanel() {
                       } else if (hasAtendimento) {
                         buttonClass = 'bg-green-600 text-white shadow-md shadow-green-200';
                       } else if (activeLeadCategory === cat) {
-                        buttonClass = isTodos 
-                          ? 'bg-slate-800 text-white shadow-md' 
-                          : 'bg-blue-600 text-white shadow-md shadow-blue-200';
+                        buttonClass = 'bg-blue-600 text-white shadow-md shadow-blue-200';
                       } else {
                         buttonClass = 'text-slate-600 hover:bg-slate-50 hover:text-slate-900';
                       }

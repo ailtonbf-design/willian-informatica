@@ -11,6 +11,7 @@ export function Header() {
     { href: '/#empreendedor', label: 'Aluno Empreendedor' },
     { href: '/#wpescola', label: 'WP Escola', mobileLabel: 'WP Escola de Vendas & Negócios' },
     { href: '/#certificado', label: 'Certificado', mobileLabel: 'Certificado Premium' },
+    { href: '/depoimentos', label: 'Depoimentos' },
     { href: '/#quemsomos', label: 'Quem Somos' },
   ];
 
