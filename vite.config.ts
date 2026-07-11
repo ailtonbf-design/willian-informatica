@@ -16,7 +16,6 @@ export default defineConfig(({mode}) => {
           main: path.resolve(__dirname, 'index.html'),
           cursos: path.resolve(__dirname, 'cursos.html'),
           depoimentos: path.resolve(__dirname, 'depoimentos.html'),
-          deoimentos: path.resolve(__dirname, 'deoimentos.html'),
         },
       },
     },
