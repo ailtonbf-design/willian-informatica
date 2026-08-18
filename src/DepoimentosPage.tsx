@@ -116,12 +116,6 @@ export default function DepoimentosPage() {
             <span className="text-red-500 font-bold uppercase tracking-wider text-sm bg-red-500/10 px-4 py-2 rounded-full inline-block mb-4">
               Histórias de Sucesso
             </span>
-            <h1 className="text-4xl md:text-6xl font-extrabold text-white leading-tight tracking-tight mb-6">
-              O Impacto Real da <br />
-              <span className="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-amber-500">
-                William Informática
-              </span>
-            </h1>
             <p className="text-slate-300 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed">
               Veja o depoimento de alunos que transformaram suas carreiras, aprenderam do zero absoluto, conquistaram vagas de emprego ou abriram seus próprios negócios.
             </p>
