@@ -18,6 +18,7 @@ export default defineConfig(({mode}) => {
           depoimentos: path.resolve(__dirname, 'depoimentos.html'),
           alunoEmpreendedor: path.resolve(__dirname, 'aluno-empreendedor.html'),
           melhoridade: path.resolve(__dirname, 'melhoridade.html'),
+          filhosbrilhantes: path.resolve(__dirname, 'filhosbrilhantes.html'),
         },
       },
     },
@@ -37,6 +38,9 @@ export default defineConfig(({mode}) => {
           }
           if (req.url === '/melhoridade' || req.url === '/melhoridade/' || req.url === '/melhor-idade' || req.url === '/melhor-idade/') {
             req.url = '/melhoridade.html';
+          }
+          if (req.url === '/filhosbrilhantes' || req.url === '/filhosbrilhantes/' || req.url === '/filhos-brilhantes' || req.url === '/filhos-brilhantes/') {
+            req.url = '/filhosbrilhantes.html';
           }
           next();
         });

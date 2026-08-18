@@ -11,6 +11,7 @@ const CursosPage = lazy(() => import('./CursosPage'));
 const DepoimentosPage = lazy(() => import('./DepoimentosPage'));
 const AlunoEmpreendedorPage = lazy(() => import('./AlunoEmpreendedorPage'));
 const MelhorIdadePage = lazy(() => import('./MelhorIdadePage'));
+const FilhosBrilhantesPage = lazy(() => import('./FilhosBrilhantesPage'));
 import { doc, onSnapshot, collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
 const fadeInUp = {
@@ -212,8 +213,9 @@ export default function App() {
   const isDepoimentosRoute = currentPath === '/depoimentos' || currentPath === '/depoimentos.html' || currentPath === '/deoimentos' || currentPath === '/deoimentos.html';
   const isAlunoEmpreendedorRoute = currentPath === '/aluno-empreendedor' || currentPath === '/aluno-empreendedor.html' || currentPath === '/alunoempreendedor' || currentPath === '/alunoempreendedor.html';
   const isMelhorIdadeRoute = currentPath === '/melhoridade' || currentPath === '/melhoridade.html' || currentPath === '/melhor-idade' || currentPath === '/melhor-idade.html';
+  const isFilhosBrilhantesRoute = currentPath === '/filhosbrilhantes' || currentPath === '/filhosbrilhantes.html' || currentPath === '/filhos-brilhantes' || currentPath === '/filhos-brilhantes.html';
 
-  console.log('Current Path:', window.location.pathname, 'isAdminRoute:', isAdminRoute, 'isCursosRoute:', isCursosRoute, 'isDepoimentosRoute:', isDepoimentosRoute, 'isAlunoEmpreendedorRoute:', isAlunoEmpreendedorRoute, 'isMelhorIdadeRoute:', isMelhorIdadeRoute);
+  console.log('Current Path:', window.location.pathname, 'isAdminRoute:', isAdminRoute, 'isCursosRoute:', isCursosRoute, 'isDepoimentosRoute:', isDepoimentosRoute, 'isAlunoEmpreendedorRoute:', isAlunoEmpreendedorRoute, 'isMelhorIdadeRoute:', isMelhorIdadeRoute, 'isFilhosBrilhantesRoute:', isFilhosBrilhantesRoute);
 
   if (isAdminRoute) {
     return (
@@ -251,6 +253,14 @@ export default function App() {
     return (
       <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-slate-50"><div className="w-10 h-10 border-4 border-red-600 border-t-transparent rounded-full animate-spin"></div></div>}>
         <MelhorIdadePage />
+      </Suspense>
+    );
+  }
+
+  if (isFilhosBrilhantesRoute) {
+    return (
+      <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-slate-50"><div className="w-10 h-10 border-4 border-red-600 border-t-transparent rounded-full animate-spin"></div></div>}>
+        <FilhosBrilhantesPage />
       </Suspense>
     );
   }
