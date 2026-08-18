@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aluno Empreendedor - William Informática</title>
+  <link rel="icon" type="image/webp" href="https://res.cloudinary.com/dapsovbs5/image/upload/v1774637435/Logo-Willian_g1zxno.webp" />
+  
+  <!-- SEO Meta Tags -->
+  <meta name="description" content="Conheça o Aluno Empreendedor, um projeto da William Informática que une formação profissional e geração de renda em Bebedouro.">
+  
+  <!-- Google Fonts (Inter) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              red: '#E3000F',
+              hoverRed: '#c2000c',
+              dark: '#0f172a', /* slate-900 */
+              deepDark: '#090d16', /* slate-950 */
+            }
+          },
+          animation: {
+            'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      background-color: #090d16;
+      background-image: radial-gradient(circle at top center, rgba(227, 0, 15, 0.08) 0%, transparent 60%);
+    }
+  </style>
+</head>
+<body class="text-slate-100 min-h-screen flex flex-col justify-between antialiased selection:bg-brand-red selection:text-white">
+
+  <!-- Header / Logo -->
+  <header class="py-8 text-center">
+    <div class="container mx-auto px-4">
+      <img src="https://res.cloudinary.com/dapsovbs5/image/upload/v1774637435/Logo-Willian_g1zxno.webp" 
+           alt="Logo William Informática" 
+           class="h-16 mx-auto hover:scale-105 transition-transform duration-300"
+           loading="lazy" />
+    </div>
+  </header>
+
+  <!-- Main Content Container -->
+  <main class="flex-grow flex items-center py-6 md:py-12">
+    <div class="container mx-auto px-4 max-w-4xl">
+      
+      <!-- Copy Section / Header LP -->
+      <div class="text-center space-y-6 mb-10">
+        <!-- Tag Destaque -->
+        <span class="inline-flex items-center gap-1.5 py-1.5 px-4 rounded-full text-xs font-bold bg-brand-red/10 text-brand-red uppercase tracking-widest border border-brand-red/20">
+          <span class="w-2 h-2 rounded-full bg-brand-red animate-pulse"></span>
+          Oportunidade Exclusiva
+        </span>
+
+        <!-- Headline Principal -->
+        <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-tight tracking-tight max-w-3xl mx-auto">
+          E se você pudesse estudar e, ao mesmo tempo, <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-red to-amber-500">criar sua própria fonte de renda?</span>
+        </h1>
+
+        <!-- Subheadline -->
+        <p class="text-slate-300 text-base sm:text-lg md:text-xl max-w-2xl mx-auto leading-relaxed font-light">
+          Conheça o <strong class="text-white font-semibold">Aluno Empreendedor</strong>, um projeto da William Informática que une formação profissional e oportunidade de geração de renda — sem depender de um emprego com carteira assinada.
+        </p>
+      </div>
+
+      <!-- Video Section -->
+      <div class="space-y-4 mb-10">
+        <p class="text-slate-400 text-sm font-semibold tracking-wider uppercase text-center flex items-center justify-center gap-2">
+          <!-- Play Icon -->
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-brand-red">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15.91 11.672a.375.375 0 0 1 0 .656l-5.603 3.113a.375.375 0 0 1-.557-.328V8.887c0-.286.307-.466.557-.327l5.603 3.112Z" />
+          </svg>
+          Assista ao vídeo e entenda como funciona o projeto em Bebedouro
+        </p>
+        
+        <!-- Video Wrapper (16:9 Responsive Placeholder) -->
+        <div class="relative w-full aspect-video rounded-2xl overflow-hidden bg-slate-900 border border-slate-800 shadow-2xl shadow-brand-red/10 group">
+          <!-- 
+            Placeholder do Player de Vídeo. 
+            Para colocar o vídeo real (YouTube / Vimeo / Pandavideo / Vturb), basta substituir o iframe ou a div abaixo.
+          -->
+          <div class="absolute inset-0 flex flex-col items-center justify-center bg-cover bg-center" style="background-image: linear-gradient(to bottom, rgba(15, 23, 42, 0.8), rgba(9, 13, 22, 0.95)), url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=80');">
+            <!-- Simulated Play Button -->
+            <button class="w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center rounded-full bg-brand-red text-white shadow-lg shadow-brand-red/50 group-hover:scale-110 group-hover:bg-brand-hoverRed transition-all duration-300 transform" aria-label="Play video">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-8 h-8 sm:w-10 sm:h-10 ml-1">
+                <path fill-rule="evenodd" d="M4.5 5.653c0-1.427 1.529-2.33 2.779-1.643l11.54 6.347c1.295.712 1.295 2.573 0 3.286L7.28 19.99c-1.25.687-2.779-.217-2.779-1.643V5.653Z" clip-rule="evenodd" />
+              </svg>
+            </button>
+            <span class="mt-4 text-xs tracking-widest text-slate-400 uppercase font-medium group-hover:text-slate-300 transition-colors">Clique para reproduzir o vídeo</span>
+          </div>
+
+          <!-- 
+            Exemplo de Embed Real (comente a div acima e desinale o iframe abaixo caso use YouTube):
+            <iframe class="w-full h-full" src="https://www.youtube.com/embed/ID_DO_VIDEO" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+          -->
+        </div>
+      </div>
+
+      <!-- Informative Box / Destaque Sutil -->
+      <div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-6 sm:p-8 text-center space-y-4 max-w-2xl mx-auto backdrop-blur-sm">
+        <h2 class="text-xl font-bold text-white tracking-tight flex items-center justify-center gap-2">
+          <!-- User / Verification Icon -->
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 text-brand-red">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 0 1 1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.746 3.746 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z" />
+          </svg>
+          Quer saber se você pode participar?
+        </h2>
+        <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
+          O ingresso no <span class="text-white font-medium">Aluno Empreendedor</span> é feito mediante uma conversa inicial para entender seu perfil e explicar como funciona o projeto.
+        </p>
+      </div>
+
+      <!-- CTA Button & Footer Disclaimer -->
+      <div class="mt-10 text-center space-y-4">
+        <a href="https://wa.me/5517991879478?text=Olá!%20Assisti%20ao%20vídeo%20do%20William%20e%20gostaria%20de%20saber%20se%20posso%20participar%20do%20projeto%20Aluno%20Empreendedor" 
+           target="_blank" 
+           rel="noopener noreferrer" 
+           class="inline-flex items-center justify-center gap-3 px-8 py-5 rounded-full text-base sm:text-lg font-bold text-white bg-brand-red hover:bg-brand-hoverRed active:scale-98 transition-all duration-300 shadow-xl shadow-brand-red/20 w-full sm:w-auto hover:shadow-2xl hover:shadow-brand-red/30 animate-pulse-slow">
+          <!-- WhatsApp Icon -->
+          <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946C.06 5.348 5.397.01 12.008.01c3.202.001 6.212 1.246 8.477 3.514 2.266 2.268 3.507 5.28 3.505 8.484-.004 6.657-5.34 11.997-11.953 11.997-2.005-.001-3.973-.502-5.724-1.455L0 24zm6.59-4.846c1.6.95 3.188 1.449 4.825 1.451 5.436 0 9.86-4.37 9.864-9.799.002-2.63-1.023-5.101-2.885-6.965C16.528 1.977 14.07 1.05 11.478 1.05c-5.448 0-9.886 4.373-9.89 9.802-.001 1.84.5 3.631 1.446 5.197L2.06 21.982l6.155-1.613c.007-.003.014-.006.021-.01-.005.003-.01.006-.016.009zM17.47 14.397c-.3-.149-1.777-.866-2.046-.964-.269-.099-.465-.148-.659.149-.195.297-.753.964-.922 1.162-.17.197-.339.222-.639.074-.3-.149-1.265-.462-2.41-1.474-.89-.785-1.49-1.754-1.665-2.052-.175-.297-.019-.458.13-.606.134-.133.3-.347.45-.52.149-.174.199-.297.299-.496.099-.198.05-.371-.025-.52-.075-.149-.659-1.579-.902-2.164-.237-.567-.479-.49-.659-.5-.17-.008-.365-.01-.56-.01-.196 0-.514.073-.783.371-.269.297-1.027 1.002-1.027 2.44 0 1.437 1.047 2.822 1.192 3.02.145.198 2.059 3.111 4.986 4.353.696.295 1.238.473 1.662.607.7.22 1.338.19 1.843.114.563-.084 1.777-.718 2.026-1.412.25-.694.25-1.288.175-1.412-.075-.124-.269-.223-.57-.372z"/>
+          </svg>
+          QUERO SABER SE POSSO PARTICIPAR
+        </a>
+        
+        <!-- Disclaimer Pequeno de Rodapé -->
+        <p class="text-xs text-slate-500 max-w-md mx-auto leading-relaxed">
+          Vagas limitadas. A participação está sujeita à análise de perfil e disponibilidade.
+        </p>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="py-8 border-t border-slate-900 bg-slate-950/40 text-center">
+    <div class="container mx-auto px-4 space-y-2">
+      <p class="text-xs text-slate-500">
+        &copy; 2026 William Informática. Todos os direitos reservados.
+      </p>
+      <p class="text-[10px] text-slate-600">
+        O projeto Aluno Empreendedor é uma iniciativa da William Informática voltada à capacitação profissional e incentivo ao empreendedorismo em Bebedouro/SP.
+      </p>
+    </div>
+  </footer>
+
+</body>
+</html>
