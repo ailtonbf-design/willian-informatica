@@ -9,6 +9,7 @@ import { db } from './firebase';
 const AdminPanel = lazy(() => import('./components/AdminPanel').then(m => ({ default: m.AdminPanel })));
 const CursosPage = lazy(() => import('./CursosPage'));
 const DepoimentosPage = lazy(() => import('./DepoimentosPage'));
+const AlunoEmpreendedorPage = lazy(() => import('./AlunoEmpreendedorPage'));
 import { doc, onSnapshot, collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
 const fadeInUp = {
@@ -208,8 +209,9 @@ export default function App() {
   const isAdminRoute = currentPath === '/admin';
   const isCursosRoute = currentPath === '/cursos';
   const isDepoimentosRoute = currentPath === '/depoimentos' || currentPath === '/depoimentos.html' || currentPath === '/deoimentos' || currentPath === '/deoimentos.html';
+  const isAlunoEmpreendedorRoute = currentPath === '/aluno-empreendedor' || currentPath === '/aluno-empreendedor.html' || currentPath === '/alunoempreendedor' || currentPath === '/alunoempreendedor.html';
 
-  console.log('Current Path:', window.location.pathname, 'isAdminRoute:', isAdminRoute, 'isCursosRoute:', isCursosRoute, 'isDepoimentosRoute:', isDepoimentosRoute);
+  console.log('Current Path:', window.location.pathname, 'isAdminRoute:', isAdminRoute, 'isCursosRoute:', isCursosRoute, 'isDepoimentosRoute:', isDepoimentosRoute, 'isAlunoEmpreendedorRoute:', isAlunoEmpreendedorRoute);
 
   if (isAdminRoute) {
     return (
@@ -231,6 +233,14 @@ export default function App() {
     return (
       <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-slate-50"><div className="w-10 h-10 border-4 border-red-600 border-t-transparent rounded-full animate-spin"></div></div>}>
         <DepoimentosPage />
+      </Suspense>
+    );
+  }
+
+  if (isAlunoEmpreendedorRoute) {
+    return (
+      <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-slate-50"><div className="w-10 h-10 border-4 border-red-600 border-t-transparent rounded-full animate-spin"></div></div>}>
+        <AlunoEmpreendedorPage />
       </Suspense>
     );
   }
