@@ -8,15 +8,15 @@ Options -Indexes
 # Ativa o motor de reescrita
 RewriteEngine On
 
-# Redireciona /aluno-empreendedor para /aluno-empreendedor.html
-RewriteRule ^aluno-empreendedor/?$ aluno-empreendedor.html [L]
+# 1. Redireciona URLs sem extensão para arquivos .html se eles existirem
+RewriteCond %{DOCUMENT_ROOT}/$1.html -f
+RewriteRule ^([^/]+)/?$ /$1.html [L]
 
-
-# Serve arquivos e diretórios existentes diretamente (assets, imagens, etc.)
+# 2. Serve arquivos e diretórios existentes diretamente
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 
-# Qualquer rota desconhecida vai para index.html (fallback SPA)
+# 3. Qualquer outra rota desconhecida vai para index.html (fallback SPA)
 RewriteRule ^ index.html [L]
 
 # ------------------------------------------------------------------

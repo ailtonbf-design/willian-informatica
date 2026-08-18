@@ -41,12 +41,12 @@
 
   <style>
     body {
-      background-color: #090d16;
-      background-image: radial-gradient(circle at top center, rgba(227, 0, 15, 0.08) 0%, transparent 60%);
+      background-color: #f8fafc; /* slate-50 (Same as homepage sections) */
+      background-image: radial-gradient(circle at top center, rgba(227, 0, 15, 0.03) 0%, transparent 50%);
     }
   </style>
 </head>
-<body class="text-slate-100 min-h-screen flex flex-col justify-between antialiased selection:bg-brand-red selection:text-white">
+<body class="text-slate-800 min-h-screen flex flex-col justify-between antialiased selection:bg-brand-red selection:text-white">
 
   <!-- Full Header (Replicating main website header) -->
   <header class="sticky top-0 z-50 w-full bg-white shadow-md">
@@ -132,19 +132,19 @@
         </span>
 
         <!-- Headline Principal -->
-        <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-white leading-tight tracking-tight max-w-3xl mx-auto">
-          E se você pudesse estudar e, ao mesmo tempo, <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-red to-amber-500">criar sua própria fonte de renda?</span>
+        <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold text-slate-900 leading-tight tracking-tight max-w-3xl mx-auto">
+          E se você pudesse estudar e, ao mesmo tempo, <span class="text-brand-red">criar sua própria fonte de renda?</span>
         </h1>
 
         <!-- Subheadline -->
-        <p class="text-slate-300 text-base sm:text-lg md:text-xl max-w-2xl mx-auto leading-relaxed font-light">
-          Conheça o <strong class="text-white font-semibold">Aluno Empreendedor</strong>, um projeto da William Informática que une formação profissional e oportunidade de geração de renda — sem depender de um emprego com carteira assinada.
+        <p class="text-slate-600 text-base sm:text-lg md:text-xl max-w-2xl mx-auto leading-relaxed font-light">
+          Conheça o <strong class="text-slate-900 font-semibold">Aluno Empreendedor</strong>, um projeto da William Informática que une formação profissional e oportunidade de geração de renda — sem depender de um emprego com carteira assinada.
         </p>
       </div>
 
       <!-- Video Section -->
       <div class="space-y-4 mb-12">
-        <p class="text-slate-400 text-sm font-semibold tracking-wider uppercase text-center flex items-center justify-center gap-2">
+        <p class="text-slate-500 text-sm font-semibold tracking-wider uppercase text-center flex items-center justify-center gap-2">
           <!-- Play Icon -->
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-brand-red">
             <path stroke-linecap="round" stroke-linejoin="round" d="M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
@@ -154,7 +154,7 @@
         </p>
         
         <!-- Video Wrapper (9:16 Vertical Responsive Smartphone Frame) -->
-        <div class="relative w-full max-w-[320px] aspect-[9/16] mx-auto rounded-[36px] overflow-hidden bg-slate-950 border-[6px] border-slate-800 shadow-2xl shadow-brand-red/20 group">
+        <div class="relative w-full max-w-[320px] aspect-[9/16] mx-auto rounded-[36px] overflow-hidden bg-slate-950 border-[6px] border-slate-800 shadow-2xl shadow-slate-900/10 group">
           <!-- Simulated smartphone camera notch/speaker -->
           <div class="absolute top-0 inset-x-0 h-4 bg-slate-800 z-20 flex justify-center items-center">
             <div class="w-16 h-1.5 rounded-full bg-slate-900"></div>
@@ -164,7 +164,7 @@
             Placeholder do Player de Vídeo Vertical.
             Para colocar o vídeo real (YouTube / Vimeo / Pandavideo / Vturb / TikTok / Reels), substitua o conteúdo abaixo.
           -->
-          <div class="absolute inset-0 flex flex-col items-center justify-center bg-cover bg-center" style="background-image: linear-gradient(to bottom, rgba(15, 23, 42, 0.7), rgba(9, 13, 22, 0.95)), url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=600&q=80');">
+          <div class="absolute inset-0 flex flex-col items-center justify-center bg-cover bg-center" style="background-image: linear-gradient(to bottom, rgba(15, 23, 42, 0.6), rgba(9, 13, 22, 0.95)), url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=600&q=80');">
             <!-- Simulated Play Button -->
             <button class="w-16 h-16 flex items-center justify-center rounded-full bg-brand-red text-white shadow-lg shadow-brand-red/50 group-hover:scale-110 group-hover:bg-brand-hoverRed transition-all duration-300 transform" aria-label="Play video">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-8 h-8 ml-1">
@@ -173,25 +173,20 @@
             </button>
             <span class="mt-4 px-4 text-center text-[10px] tracking-widest text-slate-400 uppercase font-medium group-hover:text-slate-300 transition-colors">Clique para assistir</span>
           </div>
-
-          <!-- 
-            Exemplo de Embed Real Vertical (comente a div acima e desinale o iframe abaixo caso use embed):
-            <iframe class="w-full h-full pt-4" src="https://www.youtube.com/embed/ID_DO_VIDEO_VERTICAL" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-          -->
         </div>
       </div>
 
-      <!-- Informative Box / Destaque Sutil -->
-      <div class="bg-slate-900/60 border border-slate-800 rounded-2xl p-6 sm:p-8 text-center space-y-4 max-w-2xl mx-auto backdrop-blur-sm">
-        <h2 class="text-xl font-bold text-white tracking-tight flex items-center justify-center gap-2">
+      <!-- Informative Box / Destaque Sutil (Light Theme matching homepage cards) -->
+      <div class="bg-white border border-slate-200 rounded-3xl p-6 sm:p-8 text-center space-y-4 max-w-2xl mx-auto shadow-sm">
+        <h2 class="text-xl font-bold text-slate-900 tracking-tight flex items-center justify-center gap-2">
           <!-- User / Verification Icon -->
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 text-brand-red">
             <path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 0 1-1.043 3.296 3.745 3.745 0 0 1-3.296 1.043A3.745 3.745 0 0 1 12 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 0 1-3.296-1.043 3.745 3.745 0 0 1-1.043-3.296A3.745 3.745 0 0 1 3 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 0 1 1.043-3.296 3.746 3.746 0 0 1 3.296-1.043A3.746 3.746 0 0 1 12 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 0 1 3.296 1.043 3.746 3.746 0 0 1 1.043 3.296A3.745 3.745 0 0 1 21 12Z" />
           </svg>
           Quer saber se você pode participar?
         </h2>
-        <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
-          O ingresso no <span class="text-white font-medium">Aluno Empreendedor</span> é feito mediante uma conversa inicial para entender seu perfil e explicar como funciona o projeto.
+        <p class="text-slate-600 text-sm sm:text-base leading-relaxed">
+          O ingresso no <span class="text-slate-900 font-semibold">Aluno Empreendedor</span> é feito mediante uma conversa inicial para entender seu perfil e explicar como funciona o projeto.
         </p>
       </div>
 
@@ -217,15 +212,77 @@
     </div>
   </main>
 
-  <!-- Footer -->
-  <footer class="py-8 border-t border-slate-900 bg-slate-950/40 text-center">
-    <div class="container mx-auto px-4 space-y-2">
-      <p class="text-xs text-slate-500">
-        &copy; 2026 William Informática. Todos os direitos reservados.
-      </p>
-      <p class="text-[10px] text-slate-600">
-        O projeto Aluno Empreendedor é uma iniciativa da William Informática voltada à capacitação profissional e incentivo ao empreendedorismo em Bebedouro/SP.
-      </p>
+  <!-- Full Footer (Replicating exact website footer) -->
+  <footer class="bg-slate-950 text-slate-400 py-16 border-t border-white/10">
+    <div class="container mx-auto px-6">
+      <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12 text-left">
+        <!-- Coluna 1: Info & Redes -->
+        <div class="col-span-1 md:col-span-2 space-y-6">
+          <img 
+            src="https://res.cloudinary.com/dapsovbs5/image/upload/v1774637435/Logo-Willian_g1zxno.webp" 
+            alt="William Informática" 
+            class="h-[77px] md:h-[83px] w-auto object-contain" 
+            loading="lazy"
+          />
+          <p class="max-w-sm leading-relaxed text-slate-400 text-sm">
+            Transformando vidas através da educação tecnológica e empreendedora há mais de três décadas.
+          </p>
+          <div class="flex gap-4">
+            <a href="https://www.instagram.com/williaminformatica/" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-brand-red hover:text-white transition-colors" aria-label="Acessar Instagram">
+              <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.051C.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 1 0 0 12.324 6.162 6.162 0 0 0 0-12.324zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm6.406-11.845a1.44 1.44 0 1 0 0 2.881 1.44 1.44 0 0 0 0-2.881z"/>
+              </svg>
+            </a>
+            <a href="https://www.facebook.com/escolawilliaminformatica" target="_blank" rel="noopener noreferrer" class="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center hover:bg-brand-red hover:text-white transition-colors" aria-label="Acessar Facebook">
+              <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+              </svg>
+            </a>
+          </div>
+        </div>
+
+        <!-- Coluna 2: Contato -->
+        <div class="space-y-6">
+          <h4 class="text-white font-semibold uppercase tracking-wider text-sm">Contato</h4>
+          <ul class="space-y-4 text-slate-400 text-sm">
+            <li class="flex items-start gap-3">
+              <!-- Location Pin Icon -->
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 text-brand-red shrink-0 mt-0.5">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
+              </svg>
+              <span>Rua Brandão Veras, 777<br/>Bebedouro/SP</span>
+            </li>
+            <li class="flex items-center gap-3">
+              <!-- Phone Icon -->
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5 text-brand-red shrink-0">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.387a20.373 20.373 0 0 1-9.357-9.357c-.153-.44.013-.927.387-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 0 0-1.091-.852H4.5A2.25 2.25 0 0 0 2.25 4.5v2.25Z" />
+              </svg>
+              <span>17 3342-6732</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- Coluna 3: Links Rápidos -->
+        <div class="space-y-6">
+          <h4 class="text-white font-semibold uppercase tracking-wider text-sm">Links Rápidos</h4>
+          <ul class="space-y-3 text-slate-400 text-sm">
+            <li><a href="/#destaque" class="hover:text-white transition-colors">Destaque</a></li>
+            <li><a href="/cursos" class="hover:text-white transition-colors font-bold text-white">Catálogo de Cursos</a></li>
+            <li><a href="/depoimentos" class="hover:text-white transition-colors">Depoimentos</a></li>
+            <li><a href="/#treinamento" class="hover:text-white transition-colors">Treinamentos</a></li>
+            <li><a href="/#empreendedor" class="hover:text-white transition-colors">Aluno Empreendedor</a></li>
+            <li><a href="/#wpescola" class="hover:text-white transition-colors">WP Escola</a></li>
+            <li><a href="/#certificado" class="hover:text-white transition-colors">Certificado</a></li>
+            <li><a href="/#quemsomos" class="hover:text-white transition-colors">Quem Somos</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Copyright Section -->
+      <div class="pt-8 border-t border-white/10 text-center text-sm text-slate-500">
+        <p>&copy; 2026 William Informática. Todos os direitos reservados.</p>
+      </div>
     </div>
   </footer>
 
