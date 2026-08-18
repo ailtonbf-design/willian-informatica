@@ -12,6 +12,7 @@ const DepoimentosPage = lazy(() => import('./DepoimentosPage'));
 const AlunoEmpreendedorPage = lazy(() => import('./AlunoEmpreendedorPage'));
 const MelhorIdadePage = lazy(() => import('./MelhorIdadePage'));
 const FilhosBrilhantesPage = lazy(() => import('./FilhosBrilhantesPage'));
+const CarreiraPage = lazy(() => import('./CarreiraPage'));
 import { doc, onSnapshot, collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
 const fadeInUp = {
@@ -214,8 +215,9 @@ export default function App() {
   const isAlunoEmpreendedorRoute = currentPath === '/aluno-empreendedor' || currentPath === '/aluno-empreendedor.html' || currentPath === '/alunoempreendedor' || currentPath === '/alunoempreendedor.html';
   const isMelhorIdadeRoute = currentPath === '/melhoridade' || currentPath === '/melhoridade.html' || currentPath === '/melhor-idade' || currentPath === '/melhor-idade.html';
   const isFilhosBrilhantesRoute = currentPath === '/filhosbrilhantes' || currentPath === '/filhosbrilhantes.html' || currentPath === '/filhos-brilhantes' || currentPath === '/filhos-brilhantes.html';
+  const isCarreiraRoute = currentPath === '/carreira' || currentPath === '/carreira.html' || currentPath === '/qualificacao' || currentPath === '/qualificacao.html';
 
-  console.log('Current Path:', window.location.pathname, 'isAdminRoute:', isAdminRoute, 'isCursosRoute:', isCursosRoute, 'isDepoimentosRoute:', isDepoimentosRoute, 'isAlunoEmpreendedorRoute:', isAlunoEmpreendedorRoute, 'isMelhorIdadeRoute:', isMelhorIdadeRoute, 'isFilhosBrilhantesRoute:', isFilhosBrilhantesRoute);
+  console.log('Current Path:', window.location.pathname, 'isAdminRoute:', isAdminRoute, 'isCursosRoute:', isCursosRoute, 'isDepoimentosRoute:', isDepoimentosRoute, 'isAlunoEmpreendedorRoute:', isAlunoEmpreendedorRoute, 'isMelhorIdadeRoute:', isMelhorIdadeRoute, 'isFilhosBrilhantesRoute:', isFilhosBrilhantesRoute, 'isCarreiraRoute:', isCarreiraRoute);
 
   if (isAdminRoute) {
     return (
@@ -261,6 +263,14 @@ export default function App() {
     return (
       <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-slate-50"><div className="w-10 h-10 border-4 border-red-600 border-t-transparent rounded-full animate-spin"></div></div>}>
         <FilhosBrilhantesPage />
+      </Suspense>
+    );
+  }
+
+  if (isCarreiraRoute) {
+    return (
+      <Suspense fallback={<div className="min-h-screen flex items-center justify-center bg-slate-50"><div className="w-10 h-10 border-4 border-red-600 border-t-transparent rounded-full animate-spin"></div></div>}>
+        <CarreiraPage />
       </Suspense>
     );
   }
