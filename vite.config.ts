@@ -17,6 +17,7 @@ export default defineConfig(({mode}) => {
           cursos: path.resolve(__dirname, 'cursos.html'),
           depoimentos: path.resolve(__dirname, 'depoimentos.html'),
           alunoEmpreendedor: path.resolve(__dirname, 'aluno-empreendedor.html'),
+          melhoridade: path.resolve(__dirname, 'melhoridade.html'),
         },
       },
     },
@@ -33,6 +34,9 @@ export default defineConfig(({mode}) => {
         server.middlewares.use((req, res, next) => {
           if (req.url === '/aluno-empreendedor' || req.url === '/aluno-empreendedor/') {
             req.url = '/aluno-empreendedor.html';
+          }
+          if (req.url === '/melhoridade' || req.url === '/melhoridade/' || req.url === '/melhor-idade' || req.url === '/melhor-idade/') {
+            req.url = '/melhoridade.html';
           }
           next();
         });
