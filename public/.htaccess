@@ -9,8 +9,8 @@ Options -Indexes
 RewriteEngine On
 
 # Redireciona /aluno-empreendedor para /aluno-empreendedor.html
-RewriteCond %{REQUEST_URI} ^/aluno-empreendedor/?$
-RewriteRule ^(.*)$ aluno-empreendedor.html [L]
+RewriteRule ^aluno-empreendedor/?$ aluno-empreendedor.html [L]
+
 
 # Serve arquivos e diretórios existentes diretamente (assets, imagens, etc.)
 RewriteCond %{REQUEST_FILENAME} !-f

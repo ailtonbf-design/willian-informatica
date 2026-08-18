@@ -48,22 +48,83 @@
 </head>
 <body class="text-slate-100 min-h-screen flex flex-col justify-between antialiased selection:bg-brand-red selection:text-white">
 
-  <!-- Header / Logo -->
-  <header class="py-8 text-center">
-    <div class="container mx-auto px-4">
-      <img src="https://res.cloudinary.com/dapsovbs5/image/upload/v1774637435/Logo-Willian_g1zxno.webp" 
-           alt="Logo William Informática" 
-           class="h-16 mx-auto hover:scale-105 transition-transform duration-300"
-           loading="lazy" />
+  <!-- Full Header (Replicating main website header) -->
+  <header class="sticky top-0 z-50 w-full bg-white shadow-md">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 md:h-28 flex items-center justify-between">
+      <!-- Logo -->
+      <div class="flex-shrink-0">
+        <a href="/">
+          <img 
+            src="https://res.cloudinary.com/dapsovbs5/image/upload/v1774637435/Logo-Willian_g1zxno.webp" 
+            alt="William Informática" 
+            class="h-[58px] md:h-[90px] w-auto object-contain mix-blend-multiply" 
+          />
+        </a>
+      </div>
+
+      <!-- Desktop Navigation -->
+      <nav class="hidden md:flex gap-6 lg:gap-8 items-center">
+        <a href="/#destaque" class="text-slate-700 hover:text-brand-red font-semibold transition-colors text-sm lg:text-base">Destaque</a>
+        <a href="/#treinamento" class="text-slate-700 hover:text-brand-red font-semibold transition-colors text-sm lg:text-base">Treinamentos</a>
+        <a href="/#empreendedor" class="text-slate-700 hover:text-brand-red font-semibold transition-colors text-sm lg:text-base border-b-2 border-brand-red">Aluno Empreendedor</a>
+        <a href="/#wpescola" class="text-slate-700 hover:text-brand-red font-semibold transition-colors text-sm lg:text-base">WP Escola</a>
+        <a href="/#certificado" class="text-slate-700 hover:text-brand-red font-semibold transition-colors text-sm lg:text-base">Certificado</a>
+        <a href="/depoimentos" class="text-slate-700 hover:text-brand-red font-semibold transition-colors text-sm lg:text-base">Depoimentos</a>
+        <a href="/#quemsomos" class="text-slate-700 hover:text-brand-red font-semibold transition-colors text-sm lg:text-base">Quem Somos</a>
+      </nav>
+
+      <!-- CTA & Mobile Menu Button -->
+      <div class="flex items-center gap-4">
+        <a href="https://wa.me/5517991879478?text=Olá!%20Quero%20me%20matricular%20na%20William%20Informática!" 
+           target="_blank" 
+           rel="noopener noreferrer" 
+           class="bg-brand-red text-white px-6 py-2 rounded-full font-bold hover:bg-brand-hoverRed hidden md:block transition-colors">
+          Matricule-se
+        </a>
+        <button 
+          id="menu-btn"
+          class="md:hidden p-2 text-slate-700 hover:text-brand-red transition-colors"
+          aria-label="Alternar menu mobile"
+          aria-expanded="false"
+        >
+          <!-- Menu Icon -->
+          <svg id="menu-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+          </svg>
+          <!-- Close Icon (Hidden by default) -->
+          <svg id="close-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-6 h-6 hidden">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Navigation -->
+    <div id="mobile-menu" class="hidden md:hidden bg-white border-t border-gray-100 overflow-hidden">
+      <div class="px-4 py-6 flex flex-col gap-4">
+        <a href="/#destaque" class="text-slate-700 hover:text-brand-red font-semibold transition-colors py-2">Curso Destaque da Semana</a>
+        <a href="/#treinamento" class="text-slate-700 hover:text-brand-red font-semibold transition-colors py-2">Vagas de Emprego</a>
+        <a href="/#empreendedor" class="text-slate-700 hover:text-brand-red font-semibold transition-colors py-2">Aluno Empreendedor</a>
+        <a href="/#wpescola" class="text-slate-700 hover:text-brand-red font-semibold transition-colors py-2">WP Escola de Vendas & Negócios</a>
+        <a href="/#certificado" class="text-slate-700 hover:text-brand-red font-semibold transition-colors py-2">Certificado Premium</a>
+        <a href="/depoimentos" class="text-slate-700 hover:text-brand-red font-semibold transition-colors py-2">Depoimentos</a>
+        <a href="/#quemsomos" class="text-slate-700 hover:text-brand-red font-semibold transition-colors py-2">Quem Somos</a>
+        <a href="https://wa.me/5517991879478?text=Olá!%20Quero%20me%20matricular%20na%20William%20Informática!" 
+           target="_blank" 
+           rel="noopener noreferrer" 
+           class="bg-brand-red text-white px-6 py-3 rounded-xl font-bold hover:bg-brand-hoverRed transition-colors text-center mt-2">
+          Matricule-se Agora
+        </a>
+      </div>
     </div>
   </header>
 
   <!-- Main Content Container -->
-  <main class="flex-grow flex items-center py-6 md:py-12">
+  <main class="flex-grow flex items-center py-10 md:py-16">
     <div class="container mx-auto px-4 max-w-4xl">
       
       <!-- Copy Section / Header LP -->
-      <div class="text-center space-y-6 mb-10">
+      <div class="text-center space-y-6 mb-12">
         <!-- Tag Destaque -->
         <span class="inline-flex items-center gap-1.5 py-1.5 px-4 rounded-full text-xs font-bold bg-brand-red/10 text-brand-red uppercase tracking-widest border border-brand-red/20">
           <span class="w-2 h-2 rounded-full bg-brand-red animate-pulse"></span>
@@ -82,7 +143,7 @@
       </div>
 
       <!-- Video Section -->
-      <div class="space-y-4 mb-10">
+      <div class="space-y-4 mb-12">
         <p class="text-slate-400 text-sm font-semibold tracking-wider uppercase text-center flex items-center justify-center gap-2">
           <!-- Play Icon -->
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-4 h-4 text-brand-red">
@@ -92,25 +153,30 @@
           Assista ao vídeo e entenda como funciona o projeto em Bebedouro
         </p>
         
-        <!-- Video Wrapper (16:9 Responsive Placeholder) -->
-        <div class="relative w-full aspect-video rounded-2xl overflow-hidden bg-slate-900 border border-slate-800 shadow-2xl shadow-brand-red/10 group">
-          <!-- 
-            Placeholder do Player de Vídeo. 
-            Para colocar o vídeo real (YouTube / Vimeo / Pandavideo / Vturb), basta substituir o iframe ou a div abaixo.
-          -->
-          <div class="absolute inset-0 flex flex-col items-center justify-center bg-cover bg-center" style="background-image: linear-gradient(to bottom, rgba(15, 23, 42, 0.8), rgba(9, 13, 22, 0.95)), url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1200&q=80');">
-            <!-- Simulated Play Button -->
-            <button class="w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center rounded-full bg-brand-red text-white shadow-lg shadow-brand-red/50 group-hover:scale-110 group-hover:bg-brand-hoverRed transition-all duration-300 transform" aria-label="Play video">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-8 h-8 sm:w-10 sm:h-10 ml-1">
-                <path fill-rule="evenodd" d="M4.5 5.653c0-1.427 1.529-2.33 2.779-1.643l11.54 6.347c1.295.712 1.295 2.573 0 3.286L7.28 19.99c-1.25.687-2.779-.217-2.779-1.643V5.653Z" clip-rule="evenodd" />
-              </svg>
-            </button>
-            <span class="mt-4 text-xs tracking-widest text-slate-400 uppercase font-medium group-hover:text-slate-300 transition-colors">Clique para reproduzir o vídeo</span>
+        <!-- Video Wrapper (9:16 Vertical Responsive Smartphone Frame) -->
+        <div class="relative w-full max-w-[320px] aspect-[9/16] mx-auto rounded-[36px] overflow-hidden bg-slate-950 border-[6px] border-slate-800 shadow-2xl shadow-brand-red/20 group">
+          <!-- Simulated smartphone camera notch/speaker -->
+          <div class="absolute top-0 inset-x-0 h-4 bg-slate-800 z-20 flex justify-center items-center">
+            <div class="w-16 h-1.5 rounded-full bg-slate-900"></div>
           </div>
 
           <!-- 
-            Exemplo de Embed Real (comente a div acima e desinale o iframe abaixo caso use YouTube):
-            <iframe class="w-full h-full" src="https://www.youtube.com/embed/ID_DO_VIDEO" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+            Placeholder do Player de Vídeo Vertical.
+            Para colocar o vídeo real (YouTube / Vimeo / Pandavideo / Vturb / TikTok / Reels), substitua o conteúdo abaixo.
+          -->
+          <div class="absolute inset-0 flex flex-col items-center justify-center bg-cover bg-center" style="background-image: linear-gradient(to bottom, rgba(15, 23, 42, 0.7), rgba(9, 13, 22, 0.95)), url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=600&q=80');">
+            <!-- Simulated Play Button -->
+            <button class="w-16 h-16 flex items-center justify-center rounded-full bg-brand-red text-white shadow-lg shadow-brand-red/50 group-hover:scale-110 group-hover:bg-brand-hoverRed transition-all duration-300 transform" aria-label="Play video">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-8 h-8 ml-1">
+                <path fill-rule="evenodd" d="M4.5 5.653c0-1.427 1.529-2.33 2.779-1.643l11.54 6.347c1.295.712 1.295 2.573 0 3.286L7.28 19.99c-1.25.687-2.779-.217-2.779-1.643V5.653Z" clip-rule="evenodd" />
+              </svg>
+            </button>
+            <span class="mt-4 px-4 text-center text-[10px] tracking-widest text-slate-400 uppercase font-medium group-hover:text-slate-300 transition-colors">Clique para assistir</span>
+          </div>
+
+          <!-- 
+            Exemplo de Embed Real Vertical (comente a div acima e desinale o iframe abaixo caso use embed):
+            <iframe class="w-full h-full pt-4" src="https://www.youtube.com/embed/ID_DO_VIDEO_VERTICAL" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
           -->
         </div>
       </div>
@@ -130,7 +196,7 @@
       </div>
 
       <!-- CTA Button & Footer Disclaimer -->
-      <div class="mt-10 text-center space-y-4">
+      <div class="mt-12 text-center space-y-4">
         <a href="https://wa.me/5517991879478?text=Olá!%20Assisti%20ao%20vídeo%20do%20William%20e%20gostaria%20de%20saber%20se%20posso%20participar%20do%20projeto%20Aluno%20Empreendedor" 
            target="_blank" 
            rel="noopener noreferrer" 
@@ -162,6 +228,22 @@
       </p>
     </div>
   </footer>
+
+  <!-- Script for Mobile Menu Toggle -->
+  <script>
+    const menuBtn = document.getElementById('menu-btn');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const menuIcon = document.getElementById('menu-icon');
+    const closeIcon = document.getElementById('close-icon');
+
+    menuBtn.addEventListener('click', () => {
+      const isExpanded = menuBtn.getAttribute('aria-expanded') === 'true';
+      menuBtn.setAttribute('aria-expanded', !isExpanded);
+      mobileMenu.classList.toggle('hidden');
+      menuIcon.classList.toggle('hidden');
+      closeIcon.classList.toggle('hidden');
+    });
+  </script>
 
 </body>
 </html>
