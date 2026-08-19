@@ -20,6 +20,7 @@ export default defineConfig(({mode}) => {
           melhoridade: path.resolve(__dirname, 'melhoridade.html'),
           filhosbrilhantes: path.resolve(__dirname, 'filhosbrilhantes.html'),
           carreira: path.resolve(__dirname, 'carreira.html'),
+          negocios: path.resolve(__dirname, 'negocios.html'),
         },
       },
     },
@@ -45,6 +46,9 @@ export default defineConfig(({mode}) => {
           }
           if (req.url === '/carreira' || req.url === '/carreira/' || req.url === '/qualificacao' || req.url === '/qualificacao/') {
             req.url = '/carreira.html';
+          }
+          if (req.url === '/negocios' || req.url === '/negocios/' || req.url === '/wpescola' || req.url === '/wpescola/') {
+            req.url = '/negocios.html';
           }
           next();
         });
