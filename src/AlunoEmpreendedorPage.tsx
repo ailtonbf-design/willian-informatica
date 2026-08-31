@@ -64,7 +64,6 @@ export default function AlunoEmpreendedorPage() {
                 <iframe src="https://player.mediadelivery.net/embed/740813/0cf4c250-cf8e-4116-bec4-67d0d5006fdf?autoplay=true&loop=false&muted=true&preload=true&responsive=true" loading="lazy" style={{ border: 0, position: 'absolute', top: 0, height: '100%', width: '100%' }} allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;fullscreen;" allowFullScreen={true}></iframe>
               </div>
             </div>
-            </div>
           </motion.div>
 
           {/* Box de Destaque com Visual Forte e Constraste */}
