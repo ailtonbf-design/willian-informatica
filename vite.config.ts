@@ -47,7 +47,7 @@ export default defineConfig(({mode}) => {
           if (req.url === '/carreira' || req.url === '/carreira/' || req.url === '/empregabilidade' || req.url === '/empregabilidade/') {
             req.url = '/carreira.html';
           }
-          if (req.url === '/negocios' || req.url === '/negocios/' || req.url === '/wpescola' || req.url === '/wpescola/') {
+          if (req.url === '/negocios' || req.url === '/negocios/' || req.url === '/empreendedor' || req.url === '/empreendedor/') {
             req.url = '/negocios.html';
           }
           next();

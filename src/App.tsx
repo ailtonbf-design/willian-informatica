@@ -217,7 +217,7 @@ export default function App() {
   const isMelhorIdadeRoute = currentPath === '/melhoridade' || currentPath === '/melhoridade.html' || currentPath === '/melhor-idade' || currentPath === '/melhor-idade.html';
   const isFilhosBrilhantesRoute = currentPath === '/filhosbrilhantes' || currentPath === '/filhosbrilhantes.html' || currentPath === '/filhos-brilhantes' || currentPath === '/filhos-brilhantes.html';
   const isCarreiraRoute = currentPath === '/carreira' || currentPath === '/carreira.html' || currentPath === '/empregabilidade' || currentPath === '/empregabilidade.html';
-  const isNegociosRoute = currentPath === '/negocios' || currentPath === '/negocios.html' || currentPath === '/wpescola' || currentPath === '/wpescola.html';
+  const isNegociosRoute = currentPath === '/negocios' || currentPath === '/negocios.html' || currentPath === '/empreendedor' || currentPath === '/empreendedor.html';
 
   console.log('Current Path:', window.location.pathname, 'isAdminRoute:', isAdminRoute, 'isCursosRoute:', isCursosRoute, 'isDepoimentosRoute:', isDepoimentosRoute, 'isAlunoEmpreendedorRoute:', isAlunoEmpreendedorRoute, 'isMelhorIdadeRoute:', isMelhorIdadeRoute, 'isFilhosBrilhantesRoute:', isFilhosBrilhantesRoute, 'isCarreiraRoute:', isCarreiraRoute, 'isNegociosRoute:', isNegociosRoute);
 
