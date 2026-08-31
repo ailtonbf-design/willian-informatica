@@ -59,9 +59,9 @@ export default function MelhorIdadePage() {
             </div>
             
             {/* Video Wrapper */}
-            <div className="relative w-full max-w-3xl mx-auto rounded-2xl overflow-hidden shadow-[0_0_50px_-10px_rgba(227,0,15,0.3)]">
-              <div style={{ position: 'relative', paddingTop: '56.25%' }}>
-                <iframe src="https://player.mediadelivery.net/embed/740813/42466e03-e6b0-4a99-a53e-9f65a550d8cd?autoplay=false&loop=false&muted=true&preload=true&responsive=true" loading="lazy" style={{ border: 0, position: 'absolute', top: 0, height: '100%', width: '100%' }} allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;fullscreen;" allowFullScreen={true}></iframe>
+            <div className="relative w-full max-w-[340px] aspect-[9/16] mx-auto rounded-[32px] overflow-hidden shadow-[0_0_50px_-10px_rgba(227,0,15,0.3)] border-[8px] border-slate-900 bg-slate-950">
+              <div className="absolute inset-0 w-full h-full">
+                <iframe src="https://player.mediadelivery.net/embed/740813/42466e03-e6b0-4a99-a53e-9f65a550d8cd?autoplay=false&loop=false&muted=true&preload=true&responsive=true" loading="lazy" className="w-full h-full object-cover" style={{ border: 0 }} allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;fullscreen;" allowFullScreen={true}></iframe>
               </div>
             </div>
           </motion.div>
