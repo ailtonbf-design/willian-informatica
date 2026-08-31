@@ -61,7 +61,7 @@ export default function CarreiraPage() {
             {/* Video Wrapper */}
             <div className="relative w-full max-w-3xl mx-auto rounded-2xl overflow-hidden shadow-[0_0_50px_-10px_rgba(227,0,15,0.3)]">
               <div style={{ position: 'relative', paddingTop: '56.25%' }}>
-                <iframe src="https://player.mediadelivery.net/embed/740813/8f2d1fb4-69d1-4fe4-b00e-bcb1345585a8?autoplay=true&loop=false&muted=true&preload=true&responsive=true" loading="lazy" style={{ border: 0, position: 'absolute', top: 0, height: '100%', width: '100%' }} allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;fullscreen;" allowFullScreen={true}></iframe>
+                <iframe src="https://player.mediadelivery.net/embed/740813/8f2d1fb4-69d1-4fe4-b00e-bcb1345585a8?autoplay=false&loop=false&muted=true&preload=true&responsive=true" loading="lazy" style={{ border: 0, position: 'absolute', top: 0, height: '100%', width: '100%' }} allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;fullscreen;" allowFullScreen={true}></iframe>
               </div>
             </div>
           </motion.div>
