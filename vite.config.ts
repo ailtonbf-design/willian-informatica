@@ -44,7 +44,7 @@ export default defineConfig(({mode}) => {
           if (req.url === '/filhosbrilhantes' || req.url === '/filhosbrilhantes/' || req.url === '/filhos-brilhantes' || req.url === '/filhos-brilhantes/') {
             req.url = '/filhosbrilhantes.html';
           }
-          if (req.url === '/carreira' || req.url === '/carreira/' || req.url === '/qualificacao' || req.url === '/qualificacao/') {
+          if (req.url === '/carreira' || req.url === '/carreira/' || req.url === '/empregabilidade' || req.url === '/empregabilidade/') {
             req.url = '/carreira.html';
           }
           if (req.url === '/negocios' || req.url === '/negocios/' || req.url === '/wpescola' || req.url === '/wpescola/') {

@@ -41,11 +41,11 @@ export default function AlunoEmpreendedorPage() {
 
             {/* Subheadline */}
             <p className="text-slate-300 text-base sm:text-lg md:text-xl max-w-2xl mx-auto leading-relaxed font-normal">
-              Conheça o <strong className="text-white font-bold underline decoration-brand-red decoration-2 underline-offset-4">Aluno Empreendedor</strong>, um projeto da <strong className="text-white font-semibold">William Informática</strong> que une formação profissional e oportunidade de geração de renda — sem depender de um emprego com carteira assinada.
+              Conheça o <strong className="text-white font-bold underline decoration-brand-red decoration-2 underline-offset-4">Aluno Empreendedor</strong>, um projeto da <strong className="text-white font-semibold">William Informática</strong> que une formação profissional e oportunidade de geração de renda, sem depender de um emprego com carteira assinada.
             </p>
           </motion.div>
 
-          {/* Video Section com Smartphone Frame Premium */}
+          {/* Video Section */}
           <motion.div 
             initial={{ opacity: 0, y: 25 }}
             animate={{ opacity: 1, y: 0 }}
@@ -58,37 +58,12 @@ export default function AlunoEmpreendedorPage() {
               <span>Assista ao vídeo e entenda como funciona o projeto em Bebedouro</span>
             </div>
             
-            {/* Video Wrapper (9:16 Smartphone Frame com Glow) */}
-            <div className="relative w-full max-w-[330px] aspect-[9/16] mx-auto rounded-[40px] overflow-hidden bg-slate-950 border-[7px] border-slate-800 shadow-[0_0_50px_-10px_rgba(227,0,15,0.3)] group transition-transform duration-300 hover:scale-[1.01]">
-              {/* Dynamic Island / Notch */}
-              <div className="absolute top-0 inset-x-0 h-5 bg-slate-900/90 z-20 flex justify-center items-center backdrop-blur-sm">
-                <div className="w-20 h-2.5 rounded-full bg-slate-950 flex items-center justify-end px-2">
-                  <div className="w-1.5 h-1.5 rounded-full bg-slate-800" />
-                </div>
+            {/* Video Wrapper */}
+            <div className="relative w-full max-w-3xl mx-auto rounded-2xl overflow-hidden shadow-[0_0_50px_-10px_rgba(227,0,15,0.3)]">
+              <div style={{ position: 'relative', paddingTop: '56.25%' }}>
+                <iframe src="https://player.mediadelivery.net/embed/740813/0cf4c250-cf8e-4116-bec4-67d0d5006fdf?autoplay=true&loop=false&muted=true&preload=true&responsive=true" loading="lazy" style={{ border: 0, position: 'absolute', top: 0, height: '100%', width: '100%' }} allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;fullscreen;" allowFullScreen={true}></iframe>
               </div>
-
-              {/* Video placeholder com Capa & Play Button */}
-              <div 
-                className="absolute inset-0 flex flex-col items-center justify-center bg-cover bg-center" 
-                style={{ 
-                  backgroundImage: `linear-gradient(to bottom, rgba(11, 17, 32, 0.5), rgba(11, 17, 32, 0.95)), url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=600&q=80')` 
-                }}
-              >
-                {/* Botão de Play com Animação */}
-                <div className="relative flex items-center justify-center">
-                  <span className="absolute w-20 h-20 rounded-full bg-brand-red/30 animate-ping" />
-                  <button 
-                    className="relative w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center rounded-full bg-gradient-to-tr from-brand-red to-rose-600 text-white shadow-2xl shadow-brand-red/60 group-hover:scale-110 group-hover:brightness-110 transition-all duration-300 transform" 
-                    aria-label="Assistir vídeo"
-                  >
-                    <Play className="w-8 h-8 sm:w-9 sm:h-9 ml-1 fill-white" />
-                  </button>
-                </div>
-                
-                <span className="mt-5 px-4 text-center text-xs tracking-widest text-slate-300 uppercase font-semibold group-hover:text-white transition-colors bg-slate-950/60 py-1.5 px-3 rounded-full border border-white/10 backdrop-blur-sm">
-                  Toque para assistir
-                </span>
-              </div>
+            </div>
             </div>
           </motion.div>
 

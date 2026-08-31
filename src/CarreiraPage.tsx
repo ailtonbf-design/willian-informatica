@@ -58,36 +58,10 @@ export default function CarreiraPage() {
               <span>Assista a este vídeo e descubra como a nossa formação prepara você para os desafios da era digital.</span>
             </div>
             
-            {/* Video Wrapper (9:16 Smartphone Frame com Glow) */}
-            <div className="relative w-full max-w-[330px] aspect-[9/16] mx-auto rounded-[40px] overflow-hidden bg-slate-950 border-[7px] border-slate-800 shadow-[0_0_50px_-10px_rgba(227,0,15,0.3)] group transition-transform duration-300 hover:scale-[1.01]">
-              {/* Dynamic Island / Notch */}
-              <div className="absolute top-0 inset-x-0 h-5 bg-slate-900/90 z-20 flex justify-center items-center backdrop-blur-sm">
-                <div className="w-20 h-2.5 rounded-full bg-slate-950 flex items-center justify-end px-2">
-                  <div className="w-1.5 h-1.5 rounded-full bg-slate-800" />
-                </div>
-              </div>
-
-              {/* Video placeholder com Capa & Play Button */}
-              <div 
-                className="absolute inset-0 flex flex-col items-center justify-center bg-cover bg-center" 
-                style={{ 
-                  backgroundImage: `linear-gradient(to bottom, rgba(11, 17, 32, 0.45), rgba(11, 17, 32, 0.95)), url('https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=600&q=80')` 
-                }}
-              >
-                {/* Botão de Play com Animação */}
-                <div className="relative flex items-center justify-center">
-                  <span className="absolute w-20 h-20 rounded-full bg-brand-red/30 animate-ping" />
-                  <button 
-                    className="relative w-16 h-16 sm:w-20 sm:h-20 flex items-center justify-center rounded-full bg-gradient-to-tr from-brand-red to-rose-600 text-white shadow-2xl shadow-brand-red/60 group-hover:scale-110 group-hover:brightness-110 transition-all duration-300 transform" 
-                    aria-label="Assistir vídeo"
-                  >
-                    <Play className="w-8 h-8 sm:w-9 sm:h-9 ml-1 fill-white" />
-                  </button>
-                </div>
-                
-                <span className="mt-5 px-4 text-center text-xs tracking-widest text-slate-300 uppercase font-semibold group-hover:text-white transition-colors bg-slate-950/60 py-1.5 px-3 rounded-full border border-white/10 backdrop-blur-sm">
-                  Toque para assistir
-                </span>
+            {/* Video Wrapper */}
+            <div className="relative w-full max-w-3xl mx-auto rounded-2xl overflow-hidden shadow-[0_0_50px_-10px_rgba(227,0,15,0.3)]">
+              <div style={{ position: 'relative', paddingTop: '56.25%' }}>
+                <iframe src="https://player.mediadelivery.net/embed/740813/8f2d1fb4-69d1-4fe4-b00e-bcb1345585a8?autoplay=true&loop=false&muted=true&preload=true&responsive=true" loading="lazy" style={{ border: 0, position: 'absolute', top: 0, height: '100%', width: '100%' }} allow="accelerometer;gyroscope;autoplay;encrypted-media;picture-in-picture;fullscreen;" allowFullScreen={true}></iframe>
               </div>
             </div>
           </motion.div>
@@ -104,26 +78,26 @@ export default function CarreiraPage() {
             </div>
 
             <h2 className="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">
-              O mercado exige profissionais preparados.
+              Você passaria hoje em uma entrevista de emprego?
             </h2>
 
             <p className="text-slate-300 text-base sm:text-lg leading-relaxed max-w-lg mx-auto">
-              Dê o próximo passo na sua trajetória profissional com uma metodologia focada no que as empresas realmente buscam.
+              Faça gratuitamente o nosso Diagnóstico de Empregabilidade e descubra o seu nível de preparação para enfrentar uma entrevista e disputar uma vaga no mercado de trabalho.
             </p>
 
             {/* Benefícios rápidos em pílulas */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2 text-xs font-semibold text-slate-300 text-left">
               <div className="bg-white/5 border border-white/10 rounded-xl p-3 flex items-center gap-2">
                 <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0" />
-                <span>Encaminhamento ao mercado</span>
+                <span>Perguntas reais de entrevista</span>
               </div>
               <div className="bg-white/5 border border-white/10 rounded-xl p-3 flex items-center gap-2">
-                <GraduationCap className="w-4 h-4 text-amber-400 shrink-0" />
-                <span>Certificado Premium reconhecido</span>
+                <CheckCircle2 className="w-4 h-4 text-amber-400 shrink-0" />
+                <span>Análise do seu currículo</span>
               </div>
               <div className="bg-white/5 border border-white/10 rounded-xl p-3 flex items-center gap-2">
-                <ShieldCheck className="w-4 h-4 text-rose-400 shrink-0" />
-                <span>Prática real em laboratório</span>
+                <CheckCircle2 className="w-4 h-4 text-rose-400 shrink-0" />
+                <span>Seu índice de preparação</span>
               </div>
             </div>
           </motion.div>
@@ -136,19 +110,19 @@ export default function CarreiraPage() {
             className="mt-12 text-center space-y-4"
           >
             <a 
-              href="https://wa.me/5517991879478?text=Olá!%20Assisti%20ao%20vídeo%20do%20William%20e%20gostaria%20de%20saber%20mais%20sobre%20os%20cursos%20de%20Carreira" 
+              href="https://wa.me/5517991879478?text=Olá!%20Assisti%20ao%20vídeo%20do%20William%20e%20gostaria%20de%20agendar%20meu%20diagnóstico%20de%20empregabilidade." 
               target="_blank" 
               rel="noopener noreferrer" 
               className="group inline-flex items-center justify-center gap-3 px-8 sm:px-12 py-5 rounded-2xl text-lg sm:text-xl font-black text-white bg-gradient-to-r from-red-600 via-brand-red to-red-700 hover:from-red-500 hover:to-rose-600 active:scale-98 transition-all duration-300 shadow-2xl shadow-red-600/40 hover:shadow-red-600/60 w-full sm:w-auto hover:scale-105"
             >
               <MessageCircle className="w-7 h-7 fill-white group-hover:rotate-12 transition-transform duration-300" />
-              <span>QUERO ME QUALIFICAR</span>
+              <span>QUERO DESCOBRIR MEU ÍNDICE</span>
               <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300 hidden sm:inline-block" />
             </a>
             
             <div className="flex items-center justify-center gap-2 text-xs text-slate-400 font-medium">
               <ShieldCheck className="w-4 h-4 text-emerald-400" />
-              <span>Fale com nossa equipe e conheça as turmas abertas.</span>
+              <span>Diagnóstico presencial e gratuito. Vagas limitadas mediante agendamento.</span>
             </div>
           </motion.div>
 
