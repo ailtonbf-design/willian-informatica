@@ -3,8 +3,8 @@ import { Header } from './components/Header';
 import { Footer } from './components/Footer';
 import { motion, AnimatePresence } from 'motion/react';
 import { Play, Star, Quote, Award, Users, MessageSquare, ArrowRight, X } from 'lucide-react';
-import { db } from './firebase';
-import { collection, onSnapshot, query, orderBy } from 'firebase/firestore';
+import { db, CACHE_KEYS, getCachedData, getStaleCachedData, setCachedData } from './firebase';
+import { collection, getDocs, query } from 'firebase/firestore';
 
 interface Testimonial {
   id: string;
@@ -61,33 +61,46 @@ export default function DepoimentosPage() {
   const [activeVideoId, setActiveVideoId] = useState<string | null>(null);
 
   useEffect(() => {
-    // Escuta a coleção de depoimentos no Firestore
-    const depoimentosRef = collection(db, 'depoimentos');
-    const q = query(depoimentosRef);
-
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      if (!snapshot.empty) {
-        const data = snapshot.docs.map(doc => ({
-          id: doc.id,
-          nome: doc.data().nome,
-          curso: doc.data().curso,
-          texto: doc.data().texto,
-          vimeoId: doc.data().vimeoId,
-          avatarUrl: doc.data().avatarUrl,
-          thumbnailUrl: doc.data().thumbnailUrl,
-        })) as Testimonial[];
-        setTestimonials(data);
-      } else {
-        setTestimonials(defaultTestimonials);
+    const fetchDepoimentos = async () => {
+      const cached = getCachedData<Testimonial[]>(CACHE_KEYS.DEPOIMENTOS);
+      if (cached && cached.length > 0) {
+        setTestimonials(cached);
+        setLoading(false);
+        return;
       }
-      setLoading(false);
-    }, (error) => {
-      console.error("Erro ao carregar depoimentos do Firestore:", error);
-      setTestimonials(defaultTestimonials);
-      setLoading(false);
-    });
 
-    return () => unsubscribe();
+      try {
+        const depoimentosRef = collection(db, 'depoimentos');
+        const snapshot = await getDocs(query(depoimentosRef));
+        if (!snapshot.empty) {
+          const data = snapshot.docs.map(doc => ({
+            id: doc.id,
+            nome: doc.data().nome,
+            curso: doc.data().curso,
+            texto: doc.data().texto,
+            vimeoId: doc.data().vimeoId,
+            avatarUrl: doc.data().avatarUrl,
+            thumbnailUrl: doc.data().thumbnailUrl,
+          })) as Testimonial[];
+          setTestimonials(data);
+          setCachedData(CACHE_KEYS.DEPOIMENTOS, data);
+        } else {
+          setTestimonials(defaultTestimonials);
+        }
+      } catch (error) {
+        const stale = getStaleCachedData<Testimonial[]>(CACHE_KEYS.DEPOIMENTOS);
+        if (stale && stale.length > 0) {
+          setTestimonials(stale);
+        } else {
+          setTestimonials(defaultTestimonials);
+        }
+        console.warn("Aviso ao carregar depoimentos do Firestore (usando cache/padrão):", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDepoimentos();
   }, []);
 
   return (

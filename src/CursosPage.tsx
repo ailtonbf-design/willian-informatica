@@ -3,8 +3,8 @@ import { Header } from './components/Header';
 import { Footer } from './components/Footer';
 import { motion, AnimatePresence } from 'motion/react';
 import { Check, X, Clock, Info, Send } from 'lucide-react';
-import { db } from './firebase';
-import { collection, addDoc, serverTimestamp, onSnapshot, query, where, orderBy } from 'firebase/firestore';
+import { db, CACHE_KEYS, getCachedData, getStaleCachedData, setCachedData } from './firebase';
+import { collection, addDoc, serverTimestamp, getDocs, query, where, orderBy } from 'firebase/firestore';
 
 interface Curso {
   id: string;
@@ -33,27 +33,43 @@ export default function CursosPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
-    const cursosRef = collection(db, 'cursos');
-    const q = query(cursosRef, where('ativo', '==', true), orderBy('nome', 'asc'));
-    
-    const unsubscribe = onSnapshot(q, (snapshot) => {
-      const cursosData = snapshot.docs.map(doc => ({
-        id: doc.id,
-        nome: doc.data().nome,
-        categoria: doc.data().categoria,
-        cargaHoraria: doc.data().carga_horaria,
-        descricao: doc.data().descricao,
-        imagem: doc.data().imagem_url
-      })) as Curso[];
-      
-      setCursos(cursosData);
-      setLoading(false);
-    }, (error) => {
-      console.error("Erro ao carregar cursos:", error);
-      setLoading(false);
-    });
+    const fetchCursos = async () => {
+      const cached = getCachedData<Curso[]>(CACHE_KEYS.CURSOS);
+      if (cached && cached.length > 0) {
+        setCursos(cached);
+        setLoading(false);
+        return;
+      }
 
-    return () => unsubscribe();
+      try {
+        const cursosRef = collection(db, 'cursos');
+        const q = query(cursosRef, where('ativo', '==', true), orderBy('nome', 'asc'));
+        const snapshot = await getDocs(q);
+        const cursosData = snapshot.docs.map(doc => ({
+          id: doc.id,
+          nome: doc.data().nome,
+          categoria: doc.data().categoria,
+          cargaHoraria: doc.data().carga_horaria,
+          descricao: doc.data().descricao,
+          imagem: doc.data().imagem_url
+        })) as Curso[];
+
+        setCursos(cursosData);
+        if (cursosData.length > 0) {
+          setCachedData(CACHE_KEYS.CURSOS, cursosData);
+        }
+      } catch (error) {
+        const stale = getStaleCachedData<Curso[]>(CACHE_KEYS.CURSOS);
+        if (stale && stale.length > 0) {
+          setCursos(stale);
+        }
+        console.error("Erro ao carregar cursos (usando cache se disponível):", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchCursos();
   }, []);
 
   const cursosFiltrados = useMemo(() => {

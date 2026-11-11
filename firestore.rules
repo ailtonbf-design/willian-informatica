@@ -16,6 +16,16 @@ service cloud.firestore {
     //   - status: string (required) - Status (Novo, Em Atendimento, etc)
     //   - createdAt: timestamp (required) - When the lead registered
     //
+    // Collection: depoimentos
+    // Document ID: Auto-generated
+    // Fields:
+    //   - nome: string (required, length 1-100) - Student name
+    //   - curso: string (required, length 1-150) - Course or category name
+    //   - texto: string (required, length 1-2000) - Testimonial text
+    //   - vimeoId: string (required, length 1-100) - Vimeo video ID
+    //   - avatarUrl: string (optional, length <= 1048576) - Student avatar URL
+    //   - thumbnailUrl: string (optional, length <= 1048576) - Video thumbnail URL
+    //
     // ===============================================================
 
     // ===============================================================
@@ -64,6 +74,16 @@ service cloud.firestore {
              (!('imagemUrl' in data) || (data.imagemUrl is string && data.imagemUrl.size() <= 1048576));
     }
 
+    function isValidDepoimento(data) {
+      return hasOnlyAllowedFields(['nome', 'curso', 'texto', 'vimeoId', 'avatarUrl', 'thumbnailUrl']) &&
+             data.nome is string && data.nome.size() > 0 && data.nome.size() <= 100 &&
+             data.curso is string && data.curso.size() > 0 && data.curso.size() <= 150 &&
+             data.texto is string && data.texto.size() > 0 && data.texto.size() <= 2000 &&
+             data.vimeoId is string && data.vimeoId.size() > 0 && data.vimeoId.size() <= 100 &&
+             (!('avatarUrl' in data) || (data.avatarUrl is string && data.avatarUrl.size() <= 1048576)) &&
+             (!('thumbnailUrl' in data) || (data.thumbnailUrl is string && data.thumbnailUrl.size() <= 1048576));
+    }
+
     // ===============================================================
     // Rules
     // ===============================================================
@@ -101,6 +121,14 @@ service cloud.firestore {
       allow read: if true;
       // Only admins can manage courses
       allow write: if isAdmin();
+    }
+
+    match /depoimentos/{depoimentoId} {
+      // Anyone can read testimonials
+      allow read: if true;
+      // Only admins can manage testimonials
+      allow create, update: if isAdmin() && isValidDepoimento(request.resource.data);
+      allow delete: if isAdmin();
     }
 
     match /inscricoes_aluno_empreendedor/{inscricaoId} {

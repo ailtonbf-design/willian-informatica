@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { doc, setDoc, getDoc, collection, query, where, getDocs, updateDoc, deleteDoc, orderBy, addDoc, serverTimestamp, onSnapshot } from 'firebase/firestore';
 import { ref, uploadBytes, getDownloadURL, deleteObject } from 'firebase/storage';
 import { signInWithPopup, GoogleAuthProvider, signOut, onAuthStateChanged } from 'firebase/auth';
-import { db, storage, auth } from '../firebase';
+import { db, storage, auth, CACHE_KEYS, setCachedData, invalidateCache, getStaleCachedData } from '../firebase';
 import { Save, LogIn, LogOut, CheckCircle, Upload, Trash2, Briefcase, BookOpen, Image as ImageIcon, Users, MessageCircle, Plus, Bell, X } from 'lucide-react';
 
 interface Vaga {
@@ -69,6 +69,7 @@ export function AdminPanel() {
   const [novaFotoFile, setNovaFotoFile] = useState<File | null>(null);
 
   // Leads State
+  const [allLeads, setAllLeads] = useState<Lead[]>([]);
   const [leads, setLeads] = useState<Lead[]>([]);
   const [activeLeadCategory, setActiveLeadCategory] = useState<string>('Todos os Leads');
   const [leadsStats, setLeadsStats] = useState<Record<string, { novos: number, atendimento: number }>>({});
@@ -115,29 +116,6 @@ export function AdminPanel() {
       loadFotosCarrossel();
       loadTodosCursos();
       loadDepoimentos();
-
-      // Migração temporária de categoria: Preparatórios -> Reforço Escolar
-      const migrateCategories = async () => {
-        try {
-          const cursosRef = collection(db, 'cursos');
-          const q = query(cursosRef, where('categoria', '==', 'Preparatórios'));
-          const querySnapshot = await getDocs(q);
-          
-          if (!querySnapshot.empty) {
-            console.log(`Encontrados ${querySnapshot.size} cursos na categoria antiga 'Preparatórios'. Migrando...`);
-            const updatePromises = querySnapshot.docs.map(docRef => 
-              updateDoc(doc(db, 'cursos', docRef.id), { categoria: 'Reforço Escolar' })
-            );
-            await Promise.all(updatePromises);
-            console.log('Migração de categorias concluída com sucesso.');
-            // Recarregar dados após migração
-            loadTodosCursos();
-          }
-        } catch (err) {
-          console.error("Erro na migração de categorias:", err);
-        }
-      };
-      migrateCategories();
     }
   }, [isAuthenticated]);
 
@@ -150,8 +128,19 @@ export function AdminPanel() {
         if (data.titulo) setTitulo(data.titulo);
         if (data.descricao) setDescricao(data.descricao);
         if (data.imagemUrl) setImagemUrl(data.imagemUrl);
+        setCachedData(CACHE_KEYS.CURSO_DESTAQUE, {
+          titulo: data.titulo || '',
+          descricao: data.descricao || '',
+          imagemUrl: data.imagemUrl || ''
+        });
       }
     } catch (err) {
+      const stale = getStaleCachedData<{ titulo: string; descricao: string; imagemUrl: string }>(CACHE_KEYS.CURSO_DESTAQUE);
+      if (stale) {
+        if (stale.titulo) setTitulo(stale.titulo);
+        if (stale.descricao) setDescricao(stale.descricao);
+        if (stale.imagemUrl) setImagemUrl(stale.imagemUrl);
+      }
       console.error("Erro ao carregar dados do curso:", err);
     }
   };
@@ -162,9 +151,14 @@ export function AdminPanel() {
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
         const data = docSnap.data();
-        if (data.lista) setVagas(data.lista);
+        if (data.lista) {
+          setVagas(data.lista);
+          setCachedData(CACHE_KEYS.VAGAS, data.lista);
+        }
       }
     } catch (err) {
+      const stale = getStaleCachedData<Vaga[]>(CACHE_KEYS.VAGAS);
+      if (stale) setVagas(stale);
       console.error("Erro ao carregar vagas:", err);
     }
   };
@@ -176,7 +170,32 @@ export function AdminPanel() {
       const snapshot = await getDocs(q);
       const cursosData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
       setTodosCursos(cursosData);
+      if (cursosData.length > 0) {
+        const mappedForPublic = cursosData
+          .filter((c: any) => c.ativo !== false)
+          .map((c: any) => ({
+            id: c.id,
+            nome: c.nome,
+            categoria: c.categoria,
+            cargaHoraria: c.carga_horaria,
+            descricao: c.descricao,
+            imagem: c.imagem_url
+          }));
+        setCachedData(CACHE_KEYS.CURSOS, mappedForPublic);
+      }
     } catch (err) {
+      const stale = getStaleCachedData<any[]>(CACHE_KEYS.CURSOS);
+      if (stale && stale.length > 0) {
+        setTodosCursos(stale.map(c => ({
+          id: c.id,
+          nome: c.nome,
+          categoria: c.categoria,
+          carga_horaria: c.cargaHoraria || c.carga_horaria,
+          descricao: c.descricao,
+          imagem_url: c.imagem || c.imagem_url,
+          ativo: true
+        })));
+      }
       console.error("Erro ao carregar todos os cursos:", err);
     }
   };
@@ -191,7 +210,12 @@ export function AdminPanel() {
         ...doc.data()
       }));
       setDepoimentos(list);
+      if (list.length > 0) {
+        setCachedData(CACHE_KEYS.DEPOIMENTOS, list);
+      }
     } catch (err) {
+      const stale = getStaleCachedData<any[]>(CACHE_KEYS.DEPOIMENTOS);
+      if (stale) setDepoimentos(stale);
       console.error("Erro ao carregar depoimentos:", err);
     }
   };
@@ -375,6 +399,7 @@ export function AdminPanel() {
     try {
       await deleteDoc(doc(db, 'cursos', id));
       setTodosCursos(prev => prev.filter(c => c.id !== id));
+      invalidateCache(CACHE_KEYS.CURSOS);
       setSuccess(true);
       setTimeout(() => setSuccess(false), 2000);
     } catch (err) {
@@ -391,15 +416,20 @@ export function AdminPanel() {
       const docSnap = await getDoc(docRef);
       if (docSnap.exists()) {
         const data = docSnap.data();
-        if (data.lista) setFotosCarrossel(data.lista);
+        if (data.lista) {
+          setFotosCarrossel(data.lista);
+          setCachedData(CACHE_KEYS.CARROSSEL, data.lista);
+        }
       }
     } catch (err) {
+      const stale = getStaleCachedData<FotoCarrossel[]>(CACHE_KEYS.CARROSSEL);
+      if (stale) setFotosCarrossel(stale);
       console.error("Erro ao carregar fotos do carrossel:", err);
     }
   };
 
   // --- LÓGICA DE LEADS / CRM ---
-  // Real-time Leads Listener
+  // Real-time Leads Listener (executa apenas 1 vez ao autenticar, sem reler ao trocar categoria!)
   useEffect(() => {
     if (!isAuthenticated) return;
 
@@ -407,7 +437,7 @@ export function AdminPanel() {
     const leadsRef = collection(db, 'leads');
     
     const unsubscribe = onSnapshot(leadsRef, (snapshot) => {
-      const allLeads: Lead[] = [];
+      const loadedLeads: Lead[] = [];
       const stats: Record<string, { novos: number, atendimento: number }> = {};
       
       // Initialize stats for all categories
@@ -415,10 +445,10 @@ export function AdminPanel() {
         stats[cat] = { novos: 0, atendimento: 0 };
       });
 
-      snapshot.forEach((doc) => {
-        const data = doc.data() as any;
+      snapshot.forEach((docSnap) => {
+        const data = docSnap.data() as any;
         const lead: Lead = {
-          id: doc.id,
+          id: docSnap.id,
           nome: data.nome || '',
           whatsapp: data.whatsapp || '',
           categoria: data.categoria || '',
@@ -427,7 +457,7 @@ export function AdminPanel() {
           notas: data.notas || '',
           createdAt: data.createdAt
         };
-        allLeads.push(lead);
+        loadedLeads.push(lead);
 
         // Update stats for specific category
         if (stats[lead.categoria]) {
@@ -440,21 +470,14 @@ export function AdminPanel() {
         if (lead.status === 'Em Atendimento') stats['Todos os Leads'].atendimento++;
       });
 
-      setLeadsStats(stats);
-
-      // Filter and sort for current view
-      let filtered = allLeads;
-      if (activeLeadCategory !== 'Todos os Leads') {
-        filtered = allLeads.filter(l => l.categoria === activeLeadCategory);
-      }
-
-      filtered.sort((a, b) => {
+      loadedLeads.sort((a, b) => {
         const dateA = a.createdAt?.toDate?.() || new Date(0);
         const dateB = b.createdAt?.toDate?.() || new Date(0);
         return dateB.getTime() - dateA.getTime();
       });
 
-      setLeads(filtered);
+      setLeadsStats(stats);
+      setAllLeads(loadedLeads);
       setLoading(false);
     }, (err) => {
       console.error("Erro no onSnapshot de leads:", err);
@@ -463,14 +486,23 @@ export function AdminPanel() {
     });
 
     return () => unsubscribe();
-  }, [isAuthenticated, activeLeadCategory]);
+  }, [isAuthenticated]);
+
+  // Filtra leads em memória (0 leituras no Firestore ao clicar nas categorias!)
+  useEffect(() => {
+    if (activeLeadCategory === 'Todos os Leads') {
+      setLeads(allLeads);
+    } else {
+      setLeads(allLeads.filter(l => l.categoria === activeLeadCategory));
+    }
+  }, [allLeads, activeLeadCategory]);
 
   const handleStatusChange = async (leadId: string, novoStatus: string) => {
     try {
       const leadRef = doc(db, 'leads', leadId);
       await updateDoc(leadRef, { status: novoStatus });
       
-      setLeads(prev => prev.map(lead => 
+      setAllLeads(prev => prev.map(lead => 
         lead.id === leadId ? { ...lead, status: novoStatus } : lead
       ));
       setSuccess(true);
@@ -488,7 +520,7 @@ export function AdminPanel() {
       const leadRef = doc(db, 'leads', leadId);
       await deleteDoc(leadRef);
       
-      setLeads(prev => prev.filter(lead => lead.id !== leadId));
+      setAllLeads(prev => prev.filter(lead => lead.id !== leadId));
       setSuccess(true);
       setTimeout(() => setSuccess(false), 2000);
     } catch (err) {
@@ -535,6 +567,7 @@ export function AdminPanel() {
         descricao,
         imagemUrl
       }, { merge: true });
+      setCachedData(CACHE_KEYS.CURSO_DESTAQUE, { titulo, descricao, imagemUrl });
       
       setSuccess(true);
       setTimeout(() => setSuccess(false), 3000);
@@ -567,6 +600,7 @@ export function AdminPanel() {
       await setDoc(docRef, { lista: updatedVagas }, { merge: true });
       
       setVagas(updatedVagas);
+      setCachedData(CACHE_KEYS.VAGAS, updatedVagas);
       setNovaVagaTitulo('');
       setNovaVagaDescricao('');
       setSuccess(true);
@@ -591,6 +625,7 @@ export function AdminPanel() {
       await setDoc(docRef, { lista: updatedVagas }, { merge: true });
       
       setVagas(updatedVagas);
+      setCachedData(CACHE_KEYS.VAGAS, updatedVagas);
       setSuccess(true);
       setTimeout(() => setSuccess(false), 3000);
     } catch (err: any) {
@@ -706,6 +741,7 @@ export function AdminPanel() {
       await setDoc(docRef, { lista: updatedFotos }, { merge: true });
       
       setFotosCarrossel(updatedFotos);
+      setCachedData(CACHE_KEYS.CARROSSEL, updatedFotos);
       setNovaFotoFile(null);
       setNovaFotoPreview('');
       setSuccess(true);
@@ -730,6 +766,7 @@ export function AdminPanel() {
       await setDoc(docRef, { lista: updatedFotos }, { merge: true });
       
       setFotosCarrossel(updatedFotos);
+      setCachedData(CACHE_KEYS.CARROSSEL, updatedFotos);
       setSuccess(true);
       setTimeout(() => setSuccess(false), 3000);
     } catch (err: any) {

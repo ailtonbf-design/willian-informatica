@@ -3,8 +3,8 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { EffectCoverflow, Navigation, Autoplay } from 'swiper/modules';
 import type { Swiper as SwiperType } from 'swiper';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
-import { doc, getDoc, onSnapshot } from 'firebase/firestore';
-import { db } from '../firebase';
+import { doc, getDoc } from 'firebase/firestore';
+import { db, CACHE_KEYS, getCachedData, getStaleCachedData, setCachedData } from '../firebase';
 
 import 'swiper/css';
 import 'swiper/css/effect-coverflow';
@@ -30,24 +30,38 @@ export default function Carousel3D() {
   const [slides, setSlides] = useState<{id: string, url: string}[]>(defaultSlides);
 
   useEffect(() => {
-    const docRef = doc(db, 'configuracoes', 'carrossel');
-    
-    const unsubscribe = onSnapshot(docRef, (docSnap) => {
-      if (docSnap.exists()) {
-        const data = docSnap.data();
-        if (data.lista && data.lista.length > 0) {
-          setSlides(data.lista);
+    const loadCarrossel = async () => {
+      const cached = getCachedData<{id: string, url: string}[]>(CACHE_KEYS.CARROSSEL);
+      if (cached && cached.length > 0) {
+        setSlides(cached);
+        return;
+      }
+
+      try {
+        const docSnap = await getDoc(doc(db, 'configuracoes', 'carrossel'));
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          if (data.lista && data.lista.length > 0) {
+            setSlides(data.lista);
+            setCachedData(CACHE_KEYS.CARROSSEL, data.lista);
+          } else {
+            setSlides(defaultSlides);
+          }
         } else {
           setSlides(defaultSlides);
         }
-      } else {
-        setSlides(defaultSlides);
+      } catch (error) {
+        const stale = getStaleCachedData<{id: string, url: string}[]>(CACHE_KEYS.CARROSSEL);
+        if (stale && stale.length > 0) {
+          setSlides(stale);
+        } else {
+          setSlides(defaultSlides);
+        }
+        console.warn("Aviso ao carregar fotos do carrossel (usando cache/padrão):", error);
       }
-    }, (error) => {
-      console.error("Erro ao carregar fotos do carrossel:", error);
-    });
+    };
 
-    return () => unsubscribe();
+    loadCarrossel();
   }, []);
 
   return (

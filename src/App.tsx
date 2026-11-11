@@ -4,7 +4,7 @@ import { BookOpen, Rocket, ArrowRight, CheckCircle2, Users, Award, Clock, MapPin
 import Carousel3D from './components/Carousel3D';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
-import { db } from './firebase';
+import { db, CACHE_KEYS, getCachedData, getStaleCachedData, setCachedData } from './firebase';
 
 const AdminPanel = lazy(() => import('./components/AdminPanel').then(m => ({ default: m.AdminPanel })));
 const CursosPage = lazy(() => import('./CursosPage'));
@@ -14,7 +14,7 @@ const MelhorIdadePage = lazy(() => import('./MelhorIdadePage'));
 const FilhosBrilhantesPage = lazy(() => import('./FilhosBrilhantesPage'));
 const CarreiraPage = lazy(() => import('./CarreiraPage'));
 const NegociosPage = lazy(() => import('./NegociosPage'));
-import { doc, onSnapshot, collection, addDoc, serverTimestamp } from 'firebase/firestore';
+import { doc, getDoc, collection, addDoc, serverTimestamp } from 'firebase/firestore';
 
 const fadeInUp = {
   hidden: { opacity: 0, y: 30 },
@@ -158,32 +158,62 @@ export default function App() {
   const [vagasList, setVagasList] = useState<{ id: string; titulo: string; descricao: string; }[]>([]);
 
   useEffect(() => {
-    const docRef = doc(db, 'configuracoes', 'cursoDestaque');
-    const unsubscribe = onSnapshot(docRef, (docSnap) => {
-      if (docSnap.exists()) {
-        const data = docSnap.data();
+    const loadHomeConfigurations = async () => {
+      // 1. Curso Destaque (com cache local)
+      const cachedCurso = getCachedData<{ titulo: string; descricao: string; imagemUrl: string }>(CACHE_KEYS.CURSO_DESTAQUE);
+      if (cachedCurso) {
         setCursoDestaque(prev => ({
-          titulo: data.titulo || prev.titulo,
-          descricao: data.descricao || prev.descricao,
-          imagemUrl: data.imagemUrl || prev.imagemUrl
+          titulo: cachedCurso.titulo || prev.titulo,
+          descricao: cachedCurso.descricao || prev.descricao,
+          imagemUrl: cachedCurso.imagemUrl || prev.imagemUrl
         }));
-      }
-    });
-
-    const vagasRef = doc(db, 'configuracoes', 'vagas');
-    const unsubscribeVagas = onSnapshot(vagasRef, (docSnap) => {
-      if (docSnap.exists()) {
-        const data = docSnap.data();
-        if (data.lista) {
-          setVagasList(data.lista);
+      } else {
+        try {
+          const docSnap = await getDoc(doc(db, 'configuracoes', 'cursoDestaque'));
+          if (docSnap.exists()) {
+            const data = docSnap.data();
+            const novoDestaque = {
+              titulo: data.titulo || "Auxiliar Administrativo",
+              descricao: data.descricao || "Domine as rotinas do escritório e seja o profissional que as empresas procuram.",
+              imagemUrl: data.imagemUrl || "https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&w=400&q=80"
+            };
+            setCursoDestaque(novoDestaque);
+            setCachedData(CACHE_KEYS.CURSO_DESTAQUE, novoDestaque);
+          }
+        } catch (err) {
+          const staleCurso = getStaleCachedData<{ titulo: string; descricao: string; imagemUrl: string }>(CACHE_KEYS.CURSO_DESTAQUE);
+          if (staleCurso) {
+            setCursoDestaque(prev => ({ ...prev, ...staleCurso }));
+          }
+          console.warn("Aviso ao carregar curso destaque (usando cache/padrão):", err);
         }
       }
-    });
 
-    return () => {
-      unsubscribe();
-      unsubscribeVagas();
+      // 2. Vagas (com cache local)
+      const cachedVagas = getCachedData<{ id: string; titulo: string; descricao: string; }[]>(CACHE_KEYS.VAGAS);
+      if (cachedVagas) {
+        setVagasList(cachedVagas);
+      } else {
+        try {
+          const docSnap = await getDoc(doc(db, 'configuracoes', 'vagas'));
+          if (docSnap.exists()) {
+            const data = docSnap.data();
+            if (Array.isArray(data.lista)) {
+              setVagasList(data.lista);
+              setCachedData(CACHE_KEYS.VAGAS, data.lista);
+            }
+          }
+        } catch (err) {
+          const staleVagas = getStaleCachedData<{ id: string; titulo: string; descricao: string; }[]>(CACHE_KEYS.VAGAS);
+          if (staleVagas) {
+            setVagasList(staleVagas);
+          }
+          console.warn("Aviso ao carregar vagas (usando cache/padrão):", err);
+        }
+      }
     };
+
+    loadHomeConfigurations();
   }, []);
 
   useEffect(() => {
